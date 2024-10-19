@@ -29,6 +29,7 @@ next step.
 * The control stick offers fowward and back for normal movement and side to side for
   finer tuning.
 
+```
  |012345689012345
  +---------------+
 0|End Pt Select  |
@@ -40,6 +41,7 @@ next step.
 6|Backlash    -12|
 7||      |      ||
  +---------------+
+```
 
 ### Step 4: Start point selection
 
@@ -53,6 +55,7 @@ Other steps are similar to end point selection
 
 Bob is shown something like this
 
+```
  |012345689012345
  +---------------+
 0|Parameters     |
@@ -64,10 +67,11 @@ Bob is shown something like this
 6|          1616 |
 7|Time: 00:00:00 |
  +---------------+
-
+```
 
 ### Step 6: Start
 
+```
  |012345689012345
  +---------------+
 0|               |
@@ -79,6 +83,7 @@ Bob is shown something like this
 6|               |
 7|               |
  +---------------+
+```
 
 ### Step 7: Process
 
@@ -87,6 +92,7 @@ Bob can press the shutter button to continuue
 Bob can press the prev to cancel
 
 
+```
  |012345689012345
  +---------------+
 0|Running        |
@@ -98,11 +104,13 @@ Bob can press the prev to cancel
 6|[next] > pause |
 7|[prev] > cancel|
  +---------------+
+```
 
 ## Settings
 
 Pressing the setting button offers a selection
 
+```
  |012345689012345
  +---------------+
 0|Settings       |
@@ -113,7 +121,9 @@ Pressing the setting button offers a selection
 6|Min Step       |
 7|               |
  +---------------+
+```
 
+```
  |012345689012345
  +---------------+
 0|Backlash       |
@@ -125,7 +135,9 @@ Pressing the setting button offers a selection
 6|[next] > test  |
 7|[prev] > back  |
  +---------------+
+```
 
+```
  |012345689012345
  +---------------+
 0|Speed          |
@@ -137,7 +149,9 @@ Pressing the setting button offers a selection
 6|               |
 7|[prev] > back  |
  +---------------+
+```
 
+```
  |012345689012345
  +---------------+
 0|Calibrate mm   |
@@ -149,7 +163,9 @@ Pressing the setting button offers a selection
 6|[lt/rt] > 1mm  |
 7|[prev] > back  |
  +---------------+
+```
 
+```
  |012345689012345
  +---------------+
 0|Min Step       |
@@ -161,3 +177,5 @@ Pressing the setting button offers a selection
 6|               |
 7|[prev] > back  |
  +---------------+
+```
+
