@@ -89,7 +89,9 @@ module motor() {
   }
 }
 
+/*
 $fa=2.0;
 $fs=0.5;
 motor();
+*/
 

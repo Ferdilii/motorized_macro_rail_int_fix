@@ -4,6 +4,7 @@ overlap = 0.01;
 KNOB_DIAMETER = 15.1;
 KNOB_INSET_DIAMETER = 13.2;
 KNOB_FINGER_HEIGHT = 14.6;
+KNOB_HEIGHT = 17.6;
 
 module finger_knob(knob_diameter, knob_inset_diameter, knob_finger_height) {
   finger_cutout_diameter = 4;
@@ -31,9 +32,8 @@ module finger_knob(knob_diameter, knob_inset_diameter, knob_finger_height) {
 }
 
 module knob() {
-  knob_height = 17.6;
   knob_inner_diameter = 10;
-  knob_inner_height = knob_height - KNOB_FINGER_HEIGHT;
+  knob_inner_height = KNOB_HEIGHT - KNOB_FINGER_HEIGHT;
   module base() {
     cylinder(
         d1=knob_inner_diameter,
