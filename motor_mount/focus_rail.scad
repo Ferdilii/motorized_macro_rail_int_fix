@@ -35,7 +35,7 @@ module focus_rail() {
           cutout_width,
           cutout_height + overlap], corner_radius);
   }
-  *translate([
+  translate([
       0,
       -rail_body_width / 2,
       -rail_body_height / 2]) {
@@ -48,5 +48,5 @@ module focus_rail() {
     txy(rail_body_length - foot_l_offset, foot_w_offset) foot();
     txy(rail_body_length - foot_l_offset, rail_body_width - foot_w_offset) foot();
   }
-  knob();
+  ry(-90) knob();
 }
