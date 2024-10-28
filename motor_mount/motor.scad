@@ -4,10 +4,10 @@ include <focus_rail.scad>
 overlap = 0.01;
 
 module motor() {
+  body_height = 30;
 
   module body() {
     body_width = 42.3;
-    body_height = 30;
     body_chamfer = 4.2;
 
     module chamfer() {
@@ -24,7 +24,27 @@ module motor() {
     }
   }
 
-  body();
+  module mounting_holes() {
+    hole_spacing = 31;
+
+    module hole() {
+      hole_diameter = 3;
+      hole_depth = 4.5;
+      
+      color("#eee") tz(body_height - hole_depth)
+        cylinder(d=hole_diameter, h=hole_depth + overlap);
+    }
+
+    txy(hole_spacing/2, hole_spacing/2) hole();
+    txy(hole_spacing/2, -hole_spacing/2) hole();
+    txy(-hole_spacing/2, hole_spacing/2) hole();
+    txy(-hole_spacing/2, -hole_spacing/2) hole();
+  }
+
+  difference() {
+    body();
+    mounting_holes();
+  }
 }
 
 $fa=2.0;
