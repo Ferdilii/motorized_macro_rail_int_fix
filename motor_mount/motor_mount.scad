@@ -7,6 +7,43 @@ module rail_body() {
   rail_body_length = 200;
   rail_body_width = 37.8;
   rail_body_height = 20;
+  foot_base_height = 2.7;
+  finger_grab_height = 4;
+  chamfer_height = 8;
+  top_diameter = 5.6;
+
+  module foot() {
+    foot_height = 18;
+    module foot_base() {
+      foot_base_diameter_bottom = 8;
+      foot_base_diameter_top = 10;
+      cylinder(
+          d1=foot_base_diameter_bottom,
+          d2=foot_base_diameter_top,
+          h=foot_base_height + overlap);
+    }
+    module finger_grab() {
+      finger_grab_diameter = 11;
+      tz(foot_base_height) cylinder(
+          d=finger_grab_diameter, h=finger_grab_height + overlap);
+    }
+    module chamfer() {
+      chamfer_base_diameter = 9.9;
+      tz(foot_base_height + finger_grab_height) cylinder(
+          d1=chamfer_base_diameter, d2=top_diameter, h=chamfer_height+overlap);
+    }
+    module top() {
+      top_height = foot_height - chamfer_height - finger_grab_height - foot_base_height;
+      tz(chamfer_height + finger_grab_height + foot_base_height) cylinder(d=top_diameter, h=top_height);
+    }
+
+    color("#ddd") union() {
+      foot_base();
+      finger_grab();
+      chamfer();
+      top();
+    }
+  }
 
   module outer_body() {
     corner_radius = 5;
@@ -30,11 +67,13 @@ module rail_body() {
           cutout_width,
           cutout_height + overlap], corner_radius);
   }
-
+/*
   difference() {
     outer_body();
     main_cutout();
   }
+*/
+  foot();
 }
 
 //module motor_mount() { }
