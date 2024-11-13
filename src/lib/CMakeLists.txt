@@ -1,3 +1,3 @@
 add_subdirectory(debounce)
 add_subdirectory(oledm)
-add_subdirectory(twi)
+add_subdirectory(spi)
