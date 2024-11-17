@@ -1,4 +1,4 @@
-The purpose of this doc is to help design the user interface, especiall in
+The purpose of this doc is to help design the user interface, especially in
 terms of streamlining the primary usecase.
 
 ## Primary Usecase
@@ -9,13 +9,7 @@ Bob would like a set of images for a focus stacking program.
 
 Bob also connects the shutter release cable from the module to the camera
 
-### Step 2: Power up
-
-Bob connects either a 3S lipo battery or a 12V DC Adapter for power. The unit
-activates and asks Bob to press a button to continue.  The unit will only
-continue if the control stick has been idle for 500ms.
-
-### Step 3: End Point Selection
+### Step 2: End Point Selection
 
 Bob can freely move the camera with the control stick and hit next to go to the
 next step.

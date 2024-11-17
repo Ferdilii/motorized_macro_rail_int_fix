@@ -1,7 +1,11 @@
-#include "pico/stdlib.h"
-#include <oledm/bitmap.h>
+#include <pico/stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
 #include <oledm/oledm.h>
-#include <oledm/font/terminus8x16.h>
+#include "shared_state.h"
+#include "fatal.h"
+#include "main_led.h"
 
 // A4988 Stepper Motor Controller (Reference only)
 //
@@ -42,20 +46,26 @@
 //          +-------------------------------------+
 
 
-// Tuned for the 128x128 display
-#define DISPLAY_WIDTH 128
-#define DISPLAY_HEIGHT 128
-#define DISPLAY_ROWS 16
 #define OLEDM_INIT oledm_basic_init
 
 struct OLEDM display;
-struct Bitmap bitmap;
+struct SharedState state;
 uint8_t bitmap_data[DISPLAY_WIDTH * DISPLAY_ROWS];
 
-static void render(void) {
-  bitmap_fill(&bitmap, 0);
-  bitmap_str(&bitmap, terminus8x16, "Hello world", 0, 96, bitmap_SET);
-  bitmap_render_fast(&display, &bitmap, 0, 0);
+static void update(void) {
+  state.main_led_claimed = 0;
+  bitmap_fill(&state.bitmap, 0);
+  switch (state.state) {
+    case STATE_FATAL:
+      fatal_update(&state);
+      break;
+    default:
+      state.state = STATE_FATAL;
+      sprintf(state.fatal_err, "UNKNOWN_STATE: %d", state.state);
+  }
+  bitmap_render_fast(&display, &state.bitmap, 0, 0); 
+
+  ++state.frame_idx;
 }
 
 static void init() {
@@ -64,16 +74,18 @@ static void init() {
   OLEDM_INIT(&display);
   oledm_start(&display);
 
-  bitmap.rows = DISPLAY_ROWS;
-  bitmap.columns = DISPLAY_WIDTH;
-  bitmap.data = bitmap_data;
+  memset(&state, 0, sizeof(struct SharedState));
+  state.state = STATE_FIRST_END_POINT_SELECT;
+  state.bitmap.rows = DISPLAY_ROWS;
+  state.bitmap.columns = DISPLAY_WIDTH;
+  state.bitmap.data = bitmap_data;
 }
 
 int main(void) {
   init();
 
   while (1) {
-    render();
+    update();
     sleep_ms(15);
   }
 }

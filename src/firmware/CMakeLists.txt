@@ -1,5 +1,7 @@
 add_executable(macro_rail_automater
         main.c
+        main_led.c
+        fatal.c
         )
 
 # pull in common dependencies
