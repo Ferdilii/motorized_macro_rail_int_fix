@@ -1,6 +1,5 @@
 #include <pico/stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 #include <oledm/oledm.h>
 #include "shared_state.h"
@@ -46,8 +45,6 @@
 //          +-------------------------------------+
 
 
-#define OLEDM_INIT oledm_basic_init
-
 struct OLEDM display;
 struct SharedState state;
 uint8_t bitmap_data[DISPLAY_WIDTH * DISPLAY_ROWS];
@@ -55,23 +52,23 @@ uint8_t bitmap_data[DISPLAY_WIDTH * DISPLAY_ROWS];
 static void update(void) {
   state.main_led_claimed = 0;
   bitmap_fill(&state.bitmap, 0);
+
   switch (state.state) {
     case STATE_FATAL:
       fatal_update(&state);
       break;
     default:
-      state.state = STATE_FATAL;
-      sprintf(state.fatal_err, "UNKNOWN_STATE: %d", state.state);
+      fatal(&state, "UNKNOWN_STATE: %d", state.state);
   }
-  bitmap_render_fast(&display, &state.bitmap, 0, 0); 
 
+  bitmap_render_fast(&display, &state.bitmap, 0, 0); 
   ++state.frame_idx;
 }
 
 static void init() {
   sleep_ms(50);
 
-  OLEDM_INIT(&display);
+  oledm_basic_init(&display);
   oledm_start(&display);
 
   memset(&state, 0, sizeof(struct SharedState));
