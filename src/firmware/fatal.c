@@ -18,7 +18,7 @@ void fatal_update(struct SharedState* state) {
     terminus8x16,
     state->fatal_err,
     0,
-    4,
+    64,
     bitmap_SET);
 
   // blink areound 5 times a second (12 frames would be close)
