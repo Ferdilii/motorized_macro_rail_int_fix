@@ -62,6 +62,9 @@ static void update(void) {
   }
 
   bitmap_render_fast(&display, &state.bitmap, 0, 0); 
+  if (!state.main_led_claimed) {
+    main_led_put(state.frame_idx & 0x20);
+  }
   ++state.frame_idx;
 }
 
