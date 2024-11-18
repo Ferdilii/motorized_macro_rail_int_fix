@@ -62,8 +62,11 @@ static void update(void) {
     case STATE_FATAL:
       fatal_update(&state);
       break;
-    case STATE_FIRST_END_POINT_SELECT:
-      end_point_select_update(&state);
+    case STATE_END_POINT_SELECT:
+      end_point_select_update(&state, false);
+      break;
+    case STATE_START_POINT_SELECT:
+      end_point_select_update(&state, true);
       break;
     default:
       fatal(&state, "UNKNOWN_STATE: %d", state.state);
@@ -88,7 +91,7 @@ static void init() {
   main_led_init();
 
   memset(&state, 0, sizeof(struct SharedState));
-  state.state = STATE_FIRST_END_POINT_SELECT;
+  state.state = STATE_END_POINT_SELECT;
   state.bitmap.rows = DISPLAY_ROWS;
   state.bitmap.columns = DISPLAY_WIDTH;
   state.bitmap.data = bitmap_data;

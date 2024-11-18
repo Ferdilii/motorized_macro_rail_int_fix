@@ -17,7 +17,12 @@
 
 // System encountered an error and can not continue
 #define STATE_FATAL 0
-#define STATE_FIRST_END_POINT_SELECT 1
+#define STATE_END_POINT_SELECT 1
+#define STATE_START_POINT_SELECT 2
+#define STATE_DELAY_BETWEEN_SHOTS 3
+#define STATE_SHOT_COUNT 4
+#define STATE_CONFIRM_START 5
+#define STATE_RUNNING 6
 
 struct SharedState {
   struct Bitmap bitmap;
@@ -29,6 +34,9 @@ struct SharedState {
   int8_t gimbal_x_dir;
   int8_t gimbal_y_dir;
 
+  // button states.  These stay set until the receiver clears them.
+  uint8_t next_pressed;
+
   struct MotorControl motor;
 
   // incremented by one each frame
@@ -37,10 +45,12 @@ struct SharedState {
   // error message displayed with STATE_FATAL
   char fatal_err[32];
 
+  int32_t start_pos;
+  int32_t end_pos;
+
   // state modules can set this to non-zero to indicate
   // they are controlling the main led
   uint8_t main_led_claimed;
-
   uint8_t state;
 };
 

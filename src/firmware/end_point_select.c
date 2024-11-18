@@ -8,7 +8,7 @@
 
 #define DEADZONE 0x10
 
-static void update(struct SharedState* ss, const struct MotorControl* motor_snap) {
+static void update(struct SharedState* ss, const struct MotorControl* motor_snap, uint8_t is_start) {
   uint16_t y = ss->gimbal_y_pos;
   int32_t new_jv = 0;
   if (y > (GIMBAL_CALIBRATE_CENTER + DEADZONE)) {
@@ -22,7 +22,16 @@ static void update(struct SharedState* ss, const struct MotorControl* motor_snap
   // A spin lock is needed to change motor settings so only
   // change them if needed.
   const float delta_jv = motor_snap->jog_velocity - (float)new_jv;
-  if ((delta_jv >= 1.0) || (delta_jv <= -1.0)) {
+  if (ss->next_pressed) {
+    ss->next_pressed = 0;
+    if (is_start) {
+      ss->start_pos = (int32_t)(motor_snap->current_pos);
+      ss->state = STATE_DELAY_BETWEEN_SHOTS;
+    } else {
+      ss->end_pos = (int32_t)(motor_snap->current_pos);
+      ss->state = STATE_START_POINT_SELECT;
+    }
+  } else if ((delta_jv >= 1.0) || (delta_jv <= -1.0)) {
     motor_control_set_jog_velocity(&(ss->motor), (float)new_jv);
   } else if (!motor_snap->jog_mode) {
     if (ss->gimbal_x_dir > 0) {
@@ -33,8 +42,9 @@ static void update(struct SharedState* ss, const struct MotorControl* motor_snap
   }
 }
 
-static void render_title(struct Bitmap* bm) {
-  bitmap_str(bm, terminus8x16, "End Point Select", 0, 0, bitmap_SET);
+static void render_title(struct Bitmap* bm, uint8_t is_start) {
+  const char* title = is_start ? "Start Position" : "End Position";
+  bitmap_str(bm, terminus8x16, title, 0, 0, bitmap_SET);
   bitmap_hline(bm, 0, 17, 128, bitmap_SET);
 }
 
@@ -64,18 +74,18 @@ static void render_backlash(struct Bitmap* bm, const struct MotorControl* motor_
   bitmap_vline(bm, 64 + scaled_bl, 120, 7, bitmap_OR);
 }
 
-static void render(struct SharedState* ss, const struct MotorControl* motor_snap) {
+static void render(struct SharedState* ss, const struct MotorControl* motor_snap, uint8_t is_start) {
   struct Bitmap* bm = &(ss->bitmap);
-  render_title(bm);
+  render_title(bm, is_start);
   render_position(bm, motor_snap);
   render_backlash(bm, motor_snap);
 }
 
-void end_point_select_update(struct SharedState* ss) {
+void end_point_select_update(struct SharedState* ss, uint8_t is_start) {
   struct MotorControl motor_snap;
   motor_control_snapshot(&motor_snap, &(ss->motor));
 
-  update(ss, &motor_snap);
-  render(ss, &motor_snap);
+  update(ss, &motor_snap, is_start);
+  render(ss, &motor_snap, is_start);
 }
 

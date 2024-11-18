@@ -2,8 +2,9 @@
 #define END_POINT_SELECT_H
 
 #include "shared_state.h"
+#include <inttypes.h>
 
-void end_point_select_update(struct SharedState* ss);
+void end_point_select_update(struct SharedState* ss, uint8_t is_start);
 
 #endif
 
