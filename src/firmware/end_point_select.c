@@ -33,14 +33,14 @@ static void update(struct SharedState* ss, const struct MotorControl* motor_snap
   }
 }
 
-static void render(struct SharedState* ss, const struct MotorControl* motor_snap) {
-  char str[32];
-  struct Bitmap* bm = &(ss->bitmap);
+static void render_title(struct Bitmap* bm) {
   bitmap_str(bm, terminus8x16, "End Point Select", 0, 0, bitmap_SET);
-
   bitmap_hline(bm, 0, 17, 128, bitmap_SET);
+}
 
+static void render_position(struct Bitmap* bm, const struct MotorControl* motor_snap) {
   // 200 steps per mm
+  char str[32];
   const float pos = (motor_snap->current_pos) / 200.0;
   snprintf(str, sizeof(str), "Plate:   %5.2fmm", pos);
   bitmap_str(bm, terminus8x16, str, 0, 32, bitmap_SET);
@@ -50,6 +50,12 @@ static void render(struct SharedState* ss, const struct MotorControl* motor_snap
 
   snprintf(str, sizeof(str), "Motor:  %8d", (int32_t)(motor_snap->motor_pos));
   bitmap_str(bm, terminus8x16, str, 0, 64, bitmap_SET);
+}
+
+static void render(struct SharedState* ss, const struct MotorControl* motor_snap) {
+  struct Bitmap* bm = &(ss->bitmap);
+  render_title(bm);
+  render_position(bm, motor_snap);
 }
 
 void end_point_select_update(struct SharedState* ss) {
