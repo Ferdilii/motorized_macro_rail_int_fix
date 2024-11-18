@@ -17,6 +17,13 @@
 struct SharedState {
   struct Bitmap bitmap;
 
+  // analog position (0x000-0x3FF)
+  int8_t gimbal_x_pos;
+  int8_t gimbal_y_pos;
+  // digital direction (-1, 0, or 1)
+  int8_t gimbal_x_dir;
+  int8_t gimbal_y_dir;
+
   struct MotorControl motor;
 
   // incremented by one each frame

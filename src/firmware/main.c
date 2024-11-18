@@ -4,6 +4,7 @@
 
 #include <oledm/oledm.h>
 #include "shared_state.h"
+#include "gimbal_update.h"
 #include "fatal.h"
 #include "main_led.h"
 
@@ -52,6 +53,7 @@ uint8_t bitmap_data[DISPLAY_WIDTH * DISPLAY_ROWS];
 
 static void update(void) {
   state.main_led_claimed = 0;
+  gimbal_update(&state);
   bitmap_fill(&state.bitmap, 0);
 
   switch (state.state) {
@@ -77,12 +79,7 @@ static void start_motor_control(void) {
 
 static void init() {
   sleep_ms(50);
-
   main_led_init();
-
-  oledm_basic_init(&display);
-  oledm_start(&display);
-  oledm_clear(&display, 0x00);
 
   memset(&state, 0, sizeof(struct SharedState));
   state.state = STATE_FIRST_END_POINT_SELECT;
@@ -90,6 +87,11 @@ static void init() {
   state.bitmap.columns = DISPLAY_WIDTH;
   state.bitmap.data = bitmap_data;
 
+  oledm_basic_init(&display);
+  oledm_start(&display);
+  oledm_clear(&display, 0x00);
+
+  gimbal_update_init(&state);
   multicore_launch_core1(start_motor_control);
 }
 

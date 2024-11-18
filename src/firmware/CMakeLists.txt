@@ -1,5 +1,6 @@
 add_executable(macro_rail_automater
         main.c
+        gimbal_update.c
         main_led.c
         motor_control.c
         motor_driver.c
@@ -8,13 +9,16 @@ add_executable(macro_rail_automater
 
 # pull in common dependencies
 target_link_libraries(macro_rail_automater
+    pico_multicore
+    pico_stdlib
+    hardware_adc
+
     FIXED_TEXT_TERMINUS8X16
+    GIMBAL
     OLEDM_BITMAP
     OLEDM_FIXED_TEXT
     OLEDM_SH1107
     OLEDM_SPI
-    pico_multicore
-    pico_stdlib
 )
 
 # create map/bin/hex file etc.
