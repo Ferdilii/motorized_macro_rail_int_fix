@@ -1,6 +1,7 @@
 add_executable(macro_rail_automater
         main.c
 
+        buttons.c
         end_point_select.c
         fatal.c
         gimbal_update.c
@@ -15,6 +16,7 @@ target_link_libraries(macro_rail_automater
     pico_stdlib
     hardware_adc
 
+    DEBOUNCE
     FIXED_TEXT_TERMINUS8X16
     GIMBAL
     OLEDM_BITMAP

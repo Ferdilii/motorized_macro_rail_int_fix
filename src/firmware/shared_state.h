@@ -24,6 +24,11 @@
 #define STATE_CONFIRM_START 5
 #define STATE_RUNNING 6
 
+// bits for buttons bit field
+#define NEXT_PRESSED     0x01
+#define PREVIOUS_PRESSED 0x02
+#define SHUTTER_PRESSED  0x04
+
 struct SharedState {
   struct Bitmap bitmap;
 
@@ -34,8 +39,8 @@ struct SharedState {
   int8_t gimbal_x_dir;
   int8_t gimbal_y_dir;
 
-  // button states.  These stay set until the receiver clears them.
-  uint8_t next_pressed;
+  // button states.
+  uint8_t button;
 
   struct MotorControl motor;
 

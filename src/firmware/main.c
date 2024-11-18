@@ -5,6 +5,7 @@
 #include <oledm/oledm.h>
 #include "shared_state.h"
 
+#include "buttons.h"
 #include "end_point_select.h"
 #include "gimbal_update.h"
 #include "fatal.h"
@@ -35,9 +36,9 @@
 //         7 -| SCL0*/RX1/CS0/G5           G28/ADC2 |- 34
 //         8 -| GND                        AGND/GND |- 33 GIMBAL_GND
 //         9 -| G6/SDA1/SCK0          G27/ADC1/SCL1 |- 32 GIMBAL_Y
-//        10 -| G7/SCL1/MOSI0         G26/ADC0/SDA1 |- 31 GIMBAL_X
-//        11 -| G8/TX1/SDA0/MISO1               RUN |- 30 RESET
-//        12 -| G9/RX1/SCL0/CS1                 G22 |- 29
+// B_SHUT 10 -| G7/SCL1/MOSI0         G26/ADC0/SDA1 |- 31 GIMBAL_X
+// B_PREV 11 -| G8/TX1/SDA0/MISO1               RUN |- 30 RESET
+// B_NEXT 12 -| G9/RX1/SCL0/CS1                 G22 |- 29
 //        13 -| GND                             GND |- 28
 // M_RST  14 -| G10/SDA1/SCK1              G21/SCL0 |- 27 OLED_RST
 // M_SLP  15 -| G11/SCL1/MOSI1             G20/SDA0 |- 26 OLED_DC
@@ -55,6 +56,7 @@ uint8_t bitmap_data[DISPLAY_WIDTH * DISPLAY_ROWS];
 
 static void update(void) {
   state.main_led_claimed = 0;
+  buttons_update(&state);
   gimbal_update(&state);
   bitmap_fill(&state.bitmap, 0);
 
@@ -100,6 +102,7 @@ static void init() {
   oledm_start(&display);
   oledm_clear(&display, 0x00);
 
+  buttons_init();
   gimbal_update_init(&state);
   multicore_launch_core1(start_motor_control);
 }

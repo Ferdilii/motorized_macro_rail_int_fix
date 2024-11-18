@@ -22,8 +22,7 @@ static void update(struct SharedState* ss, const struct MotorControl* motor_snap
   // A spin lock is needed to change motor settings so only
   // change them if needed.
   const float delta_jv = motor_snap->jog_velocity - (float)new_jv;
-  if (ss->next_pressed) {
-    ss->next_pressed = 0;
+  if (ss->button & NEXT_PRESSED) {
     if (is_start) {
       ss->start_pos = (int32_t)(motor_snap->current_pos);
       ss->state = STATE_DELAY_BETWEEN_SHOTS;
