@@ -1,3 +1,4 @@
+#include "pico/multicore.h"
 #include <pico/stdlib.h>
 #include <string.h>
 
@@ -68,6 +69,12 @@ static void update(void) {
   ++state.frame_idx;
 }
 
+static void start_motor_control(void) {
+  motor_control_init(&state.motor, 0, 150, 75);
+  motor_control_start(&state.motor);
+}
+
+
 static void init() {
   sleep_ms(50);
 
@@ -82,6 +89,8 @@ static void init() {
   state.bitmap.rows = DISPLAY_ROWS;
   state.bitmap.columns = DISPLAY_WIDTH;
   state.bitmap.data = bitmap_data;
+
+  multicore_launch_core1(start_motor_control);
 }
 
 int main(void) {

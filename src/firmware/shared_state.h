@@ -8,6 +8,7 @@
 
 #include <inttypes.h>
 #include <oledm/bitmap.h>
+#include "motor_control.h"
 
 // System encountered an error and can not continue
 #define STATE_FATAL 0
@@ -15,6 +16,8 @@
 
 struct SharedState {
   struct Bitmap bitmap;
+
+  struct MotorControl motor;
 
   // incremented by one each frame
   uint32_t frame_idx;

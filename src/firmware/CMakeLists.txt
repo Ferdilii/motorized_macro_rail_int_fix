@@ -1,6 +1,8 @@
 add_executable(macro_rail_automater
         main.c
         main_led.c
+        motor_control.c
+        motor_driver.c
         fatal.c
         )
 
@@ -11,6 +13,7 @@ target_link_libraries(macro_rail_automater
     OLEDM_FIXED_TEXT
     OLEDM_SH1107
     OLEDM_SPI
+    pico_multicore
     pico_stdlib
 )
 

@@ -55,7 +55,7 @@
 //   }
 // }
 
-#include <error_codes.h>
+#include <inttypes.h>
 
 struct Debounce {
   volatile uint32_t last_sample_time_ms;  // the last time a sample was recorded
