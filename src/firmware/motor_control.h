@@ -55,6 +55,10 @@ struct MotorControl {
   // position on each step
   uint8_t jog_mode;
   float jog_velocity;
+
+  // idle frames are used to avoid going to sleep immediately
+  uint32_t idle_frames;
+  uint8_t sleep;
 };
 
 // initialize the passed structure

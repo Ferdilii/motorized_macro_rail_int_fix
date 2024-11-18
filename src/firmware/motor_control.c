@@ -10,9 +10,20 @@ void sleep_us(uint32_t unused) { }
 
 // Run the loop around 10khz
 #define LOOP_DELAY_US 100
+// sleep after 500000 us
+#define IDLE_CYCLES_BEFORE_SLEEP (500000 / LOOP_DELAY_US)
 
 static inline uint8_t near_zero(float v, float threshold) {
   return (v < threshold) && (v > -threshold);
+}
+
+static inline void sleep(struct MotorControl* mc) {
+  mc->sleep = 1;
+}
+
+static inline void wake(struct MotorControl* mc) {
+  mc->sleep = 0;
+  mc->idle_frames = 0;
 }
 
 void motor_control_init(
@@ -28,6 +39,7 @@ void motor_control_init(
   mc->lock = spin_lock_init(lock_num);
   motor_driver_init();
   motor_driver_sleep();
+  mc->sleep = 1;
 }
 
 static float update_physics_normalized(
@@ -141,8 +153,10 @@ void update_position(struct MotorControl* mcp, float delta_seconds) {
   const float new_motor_pos = mcp->motor_pos + (mcp->velocity * delta_seconds);
   const int32_t delta = (int32_t)(new_motor_pos) - orig_motor_pos;
   if (delta > 0) {
+    wake(mcp);
     motor_driver_step(1);
   } else if (delta < 0) {
+    wake(mcp);
     motor_driver_step(-1);
   }
 
@@ -167,7 +181,7 @@ void check_for_jog_end(struct MotorControl* mcp) {
     mcp->jog_mode = 0;
     mcp->current_pos = (int32_t)(mcp->current_pos);
     mcp->target_pos = mcp->current_pos;
-    motor_driver_sleep();
+    sleep(mcp);
   }
 }
 
@@ -179,7 +193,7 @@ void check_for_target_reached(struct MotorControl* mcp) {
     // overshot the target per-design.  Time to stop.
     mcp->velocity = 0;
     mcp->current_pos = mcp->target_pos;
-    motor_driver_sleep();
+    sleep(mcp);
   }
 }
 
@@ -212,6 +226,13 @@ void motor_control_start(struct MotorControl* mc) {
     motor_control_loop(mc);
     running = mc->running;
     spin_unlock_unsafe(mc->lock);
+    if (mc->sleep) {
+      ++mc->idle_frames;
+      if (mc->idle_frames >= IDLE_CYCLES_BEFORE_SLEEP) {
+        motor_driver_sleep();
+        mc->idle_frames = 0;
+      }
+    }
     sleep_us(LOOP_DELAY_US);
   }
 }
