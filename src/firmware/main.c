@@ -78,7 +78,7 @@ static void update(void) {
 
 static void start_motor_control(void) {
   motor_control_init(
-      &state.motor, 0, MAX_MOTOR_VELOCITY, MAX_MOTOR_ACCELERATION);
+      &state.motor, MOTOR_BACKLASH, MAX_MOTOR_VELOCITY, MAX_MOTOR_ACCELERATION);
   motor_control_start(&state.motor);
 }
 

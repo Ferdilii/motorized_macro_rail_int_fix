@@ -11,6 +11,7 @@
 #include "motor_control.h"
 
 // Motor parameters
+#define MOTOR_BACKLASH 50
 #define MAX_MOTOR_VELOCITY 150
 #define MAX_MOTOR_ACCELERATION 150
 
