@@ -4,6 +4,8 @@
 
 #include <oledm/oledm.h>
 #include "shared_state.h"
+
+#include "end_point_select.h"
 #include "gimbal_update.h"
 #include "fatal.h"
 #include "main_led.h"
@@ -60,6 +62,9 @@ static void update(void) {
     case STATE_FATAL:
       fatal_update(&state);
       break;
+    case STATE_FIRST_END_POINT_SELECT:
+      end_point_select_update(&state);
+      break;
     default:
       fatal(&state, "UNKNOWN_STATE: %d", state.state);
   }
@@ -72,7 +77,8 @@ static void update(void) {
 }
 
 static void start_motor_control(void) {
-  motor_control_init(&state.motor, 0, 150, 75);
+  motor_control_init(
+      &state.motor, 0, MAX_MOTOR_VELOCITY, MAX_MOTOR_ACCELERATION);
   motor_control_start(&state.motor);
 }
 

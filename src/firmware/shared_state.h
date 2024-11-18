@@ -10,6 +10,10 @@
 #include <oledm/bitmap.h>
 #include "motor_control.h"
 
+// Motor parameters
+#define MAX_MOTOR_VELOCITY 150
+#define MAX_MOTOR_ACCELERATION 75
+
 // System encountered an error and can not continue
 #define STATE_FATAL 0
 #define STATE_FIRST_END_POINT_SELECT 1
