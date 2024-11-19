@@ -9,7 +9,7 @@
 
 #define DEADZONE 0x10
 
-static void update(struct SharedState* ss, const struct MotorControl* motor_snap, uint8_t is_start) {
+static void update_gimbal(struct SharedState* ss, const struct MotorControl* motor_snap) {
   uint16_t y = ss->gimbal_y_pos;
   int32_t new_jv = 0;
   if (y > (GIMBAL_CALIBRATE_CENTER + DEADZONE)) {
@@ -23,7 +23,18 @@ static void update(struct SharedState* ss, const struct MotorControl* motor_snap
   // A spin lock is needed to change motor settings so only
   // change them if needed.
   const float delta_jv = motor_snap->jog_velocity - (float)new_jv;
+  if ((delta_jv >= 1.0) || (delta_jv <= -1.0)) {
+    motor_control_set_jog_velocity(&(ss->motor), (float)new_jv);
+  }
+}
+
+static void update(struct SharedState* ss, const struct MotorControl* motor_snap, uint8_t is_start) {
   if ((ss->button & NEXT_PRESSED) && (ss->motor.jog_mode == 0)) {
+    if (is_start) {
+      ss->state = STATE_END_POINT_SELECT;
+    }
+    // TODO: Go to settings if on end point select.
+  } else if ((ss->button & NEXT_PRESSED) && (ss->motor.jog_mode == 0)) {
     if (is_start) {
       ss->start_pos = (int32_t)(motor_snap->current_pos);
       ss->state = STATE_SHUTTER_DELAY;
@@ -35,8 +46,8 @@ static void update(struct SharedState* ss, const struct MotorControl* motor_snap
       ss->end_pos = (int32_t)(motor_snap->current_pos);
       ss->state = STATE_START_POINT_SELECT;
     }
-  } else if ((delta_jv >= 1.0) || (delta_jv <= -1.0)) {
-    motor_control_set_jog_velocity(&(ss->motor), (float)new_jv);
+  } else {
+    update_gimbal(ss, motor_snap);
   }
 }
 
