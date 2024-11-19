@@ -18,9 +18,9 @@ uint32_t time_us_32(void);
 struct MotorControl {
   // motor position and current position are separated by the
   // concept of backlash - where reversing direction eats up
-  // some "play" before the mechanics re-engage.  If the
-  // backlash amount is set to zero, then these numbers
-  // will always be identical.
+  // some "play" before the mechanics re-engage.
+  //
+  // Motor pos is 2x the scale of current pos (400 vs 200 units per 360 deg typically)
   float motor_pos;  // user r/w, loop r/w
   float current_pos;  // user r/w, loop r/w
 
@@ -60,7 +60,6 @@ struct MotorControl {
   uint32_t idle_frames;
   uint8_t sleep;
   int8_t direction;  // current motor direction
-  uint8_t high; // last state sent to motor
 };
 
 // initialize the passed structure

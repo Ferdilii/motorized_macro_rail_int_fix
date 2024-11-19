@@ -115,14 +115,14 @@ static void update_physics(struct MotorControl* mc, float delta_seconds) {
 }
 
 static void update_current_pos_positive(struct MotorControl* mc) {
-  const float new_curr_pos = mc->motor_pos - mc->backlash;
+  const float new_curr_pos = (mc->motor_pos / 2) - mc->backlash;
   if (new_curr_pos > mc->current_pos) {
     mc->current_pos = new_curr_pos;
   }
 }
 
 static void update_current_pos_negative(struct MotorControl* mc) {
-  const float new_curr_pos = mc->motor_pos + mc->backlash;
+  const float new_curr_pos = (mc->motor_pos / 2) + mc->backlash;
   if (new_curr_pos < mc->current_pos) {
     mc->current_pos = new_curr_pos;
   }
@@ -161,19 +161,12 @@ void update_position(struct MotorControl* mcp, float delta_seconds) {
   const float new_motor_pos = mcp->motor_pos + (mcp->velocity * delta_seconds);
   const int32_t delta = (int32_t)(new_motor_pos) - orig_motor_pos;
 
-  mcp->high = 1 - mcp->high;
-
   if (delta > 0) {
     prepare(mcp, 1);
-    motor_driver_step(mcp->high);
+    motor_driver_step((orig_motor_pos + delta) & 1);
   } else if (delta < 0) {
     prepare(mcp, -1);
-    motor_driver_step(mcp->high);
-  }
-
-  if (mcp->high) {
-    // skip the update until the next round
-    return;
+    motor_driver_step((orig_motor_pos + delta) & 1);
   }
 
   if ((delta <= 1) && (delta >= -1)) {
@@ -220,20 +213,16 @@ void motor_control_loop(struct MotorControl* mcp) {
   if (prev_us == 0 || (mcp->loop_us <= prev_us)) {
     return;
   }
-  // update position only does 1/2 of a full cycle so that we can
-  // have evenly-timed high and low cycles.  This would make the motor spin
-  // half as fast as we would expect if we did nothing else.
-  // Instead the compensation is to divide delta seconds by half as
-  // much as expected (500,000 instead of 1,000,000).
-  const float delta_seconds = (float)(mcp->loop_us - prev_us) / 500000.0;
+  const float delta_seconds = (float)(mcp->loop_us - prev_us) / 1000000.0;
 
   if (mcp->jog_mode) {
     update_jog_velocity(mcp, delta_seconds);
-    update_position(mcp, delta_seconds);
+    // *2 allows for appropriate velocity through the unit conversion
+    update_position(mcp, delta_seconds * 2);
     check_for_jog_end(mcp);
   } else {
     update_physics(mcp, delta_seconds);
-    update_position(mcp, delta_seconds);
+    update_position(mcp, delta_seconds * 2);
     check_for_target_reached(mcp);
   }
 }
@@ -297,7 +286,7 @@ uint8_t motor_control_try_backlash(struct MotorControl* mc, int32_t p) {
     mc->jog_mode = 0;
     mc->velocity = 0;
     mc->backlash = p;
-    mc->motor_pos = mc->current_pos;
+    mc->motor_pos = mc->current_pos * 2;
     mc->target_pos = mc->current_pos;
     changed = 1;
   }
@@ -327,7 +316,7 @@ uint8_t motor_control_try_zero(struct MotorControl* mc) {
     mc->velocity = 0;
     mc->current_pos = 0;
     mc->target_pos = 0;
-    mc->motor_pos -= difference;
+    mc->motor_pos -= difference * 2;
     changed = 1;
   }
   spin_unlock_unsafe(mc->lock);

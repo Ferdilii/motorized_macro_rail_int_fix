@@ -57,13 +57,13 @@ static void render_position(struct Bitmap* bm, const struct MotorControl* motor_
   snprintf(str, sizeof(str), "%8d", (int32_t)(motor_snap->current_pos));
   bitmap_str(bm, terminus8x16, str, 64, 48, bitmap_SET);
 
-  snprintf(str, sizeof(str), "Motor:  %8d", (int32_t)(motor_snap->motor_pos));
+  snprintf(str, sizeof(str), "Motor:  %8d", (int32_t)(motor_snap->motor_pos / 2));
   bitmap_str(bm, terminus8x16, str, 0, 64, bitmap_SET);
 }
 
 static void render_backlash(struct Bitmap* bm, const struct MotorControl* motor_snap) {
   char str[32];
-  const int16_t backlash = (int16_t)(motor_snap->motor_pos - motor_snap->current_pos);
+  const int16_t backlash = (int16_t)((motor_snap->motor_pos / 2) - motor_snap->current_pos);
   snprintf(str, sizeof(str), "Backlash:  %5d", backlash);
   bitmap_str(bm, terminus8x16, str, 0, 96, bitmap_SET);
 
