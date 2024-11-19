@@ -73,17 +73,22 @@ static void render_backlash(struct Bitmap* bm, const struct MotorControl* motor_
 
   // convert backlash from a full scale to a -63 to 63 scale
   const int32_t scaled_bl = backlash * 63 / (int32_t)motor_snap->backlash;
-  bitmap_vline(bm, 0, 120, 7, bitmap_SET);
-  bitmap_vline(bm, 32, 122, 5, bitmap_SET);
-  bitmap_vline(bm, 64, 120, 7, bitmap_SET);
-  bitmap_vline(bm, 96, 122, 5, bitmap_SET);
-  bitmap_vline(bm, 127, 120, 7, bitmap_SET);
-  bitmap_vline(bm, 64 + scaled_bl, 117, 10, bitmap_OR);
+  const uint16_t y = 112;
+  bitmap_vline(bm, 0, y-7, 7, bitmap_SET);
+  bitmap_vline(bm, 32, y-5, 5, bitmap_SET);
+  bitmap_vline(bm, 64, y-7, 7, bitmap_SET);
+  bitmap_vline(bm, 96, y-5, 5, bitmap_SET);
+  bitmap_vline(bm, 127, y-5, 7, bitmap_SET);
+  bitmap_vline(bm, 64 + scaled_bl, y-10, 10, bitmap_OR);
 }
 
 static void render(struct SharedState* ss, const struct MotorControl* motor_snap, uint8_t is_start) {
   struct Bitmap* bm = &(ss->bitmap);
-  render_title(bm, is_start ? "Start Position" : "End Position");
+  if (is_start) {
+    render_common(bm, "Start Position", "EndPos", "Delay");
+  } else {
+    render_common(bm, "End Position", "Menu", "StartP");
+  }
   render_position(bm, motor_snap);
   render_backlash(bm, motor_snap);
 }

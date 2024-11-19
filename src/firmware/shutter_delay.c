@@ -23,7 +23,7 @@ static void update(struct SharedState* ss) {
 
 static void render(struct SharedState* ss) {
   struct Bitmap* bm = &(ss->bitmap);
-  render_title(bm, "Shutter Delay");
+  render_common(bm, "Shutter Delay", "StartP", "Count");
   int16_t xpos = 16;
   const int16_t ypos = 64;
   enter_value_widget_render(&shutter_evw, bm, xpos, ypos, 1); 

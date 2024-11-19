@@ -3,6 +3,13 @@
 
 #include "oledm/bitmap.h"
 
-void render_title(struct Bitmap* bm, const char* title);
+// renders a common overlay
+// 16 chars max for title
+// 6 chars max for prev_action and next_action
+void render_common(
+    struct Bitmap* bm,
+    const char* title,
+    const char* prev_action,
+    const char* next_action);
 
 #endif
