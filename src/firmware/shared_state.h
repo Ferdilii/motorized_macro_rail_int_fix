@@ -52,6 +52,7 @@ struct SharedState {
 
   int32_t start_pos;
   int32_t end_pos;
+  uint32_t shutter_delay_ms;
 
   // state modules can set this to non-zero to indicate
   // they are controlling the main led

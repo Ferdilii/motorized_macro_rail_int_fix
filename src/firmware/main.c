@@ -107,6 +107,7 @@ static void init() {
   oledm_clear(&display, 0x00);
 
   buttons_init();
+  shutter_delay_init(&state);
   gimbal_update_init(&state);
   multicore_launch_core1(start_motor_control);
 }

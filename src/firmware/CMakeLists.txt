@@ -3,6 +3,7 @@ add_executable(macro_rail_automater
 
         buttons.c
         end_point_select.c
+        enter_value_widget.c
         fatal.c
         gimbal_update.c
         main_led.c
