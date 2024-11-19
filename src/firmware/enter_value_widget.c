@@ -20,7 +20,11 @@ static void _widget_update_value(struct EnterValueWidget* evw, int8_t ydir) {
     change *= 10;
   }
   const int32_t new_value = evw->value + change;
-  if ((new_value >= evw->min_value) && (new_value <= evw->max_value)) {
+  if (new_value < evw->min_value) {
+    evw->value = evw->min_value;
+  } else if (new_value > evw->max_value) {
+    evw->value = evw->max_value;
+  } else {
     evw->value = new_value;
   }
 }
@@ -80,7 +84,7 @@ void enter_value_widget_render(
     bitmap_strLen(bm, terminus8x16, &c, 1, xpos, ypos, bitmap_SET);
     xpos += 8;
   }
-  for (int8_t digit = (int8_t)_max_current_digit(evw); digit > 0; --digit) {
+  for (int8_t digit = (int8_t)_max_current_digit(evw); digit >= 0; --digit) {
     uint8_t v = _get_digit(value, digit);
     c = '0' + v;
     bitmap_strLen(

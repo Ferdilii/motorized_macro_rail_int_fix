@@ -29,7 +29,7 @@ static void update_gimbal(struct SharedState* ss, const struct MotorControl* mot
 }
 
 static void update(struct SharedState* ss, const struct MotorControl* motor_snap, uint8_t is_start) {
-  if ((ss->button & NEXT_PRESSED) && (ss->motor.jog_mode == 0)) {
+  if ((ss->button & PREVIOUS_PRESSED) && (ss->motor.jog_mode == 0)) {
     if (is_start) {
       ss->state = STATE_END_POINT_SELECT;
     }
@@ -69,7 +69,7 @@ static void render_backlash(struct Bitmap* bm, const struct MotorControl* motor_
   char str[32];
   const int32_t backlash = (int16_t)((motor_snap->motor_pos / 2) - motor_snap->current_pos);
   snprintf(str, sizeof(str), "Backlash:  %5d", backlash);
-  bitmap_str(bm, terminus8x16, str, 0, 96, bitmap_SET);
+  bitmap_str(bm, terminus8x16, str, 0, 80, bitmap_SET);
 
   // convert backlash from a full scale to a -63 to 63 scale
   const int32_t scaled_bl = backlash * 63 / (int32_t)motor_snap->backlash;
