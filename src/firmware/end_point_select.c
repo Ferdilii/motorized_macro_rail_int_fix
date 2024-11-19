@@ -28,6 +28,11 @@ static void update_gimbal(struct SharedState* ss, const struct MotorControl* mot
   }
 }
 
+static inline uint8_t next_ok(const struct MotorControl* motor_snap) {
+  // need at least 1mm forward or backward (200 steps)
+  return (motor_snap->current_pos >= 200) || (motor_snap->current_pos <= -200);
+}
+
 static void update(struct SharedState* ss, const struct MotorControl* motor_snap, uint8_t is_start) {
   if ((ss->button & PREVIOUS_PRESSED) && (ss->motor.jog_mode == 0)) {
     if (is_start) {
@@ -35,7 +40,7 @@ static void update(struct SharedState* ss, const struct MotorControl* motor_snap
     }
     // TODO: Go to settings if on end point select.
   } else if ((ss->button & NEXT_PRESSED) && (ss->motor.jog_mode == 0)) {
-    if (is_start) {
+    if (is_start && next_ok(motor_snap)) {
       ss->start_pos = (int32_t)(motor_snap->current_pos);
       ss->state = STATE_SHUTTER_DELAY;
     } else {
@@ -85,7 +90,8 @@ static void render_backlash(struct Bitmap* bm, const struct MotorControl* motor_
 static void render(struct SharedState* ss, const struct MotorControl* motor_snap, uint8_t is_start) {
   struct Bitmap* bm = &(ss->bitmap);
   if (is_start) {
-    render_common(bm, "Start Position", "EndPos", "Delay");
+    const char* next_str = next_ok(motor_snap) ? "Delay" : "";
+    render_common(bm, "Start Position", "EndPos", next_str);
   } else {
     render_common(bm, "End Position", "Menu", "StartP");
   }
