@@ -65,12 +65,16 @@ static void render_backlash(struct Bitmap* bm, const struct MotorControl* motor_
   char str[32];
   const int16_t backlash = (int16_t)(motor_snap->motor_pos - motor_snap->current_pos);
   snprintf(str, sizeof(str), "Backlash:  %5d", backlash);
+  bitmap_str(bm, terminus8x16, str, 0, 96, bitmap_SET);
 
-  // convert backlash from a full scale to a 0-64 scale
-  const int16_t scaled_bl = backlash * 64 / motor_snap->backlash;
-  bitmap_vline(bm, 0, 117, 10, bitmap_OR);
-  bitmap_vline(bm, 127, 117, 10, bitmap_OR);
-  bitmap_vline(bm, 64 + scaled_bl, 120, 7, bitmap_OR);
+  // convert backlash from a full scale to a -63 to 63 scale
+  const int16_t scaled_bl = backlash * 63 / motor_snap->backlash;
+  bitmap_vline(bm, 0, 120, 7, bitmap_SET);
+  bitmap_vline(bm, 32, 122, 5, bitmap_SET);
+  bitmap_vline(bm, 64, 120, 7, bitmap_SET);
+  bitmap_vline(bm, 96, 122, 5, bitmap_SET);
+  bitmap_vline(bm, 127, 120, 7, bitmap_SET);
+  bitmap_vline(bm, 64 + scaled_bl, 117, 10, bitmap_OR);
 }
 
 static void render(struct SharedState* ss, const struct MotorControl* motor_snap, uint8_t is_start) {
