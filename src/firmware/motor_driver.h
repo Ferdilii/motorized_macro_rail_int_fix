@@ -4,7 +4,8 @@
 #include <stdint.h>
 
 void motor_driver_init(void);
-void motor_driver_step(int8_t direction); 
+void motor_driver_dir(int8_t direction); 
+void motor_driver_step(uint8_t high); 
 void motor_driver_sleep(void); 
 void motor_driver_wake(void); 
 

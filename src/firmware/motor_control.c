@@ -9,7 +9,7 @@ void sleep_us(uint32_t unused) { }
 #endif
 
 // Run the loop around 10khz
-#define LOOP_DELAY_US 100
+#define LOOP_DELAY_US 50
 // sleep after 500000 us
 #define IDLE_CYCLES_BEFORE_SLEEP (500000 / LOOP_DELAY_US)
 
@@ -18,12 +18,20 @@ static inline uint8_t near_zero(float v, float threshold) {
 }
 
 static inline void sleep(struct MotorControl* mc) {
+  motor_driver_step(0); // always set low if preparing for sleep
   mc->sleep = 1;
 }
 
-static inline void wake(struct MotorControl* mc) {
-  mc->sleep = 0;
-  mc->idle_frames = 0;
+static inline void prepare(struct MotorControl* mc, int8_t direction) {
+  if (mc->sleep) {
+    mc->sleep = 0;
+    mc->idle_frames = 0;
+    motor_driver_wake();
+  }
+  if (mc->direction != direction) {
+    mc->direction = direction;
+    motor_driver_dir(direction);
+  }
 }
 
 void motor_control_init(
@@ -152,12 +160,20 @@ void update_position(struct MotorControl* mcp, float delta_seconds) {
   const int32_t orig_motor_pos = (int32_t)(mcp->motor_pos);
   const float new_motor_pos = mcp->motor_pos + (mcp->velocity * delta_seconds);
   const int32_t delta = (int32_t)(new_motor_pos) - orig_motor_pos;
+
+  mcp->high = 1 - mcp->high;
+
   if (delta > 0) {
-    wake(mcp);
-    motor_driver_step(1);
+    prepare(mcp, 1);
+    motor_driver_step(mcp->high);
   } else if (delta < 0) {
-    wake(mcp);
-    motor_driver_step(-1);
+    prepare(mcp, -1);
+    motor_driver_step(mcp->high);
+  }
+
+  if (mcp->high) {
+    // skip the update until the next round
+    return;
   }
 
   if ((delta <= 1) && (delta >= -1)) {
@@ -204,7 +220,12 @@ void motor_control_loop(struct MotorControl* mcp) {
   if (prev_us == 0 || (mcp->loop_us <= prev_us)) {
     return;
   }
-  const float delta_seconds = (float)(mcp->loop_us - prev_us) / 1000000.0;
+  // update position only does 1/2 of a full cycle so that we can
+  // have evenly-timed high and low cycles.  This would make the motor spin
+  // half as fast as we would expect if we did nothing else.
+  // Instead the compensation is to divide delta seconds by half as
+  // much as expected (500,000 instead of 1,000,000).
+  const float delta_seconds = (float)(mcp->loop_us - prev_us) / 500000.0;
 
   if (mcp->jog_mode) {
     update_jog_velocity(mcp, delta_seconds);

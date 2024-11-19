@@ -59,6 +59,8 @@ struct MotorControl {
   // idle frames are used to avoid going to sleep immediately
   uint32_t idle_frames;
   uint8_t sleep;
+  int8_t direction;  // current motor direction
+  uint8_t high; // last state sent to motor
 };
 
 // initialize the passed structure

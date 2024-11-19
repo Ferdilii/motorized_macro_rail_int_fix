@@ -44,28 +44,21 @@ void motor_driver_init(void) {
   sleep_ms(1);
 }
 
-void motor_driver_step(int8_t direction) {
-  if (direction == 0) {
-    return;
-  }
-  motor_driver_wake();
+void motor_driver_dir(int8_t direction) {
   gpio_put(DIRECTION_PIN, direction > 0 ? MOTOR_FORWARD : MOTOR_REVERSE);
   busy_wait_us_32(SETTLE_US);
-  gpio_put(STEP_PIN, 1);
+}
+
+void motor_driver_step(uint8_t high) {
+  gpio_put(STEP_PIN, high);
   busy_wait_us_32(PULSE_US);
-  gpio_put(STEP_PIN, 0);
-  busy_wait_us_32(SETTLE_US);
+}
+
+void motor_driver_wake(void) {
+  gpio_put(SLEEP_PIN, SLEEP_DISABLED);
+  sleep_ms(1);  // let charge pump charge
 }
 
 void motor_driver_sleep(void) {
   gpio_put(SLEEP_PIN, SLEEP_ENABLED);
 }
-
-void motor_driver_wake(void) {
-  // check first to avoid an unneeded sleep
-  if (!gpio_get(SLEEP_PIN)) {
-    gpio_put(SLEEP_PIN, SLEEP_DISABLED);
-    sleep_ms(1);
-  }
-}
-
