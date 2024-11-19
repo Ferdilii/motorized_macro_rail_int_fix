@@ -8,6 +8,8 @@ add_executable(macro_rail_automater
         main_led.c
         motor_control.c
         motor_driver.c
+        render_common.c
+        shutter_delay.c
         )
 
 # pull in common dependencies

@@ -10,6 +10,7 @@
 #include "gimbal_update.h"
 #include "fatal.h"
 #include "main_led.h"
+#include "shutter_delay.h"
 
 // A4988 Stepper Motor Controller (Reference only)
 //
@@ -69,6 +70,9 @@ static void update(void) {
       break;
     case STATE_START_POINT_SELECT:
       end_point_select_update(&state, true);
+      break;
+    case STATE_SHUTTER_DELAY:
+      shutter_delay_update(&state);
       break;
     default:
       fatal(&state, "UNKNOWN_STATE: %d", state.state);

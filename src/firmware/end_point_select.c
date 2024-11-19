@@ -5,6 +5,7 @@
 #include "misc/gimbal.h"
 #include "oledm/font/terminus8x16.h"
 #include "motor_control.h"
+#include "render_common.h"
 
 #define DEADZONE 0x10
 
@@ -25,7 +26,7 @@ static void update(struct SharedState* ss, const struct MotorControl* motor_snap
   if ((ss->button & NEXT_PRESSED) && (ss->motor.jog_mode == 0)) {
     if (is_start) {
       ss->start_pos = (int32_t)(motor_snap->current_pos);
-      ss->state = STATE_DELAY_BETWEEN_SHOTS;
+      ss->state = STATE_SHUTTER_DELAY;
     } else {
       if (!motor_control_try_zero(&(ss->motor))) {
         // didn't work
@@ -37,12 +38,6 @@ static void update(struct SharedState* ss, const struct MotorControl* motor_snap
   } else if ((delta_jv >= 1.0) || (delta_jv <= -1.0)) {
     motor_control_set_jog_velocity(&(ss->motor), (float)new_jv);
   }
-}
-
-static void render_title(struct Bitmap* bm, uint8_t is_start) {
-  const char* title = is_start ? "Start Position" : "End Position";
-  bitmap_str(bm, terminus8x16, title, 0, 0, bitmap_SET);
-  bitmap_hline(bm, 0, 17, 128, bitmap_SET);
 }
 
 static void render_position(struct Bitmap* bm, const struct MotorControl* motor_snap) {
@@ -77,7 +72,7 @@ static void render_backlash(struct Bitmap* bm, const struct MotorControl* motor_
 
 static void render(struct SharedState* ss, const struct MotorControl* motor_snap, uint8_t is_start) {
   struct Bitmap* bm = &(ss->bitmap);
-  render_title(bm, is_start);
+  render_title(bm, is_start ? "Start Position" : "End Position");
   render_position(bm, motor_snap);
   render_backlash(bm, motor_snap);
 }
