@@ -21,13 +21,14 @@
 #define STATE_START_POINT_SELECT 2
 #define STATE_SHUTTER_DELAY 3
 #define STATE_SHOT_COUNT 4
-#define STATE_CONFIRM_START 5
 #define STATE_RUNNING 6
 
 // bits for buttons bit field
 #define NEXT_PRESSED     0x01
 #define PREVIOUS_PRESSED 0x02
 #define SHUTTER_PRESSED  0x04
+
+#define SETTLE_MS 500
 
 struct SharedState {
   struct Bitmap bitmap;
@@ -53,6 +54,7 @@ struct SharedState {
   int32_t start_pos;
   int32_t end_pos;
   uint32_t shutter_delay_ms;
+  uint32_t shot_count;
 
   // state modules can set this to non-zero to indicate
   // they are controlling the main led

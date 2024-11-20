@@ -10,6 +10,7 @@ add_executable(macro_rail_automater
         motor_control.c
         motor_driver.c
         render_common.c
+        shot_count.c
         shutter_delay.c
         )
 

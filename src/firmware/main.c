@@ -10,6 +10,7 @@
 #include "gimbal_update.h"
 #include "fatal.h"
 #include "main_led.h"
+#include "shot_count.h"
 #include "shutter_delay.h"
 
 // A4988 Stepper Motor Controller (Reference only)
@@ -74,6 +75,9 @@ static void update(void) {
     case STATE_SHUTTER_DELAY:
       shutter_delay_update(&state);
       break;
+    case STATE_SHOT_COUNT:
+      shot_count_update(&state);
+      break;
     default:
       fatal(&state, "UNKNOWN_STATE: %d", state.state);
   }
@@ -108,6 +112,7 @@ static void init() {
 
   buttons_init();
   shutter_delay_init(&state);
+  shot_count_init(&state);
   gimbal_update_init(&state);
   multicore_launch_core1(start_motor_control);
 }

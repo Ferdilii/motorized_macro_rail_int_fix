@@ -24,8 +24,8 @@ void enter_value_widget_update(
 void enter_value_widget_render(
     const struct EnterValueWidget* evw,
     struct Bitmap* bm,
-    uint16_t xpos,
-    uint16_t ypos,
+    uint16_t endx,
+    uint16_t y,
     uint8_t decimal_places);
 
 #endif

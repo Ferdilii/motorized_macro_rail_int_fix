@@ -74,17 +74,22 @@ static uint8_t _get_digit(uint32_t v, uint8_t digit) {
 void enter_value_widget_render(
     const struct EnterValueWidget* evw,
     struct Bitmap* bm,
-    uint16_t xpos,
-    uint16_t ypos,
+    uint16_t endx,
+    uint16_t y,
     uint8_t decimal_places) {
+  const int8_t digits = (int8_t)_max_current_digit(evw);
+  uint16_t xpos = endx - (8 * digits);
+  if (decimal_places > 0) {
+    xpos -= 8;
+  }
   uint32_t value = evw->value;
   char c = '-';
   if (evw->value < 0) {
     value = -evw->value;
-    bitmap_strLen(bm, terminus8x16, &c, 1, xpos, ypos, bitmap_SET);
+    bitmap_strLen(bm, terminus8x16, &c, 1, xpos, y, bitmap_SET);
     xpos += 8;
   }
-  for (int8_t digit = (int8_t)_max_current_digit(evw); digit >= 0; --digit) {
+  for (int8_t digit = digits; digit >= 0; --digit) {
     uint8_t v = _get_digit(value, digit);
     c = '0' + v;
     bitmap_strLen(
@@ -93,12 +98,12 @@ void enter_value_widget_render(
         &c,
         1,
         xpos,
-        ypos,
+        y,
         digit == evw->current_digit ? bitmap_NSET : bitmap_SET);
     xpos += 8;
-    if (digit == decimal_places) {
+    if ((decimal_places > 0) && (digit == decimal_places)) {
       c = '.';
-      bitmap_strLen(bm, terminus8x16, &c, 1, xpos, ypos, bitmap_SET);
+      bitmap_strLen(bm, terminus8x16, &c, 1, xpos, y, bitmap_SET);
       xpos += 8;
     }
   }
