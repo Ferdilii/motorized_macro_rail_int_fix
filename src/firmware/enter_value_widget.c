@@ -78,7 +78,7 @@ void enter_value_widget_render(
     uint16_t y,
     uint8_t decimal_places) {
   const int8_t digits = (int8_t)_max_current_digit(evw);
-  uint16_t xpos = endx - (8 * digits);
+  uint16_t xpos = endx - (8 * digits) - 8;
   if (decimal_places > 0) {
     xpos -= 8;
   }

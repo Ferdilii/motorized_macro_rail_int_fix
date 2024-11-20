@@ -9,7 +9,8 @@
 
 struct EnterValueWidget count_evw;
 
-static void reinit_count_evw(const struct MotorControl* motor_snap) {
+static void reinit_count_evw(
+    struct SharedState* ss, const struct MotorControl* motor_snap) {
   // a step of 1 is the smallest we can do
   int32_t max_shots = (int32_t)(motor_snap->current_pos);
   if (max_shots < 0) {
@@ -18,18 +19,14 @@ static void reinit_count_evw(const struct MotorControl* motor_snap) {
   count_evw.max_value = max_shots + 1;
 
   // go for about a 0.2mm step size by default
-  // 0.25mm is 40 steps
-  count_evw.value = (max_shots / 40) + 1;
-
-  if (count_evw.value > count_evw.max_value) {
-    count_evw.value = count_evw.max_value;
-  }
+  // 0.2mm is 40 steps
+  ss->shot_count = (max_shots / 40) + 1;
 }
 
 static void update(
     struct SharedState* ss, const struct MotorControl* motor_snap) {
   if (count_evw.max_value == 0) {
-    reinit_count_evw(motor_snap);
+    reinit_count_evw(ss, motor_snap);
   }
   if (ss->button & NEXT_PRESSED) {
     ss->state = STATE_RUNNING;
@@ -51,20 +48,28 @@ static void _render_image_count(struct Bitmap* bm, int16_t ypos) {
 static void _render_distance(
     struct Bitmap* bm, int16_t ypos, int32_t current_pos, uint32_t shot_count) {
   char str[32];
-  int32_t dist_dm = 0;
+  int32_t dist_um = 0;
   if (shot_count > 1) {
-    dist_dm = current_pos / 2;
-    if (dist_dm < 0) {
-      dist_dm = -dist_dm;
+    dist_um = current_pos * 5;
+    snprintf(
+        str,
+        sizeof(str),
+        "Dist:  %5d.%1dmm",
+        dist_um / 1000,
+        (dist_um % 1000) / 100);
+    bitmap_str(bm, terminus8x16, str, 0, ypos, bitmap_SET);
+    ypos += 16;
+    if (dist_um < 0) {
+      dist_um = -dist_um;
     }
-    dist_dm /= (shot_count - 1);
+    dist_um /= (shot_count - 1);
   }
   snprintf(
       str,
       sizeof(str),
-      "Step:   %3d.%02dmm",
-      dist_dm / 100,
-      dist_dm % 100);
+      "Step:  %3d.%03dmm",
+      dist_um / 1000,
+      dist_um % 1000);
   bitmap_str(bm, terminus8x16, str, 0, ypos, bitmap_SET);
 }
 
@@ -78,7 +83,13 @@ static void _render_time(
   const int32_t minutes = time_secs / 60;
   time_secs -= (minutes * 60);
   char str[32];
-  snprintf(str, sizeof(str), "Time:  %02dh%02dm%02ds");
+  snprintf(
+      str,
+      sizeof(str),
+      "Time:  %02dh%02dm%02ds",
+      hours,
+      minutes,
+      time_secs);
   bitmap_str(bm, terminus8x16, str, 0, ypos, bitmap_SET);
 }
 
@@ -87,11 +98,11 @@ static void render(
     const struct MotorControl* motor_snap) {
   struct Bitmap* bm = &(ss->bitmap);
   render_common(bm, "Shot Count", "Delay", "START");
-  int16_t ypos = 48;
+  int16_t ypos = 32;
   _render_image_count(bm, ypos);
   ypos += 16;
   _render_distance(bm, ypos, motor_snap->current_pos, ss->shot_count);
-  ypos += 16;
+  ypos += 32;
   _render_time(bm, ypos, ss);
 }
 
