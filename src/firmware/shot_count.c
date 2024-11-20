@@ -6,6 +6,7 @@
 #include "oledm/font/terminus8x16.h"
 #include "enter_value_widget.h"
 #include "render_common.h"
+#include "run.h"
 
 struct EnterValueWidget count_evw;
 
@@ -29,6 +30,7 @@ static void update(
     reinit_count_evw(ss, motor_snap);
   }
   if (ss->button & NEXT_PRESSED) {
+    run_init();
     ss->state = STATE_RUNNING;
   } else if (ss->button & PREVIOUS_PRESSED) {
     count_evw.max_value = 0;

@@ -46,11 +46,11 @@ static void update(struct SharedState* ss, const struct MotorControl* motor_snap
         ss->state = STATE_SHUTTER_DELAY;
       }
     } else {
+      // end position is always zero
       if (!motor_control_try_zero(&(ss->motor))) {
         // didn't work
         return;
       }
-      ss->end_pos = (int32_t)(motor_snap->current_pos);
       ss->state = STATE_START_POINT_SELECT;
     }
   } else {

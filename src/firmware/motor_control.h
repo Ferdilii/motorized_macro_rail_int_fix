@@ -96,6 +96,9 @@ uint8_t motor_control_try_target_position(struct MotorControl* mc, int32_t p);
 // Changes the backlash value if the motor is stopped.
 uint8_t motor_control_try_backlash(struct MotorControl* mc, int32_t p);
 
+// check to see if the motor is stopped
+uint8_t motor_control_check_stopped(struct MotorControl* mc);
+
 // Puts the algorithm into jog mode and pushes the velocity toward
 // the requested steps per second.  If doing so would exceed the maximum
 // set acceleration, then the maximum acceleration is used instead.

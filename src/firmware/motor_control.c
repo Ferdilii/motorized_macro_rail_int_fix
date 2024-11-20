@@ -278,6 +278,22 @@ uint8_t motor_control_try_target_position(struct MotorControl* mc, int32_t p) {
   return changed;
 }
 
+uint8_t motor_control_check_stopped(struct MotorControl* mc) {
+  spin_lock_unsafe_blocking(mc->lock);
+  uint8_t stopped = 0;
+  float delta = 0;
+  if (!mc->jog_mode) {
+    delta = mc->target_pos - mc->current_pos;
+  }
+  if ((delta > -1) && (delta < 1) && (mc->velocity > -0.1) && (mc->velocity < 0.1)) {
+    mc->jog_mode = 0;
+    mc->velocity = 0;
+    stopped = 1;
+  }
+  spin_unlock_unsafe(mc->lock);
+  return stopped;
+}
+
 uint8_t motor_control_try_backlash(struct MotorControl* mc, int32_t p) {
   spin_lock_unsafe_blocking(mc->lock);
   uint8_t changed = 0;

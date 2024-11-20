@@ -26,7 +26,7 @@
 // bits for buttons bit field
 #define NEXT_PRESSED     0x01
 #define PREVIOUS_PRESSED 0x02
-#define SHUTTER_PRESSED  0x04
+//#define SHUTTER_PRESSED  0x04  currently handled in button.c exclusively
 
 #define SETTLE_MS 500
 
@@ -52,7 +52,6 @@ struct SharedState {
   char fatal_err[32];
 
   int32_t start_pos;
-  int32_t end_pos;
   uint32_t shutter_delay_ms;
   uint32_t shot_count;
 

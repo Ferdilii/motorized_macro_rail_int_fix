@@ -2,6 +2,7 @@
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
 #include <misc/debounce.h>
+#include "shutter.h"
 
 #define SHUTTER_BUTTON_GPIO 7
 #define PREVIOUS_BUTTON_GPIO 8
@@ -13,6 +14,12 @@ struct Debounce next_db;
 struct Debounce previous_db;
 struct Debounce shutter_db;
 volatile uint8_t button_bit_array;
+
+#define SHUTTER_IDLE 0
+#define SHUTTER_TRIGGER 1
+#define SHUTTER_LOW 2
+
+volatile uint8_t shutter_state;
 
 static inline uint32_t uptime_ms() {
   return to_ms_since_boot(get_absolute_time());
@@ -40,7 +47,7 @@ static void button_pressed_callback(uint gpio, uint32_t events) {
     case SHUTTER_BUTTON_GPIO:
       if (debounce_gpio_irq_callback_helper(&shutter_db, uptime_ms(), events) &&
           shutter_db.val) {
-        button_bit_array |= SHUTTER_PRESSED;
+        shutter_state = SHUTTER_TRIGGER;
       }
       break;
   }
@@ -73,6 +80,13 @@ void buttons_init(void) {
 }
 
 void buttons_update(struct SharedState* ss) {
+  if (shutter_state == SHUTTER_TRIGGER) {
+    shutter_high();
+    shutter_state = SHUTTER_LOW;
+  } else if (shutter_state == SHUTTER_LOW) {
+    shutter_low();
+    shutter_state = SHUTTER_IDLE;
+  }
   ss->button = button_bit_array;
   button_bit_array = 0x00;  // reset
 }
