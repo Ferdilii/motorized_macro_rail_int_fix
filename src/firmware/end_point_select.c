@@ -47,7 +47,7 @@ static void update(struct SharedState* ss, const struct MotorControl* motor_snap
       }
     } else {
       // end position is always zero
-      if (!motor_control_try_zero(&(ss->motor))) {
+      if (!motor_control_try_set_current_pos(&(ss->motor), 0)) {
         // didn't work
         return;
       }

@@ -322,15 +322,15 @@ void motor_control_set_jog_velocity(struct MotorControl* mc, float steps_per_sec
   spin_unlock_unsafe(mc->lock);
 }
 
-uint8_t motor_control_try_zero(struct MotorControl* mc) {
+uint8_t motor_control_try_set_current_pos(struct MotorControl* mc, int32_t p) {
   spin_lock_unsafe_blocking(mc->lock);
   uint8_t changed = 0;
   if ((mc->velocity > -0.1) && (mc->velocity < 0.1)) {
-    const float difference = mc->current_pos;
+    const float difference = mc->current_pos - p;
     mc->jog_velocity = 0;
     mc->jog_mode = 0;
     mc->velocity = 0;
-    mc->current_pos = 0;
+    mc->current_pos = p;
     mc->target_pos = 0;
     mc->motor_pos -= difference * 2;
     changed = 1;

@@ -81,7 +81,17 @@ static void _wait_settle() {
 void _update_state(struct SharedState* ss, const struct MotorControl* motor_snap) {
   if (ss->button & NEXT_PRESSED) {
     if (rs.state == RUN_STATE_FINISHED) {
-      ss->start_pos = (int32_t)(motor_snap->current_pos);
+      // Here we set for a reversal.  Current pos is expected to be at zero.
+      // we change it to -start_pos so that the new zero is where the old one
+      // started.  Example:
+      // The user has start_pos at 10 and ran through.
+      // now the pos is zero.
+      // change the pos to -10 so that zero is the orignal 10.
+      if (!motor_control_try_set_current_pos(&(ss->motor), -ss->start_pos)) {
+        // failed to work
+        return;
+      }
+      ss->start_pos = -ss->start_pos;
       ss->state = STATE_SHOT_COUNT;
       return;
     }

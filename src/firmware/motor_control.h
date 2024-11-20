@@ -104,8 +104,8 @@ uint8_t motor_control_check_stopped(struct MotorControl* mc);
 // set acceleration, then the maximum acceleration is used instead.
 void motor_control_set_jog_velocity(struct MotorControl* mc, float steps_per_sec);
 
-// zeros current_pos.  motor_pos is moved by an equal delta.
-uint8_t motor_control_try_zero(struct MotorControl* mc);
+// Changes current_pos without moving the motor.  motor_pos is moved by an equal delta.
+uint8_t motor_control_try_set_current_pos(struct MotorControl* mc, int32_t p);
 
 // creates a snapshot copy of the given structure for reading
 // information without needed a lock

@@ -15,9 +15,9 @@ struct Debounce previous_db;
 struct Debounce shutter_db;
 volatile uint8_t button_bit_array;
 
-#define SHUTTER_IDLE 0
+#define SHUTTER_LOW 0
 #define SHUTTER_TRIGGER 1
-#define SHUTTER_LOW 2
+#define SHUTTER_HIGH 2
 
 volatile uint8_t shutter_state;
 
@@ -82,10 +82,10 @@ void buttons_init(void) {
 void buttons_update(struct SharedState* ss) {
   if (shutter_state == SHUTTER_TRIGGER) {
     shutter_high();
-    shutter_state = SHUTTER_LOW;
-  } else if (shutter_state == SHUTTER_LOW) {
+    shutter_state = SHUTTER_HIGH;
+  } else if (shutter_state == SHUTTER_HIGH) {
     shutter_low();
-    shutter_state = SHUTTER_IDLE;
+    shutter_state = SHUTTER_LOW;
   }
   ss->button = button_bit_array;
   button_bit_array = 0x00;  // reset
