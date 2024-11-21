@@ -1,6 +1,7 @@
 #include <string.h>
 #include "motor_control.h"
 #include "motor_driver.h"
+#include <math.h>
 
 #ifdef TEST
 void sleep_us(uint32_t unused) { }
@@ -345,3 +346,32 @@ void motor_control_snapshot(struct MotorControl* dest, const struct MotorControl
   spin_unlock_unsafe(src->lock);
 }
 
+uint32_t estimate_seek_time_ms(const struct MotorControl* mv, int32_t steps) {
+  // either way is the same time
+  if (steps < 0) {
+    steps = -steps;
+  }
+  if (steps <= 1) {
+    // a very small amount
+    return 1;
+  }
+  // we ramp up, then ramp down at about the halfway point.  Both slices should
+  // be about the same.
+  // Physics 101
+  // d = t*v + 0.5 * a * t * t  (solve for t)
+  // 0.5 * a * t^2 + v*t - d = 0
+  // x = (-b +- sqrt(b*b - 4*a*c)) / (2 * a)
+  // x = t
+  // a = 0.5 * acc
+  // b = v
+  // c = -d
+  const float a = 0.5 * (float)mv->acceleration;
+  const float b = (float)mv->max_velocity;
+  const float c = -0.5 * (float)steps;
+  const float t1 = (-b + sqrt(b*b - 4*a*c)) / (2 * a);
+  const float t2 = (-b - sqrt(b*b - 4*a*c)) / (2 * a);
+  if (t1 > 0) {
+    return (uint32_t)(t1 * 2000);  // 2000 is for *2 (slow up and down) and convert to ms
+  }
+  return (uint32_t)(t2 * 2000);  // 2000 is for *2 (slow up and down) and convert to ms
+}

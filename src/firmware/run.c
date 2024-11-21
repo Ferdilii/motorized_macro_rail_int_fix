@@ -177,10 +177,13 @@ void _elapsed_str_append(char* str) {
   _time_append(str, elapsed_sec);
 }
 
-void _total_str_append(const struct SharedState* ss, char* str) {
-  uint32_t time_secs = (
-      (ss->shot_count * ss->shutter_delay_ms) +
-      ((ss->shot_count - 1) * SETTLE_MS) + 999) / 1000;
+void _total_str_append(
+    const struct SharedState* ss,
+    const struct MotorControl* motor_snap,
+    char* str) {
+  uint32_t time_secs = (ss->shot_count * ss->shutter_delay_ms +
+      (ss->shot_count - 1) * (SETTLE_MS + estimate_seek_time_ms(motor_snap, ss->start_pos)) + 999)
+      / 1000;
   _time_append(str, time_secs);
 }
 
@@ -202,7 +205,7 @@ void _render(struct SharedState* ss, const struct MotorControl* motor_snap) {
   bitmap_str(bm, terminus8x16, str, 0, ypos, bitmap_SET);
   ypos += 16;
   strcpy(str, "Total:  ");
-  _total_str_append(ss, str);
+  _total_str_append(ss, motor_snap, str);
   bitmap_str(bm, terminus8x16, str, 0, ypos, bitmap_SET);
 }
 

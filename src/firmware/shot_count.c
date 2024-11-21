@@ -76,10 +76,13 @@ static void _render_distance(
 }
 
 static void _render_time(
-    struct Bitmap* bm, int16_t ypos, const struct SharedState* ss) {
-  uint32_t time_secs = (
-      (ss->shot_count * ss->shutter_delay_ms) +
-      ((ss->shot_count - 1) * SETTLE_MS) + 999) / 1000;
+    struct Bitmap* bm,
+    int16_t ypos,
+    const struct SharedState* ss,
+    const struct MotorControl* motor_snap) {
+  uint32_t time_secs = (ss->shot_count * ss->shutter_delay_ms +
+      (ss->shot_count - 1) * (SETTLE_MS + estimate_seek_time_ms(motor_snap, ss->start_pos)) + 999)
+      / 1000;
   const int32_t hours = time_secs / 3600;
   time_secs -= (hours * 3600);
   const int32_t minutes = time_secs / 60;
@@ -105,7 +108,7 @@ static void render(
   ypos += 16;
   _render_distance(bm, ypos, motor_snap->current_pos, ss->shot_count);
   ypos += 32;
-  _render_time(bm, ypos, ss);
+  _render_time(bm, ypos, ss, motor_snap);
 }
 
 void shot_count_init(struct SharedState* ss) {

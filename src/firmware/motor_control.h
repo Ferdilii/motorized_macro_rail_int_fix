@@ -111,5 +111,9 @@ uint8_t motor_control_try_set_current_pos(struct MotorControl* mc, int32_t p);
 // information without needed a lock
 void motor_control_snapshot(struct MotorControl* dest, const struct MotorControl* src);
 
+// estimates the time needed to travel n steps under the current velocity
+// and acceleration.
+uint32_t estimate_seek_time_ms(const struct MotorControl* mv, int32_t steps);
+
 #endif
 
