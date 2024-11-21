@@ -1,7 +1,7 @@
 #include "shutter.h"
 #include "pico/stdlib.h"
 
-#define SHUTTER_GPIO 20
+#define SHUTTER_GPIO 15
 
 void shutter_init(void) {
   gpio_init(SHUTTER_GPIO);

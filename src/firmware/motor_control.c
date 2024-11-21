@@ -331,7 +331,7 @@ uint8_t motor_control_try_set_current_pos(struct MotorControl* mc, int32_t p) {
     mc->jog_mode = 0;
     mc->velocity = 0;
     mc->current_pos = p;
-    mc->target_pos = 0;
+    mc->target_pos = p;
     mc->motor_pos -= difference * 2;
     changed = 1;
   }

@@ -20,6 +20,7 @@ struct RunState {
   uint32_t shot_idx;
   uint32_t wait_end_ms;
   uint32_t started_ms;
+  uint32_t ended_ms;
   uint8_t state;
   uint8_t paused;
 } rs;
@@ -49,11 +50,13 @@ static void _shutter_wait(struct SharedState* ss) {
   if (rs.shot_idx >= ss->shot_count) {
     // Done
     rs.state = RUN_STATE_FINISHED;
+    rs.ended_ms = uptime_ms();
+    --rs.shot_idx;
     return;
   }
 
   // it should end at zero on the last shot
-  int32_t new_pos = ss->start_pos - (rs.shot_idx * ss->start_pos / (ss->shot_count - 1));
+  int32_t new_pos = ss->start_pos - ((int32_t)rs.shot_idx * ss->start_pos / ((int32_t)ss->shot_count - 1));
 
   if (motor_control_try_target_position(&(ss->motor), new_pos)) {
     rs.state = RUN_STATE_WAIT_MOTOR_STOP;
@@ -169,7 +172,8 @@ void _time_append(char* dest, uint32_t time_secs) {
 }
 
 void _elapsed_str_append(char* str) {
-  uint32_t elapsed_sec = (uptime_ms() - rs.started_ms) / 1000;
+  uint32_t end_time_ms = rs.state == RUN_STATE_FINISHED ? rs.ended_ms : uptime_ms();
+  uint32_t elapsed_sec = (end_time_ms - rs.started_ms) / 1000;
   _time_append(str, elapsed_sec);
 }
 
@@ -186,18 +190,18 @@ void _render(struct SharedState* ss, const struct MotorControl* motor_snap) {
   _render_title(ss);
 
   const float pos_mm = motor_snap->current_pos / 200.0;
-  int16_t ypos = 16;
+  int16_t ypos = 32;
   snprintf(str, sizeof(str), "Pos:   %5.2fmm", pos_mm);
   bitmap_str(bm, terminus8x16, str, 0, ypos, bitmap_SET);
   ypos += 16;
   snprintf(str, sizeof(str), "Shot: %4d/%4d", rs.shot_idx + 1, ss->shot_count);
   bitmap_str(bm, terminus8x16, str, 0, ypos, bitmap_SET);
   ypos += 16;
-  strcpy(str, "Elapsed: ");
+  strcpy(str, "Elapsed:");
   _elapsed_str_append(str);
   bitmap_str(bm, terminus8x16, str, 0, ypos, bitmap_SET);
   ypos += 16;
-  strcpy(str, "Total:   ");
+  strcpy(str, "Total:  ");
   _total_str_append(ss, str);
   bitmap_str(bm, terminus8x16, str, 0, ypos, bitmap_SET);
 }
