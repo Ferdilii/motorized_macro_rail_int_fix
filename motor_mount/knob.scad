@@ -43,6 +43,7 @@ module knob() {
 
   color("#ddd") union() {
     base();
-    tz(knob_inner_height) finger_knob(KNOB_DIAMETER, KNOB_INSET_DIAMETER, KNOB_FINGER_HEIGHT);
+    tz(knob_inner_height) finger_knob(
+        KNOB_DIAMETER, KNOB_INSET_DIAMETER, KNOB_FINGER_HEIGHT);
   }
 }
