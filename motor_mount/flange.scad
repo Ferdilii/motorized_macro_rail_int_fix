@@ -2,8 +2,9 @@ use <mattwach/util.scad>
 include <knob.scad>
 include <motor.scad>
 
+FLANGE_DIAMETER = 20;
+
 module flange() {
-  flange_diameter = 20;
   flange_knob_inset = 10;
   flange_knob_gap = 0.3;
   flange_shaft_inset = 10;
@@ -11,7 +12,7 @@ module flange() {
   flange_pad = 0.5;
   flange_height = flange_knob_inset + flange_shaft_inset + flange_pad;
   module body() {
-    cylinder(d=flange_diameter, h=flange_height);
+    cylinder(d=FLANGE_DIAMETER, h=flange_height);
   }
 
   module knob_cutout() {
@@ -31,6 +32,8 @@ module flange() {
   //tz(flange_height + SHAFT_LENGTH - flange_shaft_inset) ry(180) motor_shaft(0);
 }
 
+/*
 flange();
 $fa=2.0;
 $fs=0.5;
+*/

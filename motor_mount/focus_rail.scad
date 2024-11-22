@@ -4,18 +4,19 @@ include <knob.scad>
 
 overlap = 0.01;
 
+RAIL_BODY_WIDTH = 37.8;
+RAIL_BODY_HEIGHT = 20;
+
 module focus_rail() {
   rail_body_length = 200;
-  rail_body_width = 37.8;
-  rail_body_height = 20;
 
   foot_w_span = 33 - FOOT_TOP_DIAMETER;
   foot_l_offset = 8.8 - FOOT_TOP_DIAMETER / 2;
-  foot_w_offset = (rail_body_width - foot_w_span) / 2;
+  foot_w_offset = (RAIL_BODY_WIDTH - foot_w_span) / 2;
 
   module outer_body() {
     corner_radius = 5;
-    rounded_cube([rail_body_length, rail_body_width, rail_body_height], 5);
+    rounded_cube([rail_body_length, RAIL_BODY_WIDTH, RAIL_BODY_HEIGHT], 5);
   }
 
   module main_cutout() {
@@ -23,8 +24,8 @@ module focus_rail() {
     width_pad = 4.8;
     height_pad = 2;
     cutout_length = rail_body_length - length_pad * 2;
-    cutout_width = rail_body_width - width_pad * 2;
-    cutout_height = rail_body_height - height_pad;
+    cutout_width = RAIL_BODY_WIDTH - width_pad * 2;
+    cutout_height = RAIL_BODY_HEIGHT - height_pad;
     corner_radius = 5;
 
     translate([
@@ -37,16 +38,16 @@ module focus_rail() {
   }
   translate([
       0,
-      -rail_body_width / 2,
-      -rail_body_height / 2]) {
+      -RAIL_BODY_WIDTH / 2,
+      -RAIL_BODY_HEIGHT / 2]) {
     color("#777") difference() {
       outer_body();
       main_cutout();
     }
     txy(foot_l_offset, foot_w_offset) foot();
-    txy(foot_l_offset, rail_body_width - foot_w_offset) foot();
+    txy(foot_l_offset, RAIL_BODY_WIDTH - foot_w_offset) foot();
     txy(rail_body_length - foot_l_offset, foot_w_offset) foot();
-    txy(rail_body_length - foot_l_offset, rail_body_width - foot_w_offset) foot();
+    txy(rail_body_length - foot_l_offset, RAIL_BODY_WIDTH - foot_w_offset) foot();
   }
   ry(-90) knob();
 }
