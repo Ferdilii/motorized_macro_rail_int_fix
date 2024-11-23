@@ -11,8 +11,8 @@ module stepper_motor() {
 
 $fa=2.0;
 $fs=0.5;
-*focus_rail();
+focus_rail();
 *stepper_motor();
-motor_bracket(RAIL_BODY_WIDTH, RAIL_BODY_HEIGHT);
+motor_bracket(RAIL_BODY_WIDTH, RAIL_BODY_HEIGHT, RAIL_Z);
 *tx(-5) ry(-90) flange();
 

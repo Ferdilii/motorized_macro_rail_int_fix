@@ -6,6 +6,7 @@ overlap = 0.01;
 
 RAIL_BODY_WIDTH = 37.8;
 RAIL_BODY_HEIGHT = 20;
+RAIL_Z = -RAIL_BODY_HEIGHT + 7;
 
 module focus_rail() {
   rail_body_length = 200;
@@ -39,7 +40,7 @@ module focus_rail() {
   translate([
       0,
       -RAIL_BODY_WIDTH / 2,
-      -RAIL_BODY_HEIGHT / 2]) {
+      RAIL_Z]) {
     color("#777") difference() {
       outer_body();
       main_cutout();
