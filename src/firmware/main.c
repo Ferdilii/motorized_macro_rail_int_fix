@@ -10,6 +10,7 @@
 #include "gimbal_update.h"
 #include "fatal.h"
 #include "main_led.h"
+#include "menu.h"
 #include "run.h"
 #include "shot_count.h"
 #include "shutter_delay.h"
@@ -82,6 +83,9 @@ static void update(void) {
       break;
     case STATE_RUNNING:
       run_update(&state);
+      break;
+    case STATE_MENU:
+      menu_update(&state);
       break;
     default:
       fatal(&state, "UNKNOWN_STATE: %d", state.state);

@@ -22,6 +22,7 @@
 #define STATE_SHUTTER_DELAY 3
 #define STATE_SHOT_COUNT 4
 #define STATE_RUNNING 6
+#define STATE_MENU 7
 
 // bits for buttons bit field
 #define NEXT_PRESSED     0x01

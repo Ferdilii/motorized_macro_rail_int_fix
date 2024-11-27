@@ -37,8 +37,9 @@ static void update(struct SharedState* ss, const struct MotorControl* motor_snap
   if ((ss->button & PREVIOUS_PRESSED) && (ss->motor.jog_mode == 0)) {
     if (is_start) {
       ss->state = STATE_END_POINT_SELECT;
+    } else {
+      ss->state = STATE_MENU;
     }
-    // TODO: Go to settings if on end point select.
   } else if ((ss->button & NEXT_PRESSED) && (ss->motor.jog_mode == 0)) {
     if (is_start) {
       if (next_ok(motor_snap)) {

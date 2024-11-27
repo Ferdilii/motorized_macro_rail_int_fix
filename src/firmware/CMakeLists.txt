@@ -7,6 +7,7 @@ add_executable(macro_rail_automater
         fatal.c
         gimbal_update.c
         main_led.c
+        menu.c
         motor_control.c
         motor_driver.c
         render_common.c
