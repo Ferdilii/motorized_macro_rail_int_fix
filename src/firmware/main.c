@@ -10,6 +10,7 @@
 #include "gimbal_update.h"
 #include "fatal.h"
 #include "main_led.h"
+#include "max_velocity.h"
 #include "menu.h"
 #include "run.h"
 #include "shot_count.h"
@@ -86,6 +87,9 @@ static void update(void) {
       break;
     case STATE_MENU:
       menu_update(&state);
+      break;
+    case STATE_MAX_VELOCITY:
+      max_velocity_update(&state);
       break;
     default:
       fatal(&state, "UNKNOWN_STATE: %d", state.state);

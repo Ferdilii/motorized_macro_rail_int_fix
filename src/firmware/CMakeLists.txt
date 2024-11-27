@@ -7,9 +7,11 @@ add_executable(macro_rail_automater
         fatal.c
         gimbal_update.c
         main_led.c
+        max_velocity.c
         menu.c
         motor_control.c
         motor_driver.c
+        parameter_change.c
         render_common.c
         run.c
         shot_count.c

@@ -2,14 +2,15 @@
 
 #include "misc/gimbal.h"
 #include "oledm/font/terminus8x16.h"
+#include "max_velocity.h"
 #include "render_common.h"
 
 const static char* items[] = {
   "End Position",  // idx 0
-  "Max Velocity",  // idx 0
-  "Acceleration",  // idx 0
-  "Backlash",      // idx 1
-  "Settle Time",   // idx 1
+  "Max Vel (step/s)",  // idx 0
+  "Accel (step/s*s)",  // idx 0
+  "Backlash (steps)", // idx 1
+  "Settle Seconds",   // idx 1
   "Steps / mm",    // idx 1
 };
 
@@ -24,6 +25,10 @@ static void _update(struct SharedState* ss) {
     switch (index) {
       case 0:
         ss->state = STATE_END_POINT_SELECT;
+        break;
+      case 1:
+        max_velocity_init(items[index]);
+        ss->state = STATE_MAX_VELOCITY;
         break;
       default:
         // not yet implemented

@@ -19,8 +19,10 @@ void enter_value_widget_init(
     int32_t value,
     int32_t min_value,
     int32_t max_value);
+
 void enter_value_widget_update(
     struct EnterValueWidget* evw, int8_t xdir, int8_t ydir);
+
 void enter_value_widget_render(
     const struct EnterValueWidget* evw,
     struct Bitmap* bm,
