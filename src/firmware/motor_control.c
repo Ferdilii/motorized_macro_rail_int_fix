@@ -314,11 +314,6 @@ uint8_t motor_control_try_backlash(struct MotorControl* mc, int32_t p) {
 void motor_control_set_jog_velocity(struct MotorControl* mc, float steps_per_sec) {
   spin_lock_unsafe_blocking(mc->lock);
   mc->jog_mode = 1;
-  if (steps_per_sec > mc->max_velocity) {
-    steps_per_sec = mc->max_velocity;
-  } else if (steps_per_sec < -((float)mc->max_velocity)) {
-    steps_per_sec = -((float)mc->max_velocity);
-  }
   mc->jog_velocity = steps_per_sec;
   spin_unlock_unsafe(mc->lock);
 }

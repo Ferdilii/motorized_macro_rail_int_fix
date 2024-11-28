@@ -25,6 +25,7 @@ void parameter_change_init(
   pc->default_val = default_val;
   pc->permanent_val = permanent_val;
   pc->decimal_places = decimal_places;
+  pc->test_mode = 0;
   enter_value_widget_init(&(pc->evw), *permanent_val, min_val, max_val);
 }
 
@@ -38,8 +39,8 @@ static void _update(
     }
     ss->state = STATE_MENU;
   } else if (ss->button & NEXT_PRESSED) {
-    // TODO: implement a way for different settings to offer testing mechanisms.
-  } else {
+    pc->test_mode = 1 - pc->test_mode;
+  } else if (!pc->test_mode) {
     enter_value_widget_update(&(pc->evw), -ss->gimbal_x_dir, -ss->gimbal_y_dir);
   }
 }
@@ -48,7 +49,7 @@ static void _render(
     struct ParameterChange* pc,
     struct SharedState* ss) {
   struct Bitmap* bm = &(ss->bitmap);
-  render_common(bm, pc->title, "Cancel", "Set");
+  render_common(bm, pc->title, "Back", pc->test_mode ? "Edit" : "Test");
   int16_t y = 64;
   bitmap_str(bm, terminus8x16, "Value", 0, y, bitmap_SET);
   enter_value_widget_render(&(pc->evw), bm, 128, y, pc->decimal_places); 

@@ -10,6 +10,7 @@ struct ParameterChange {
   int32_t default_val;
   int32_t* permanent_val;
   uint8_t decimal_places;
+  uint8_t test_mode;
   struct EnterValueWidget evw;
 };
 

@@ -2,31 +2,11 @@
 
 #include <stdio.h>
 
-#include "misc/gimbal.h"
+#include "gimbal_jog.h"
 #include "oledm/font/terminus8x16.h"
 #include "motor_control.h"
 #include "render_common.h"
-
-#define DEADZONE 0x10
-
-static void update_gimbal(struct SharedState* ss, const struct MotorControl* motor_snap) {
-  uint16_t y = ss->gimbal_y_pos;
-  int32_t new_jv = 0;
-  if (y > (GIMBAL_CALIBRATE_CENTER + DEADZONE)) {
-    y = y - DEADZONE - GIMBAL_CALIBRATE_CENTER;
-    new_jv = -y * MAX_MOTOR_VELOCITY / (GIMBAL_CALIBRATE_CENTER - DEADZONE);
-  } else if (y < (GIMBAL_CALIBRATE_CENTER - DEADZONE)) {
-    y = GIMBAL_CALIBRATE_CENTER - DEADZONE - y;
-    new_jv = y * MAX_MOTOR_VELOCITY / (GIMBAL_CALIBRATE_CENTER - DEADZONE);
-  } 
-
-  // A spin lock is needed to change motor settings so only
-  // change them if needed.
-  const float delta_jv = motor_snap->jog_velocity - (float)new_jv;
-  if ((delta_jv >= 1.0) || (delta_jv <= -1.0)) {
-    motor_control_set_jog_velocity(&(ss->motor), (float)new_jv);
-  }
-}
+#include "saved_settings.h"
 
 static inline uint8_t next_ok(const struct MotorControl* motor_snap) {
   // need at least 1mm forward or backward (200 steps)
@@ -55,7 +35,8 @@ static void update(struct SharedState* ss, const struct MotorControl* motor_snap
       ss->state = STATE_START_POINT_SELECT;
     }
   } else {
-    update_gimbal(ss, motor_snap);
+    const struct SavedSettings* settings = saved_settings_get();
+    gimbal_jog(ss, motor_snap, settings->max_velocity);
   }
 }
 

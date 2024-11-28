@@ -104,8 +104,12 @@ static void update(void) {
 }
 
 static void start_motor_control(void) {
+  const struct SavedSettings* settings = saved_settings_get();
   motor_control_init(
-      &state.motor, MOTOR_BACKLASH, MAX_MOTOR_VELOCITY, MAX_MOTOR_ACCELERATION);
+      &state.motor,
+      settings->backlash,
+      settings->max_velocity,
+      settings->acceleration);
   motor_control_start(&state.motor);
 }
 
