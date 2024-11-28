@@ -13,6 +13,7 @@
 #include "max_velocity.h"
 #include "menu.h"
 #include "run.h"
+#include "saved_settings.h"
 #include "shot_count.h"
 #include "shutter_delay.h"
 #include "shutter.h"
@@ -111,6 +112,7 @@ static void start_motor_control(void) {
 
 static void init() {
   sleep_ms(50);
+  saved_settings_init();
   main_led_init();
 
   memset(&state, 0, sizeof(struct SharedState));

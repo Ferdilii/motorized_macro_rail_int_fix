@@ -14,6 +14,7 @@ add_executable(macro_rail_automater
         parameter_change.c
         render_common.c
         run.c
+        saved_settings.c
         shot_count.c
         shutter.c
         shutter_delay.c
@@ -24,6 +25,8 @@ target_link_libraries(macro_rail_automater
     pico_multicore
     pico_stdlib
     hardware_adc
+    hardware_flash
+    hardware_sync
 
     DEBOUNCE
     FIXED_TEXT_TERMINUS8X16
