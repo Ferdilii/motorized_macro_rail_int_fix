@@ -3,6 +3,7 @@
 
 #include "shared_state.h"
 #include "enter_value_widget.h"
+#include "saved_settings.h"
 
 struct ParameterChange {
   const char* title;
@@ -20,6 +21,8 @@ void parameter_change_init(
     int32_t min_val,
     int32_t max_val,
     uint8_t decimal_places);
+
+struct SavedSettings* parameter_change_settings(void);
 
 void parameter_change_update(
     struct ParameterChange* pc,

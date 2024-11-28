@@ -1,9 +1,16 @@
 #include "parameter_change.h"
 #include <stdio.h>
+#include <string.h>
 
 #include "render_common.h"
 #include "oledm/bitmap.h"
 #include "oledm/font/terminus8x16.h"
+
+static struct SavedSettings settings;
+
+struct SavedSettings* parameter_change_settings(void) {
+  return &settings;
+}
 
 void parameter_change_init(
     struct ParameterChange* pc,
@@ -13,6 +20,7 @@ void parameter_change_init(
     int32_t min_val,
     int32_t max_val,
     uint8_t decimal_places) {
+  memcpy(&settings, saved_settings_get(), sizeof(struct SavedSettings));
   pc->title = title;
   pc->default_val = default_val;
   pc->permanent_val = permanent_val;
@@ -24,11 +32,13 @@ static void _update(
     struct ParameterChange* pc,
     struct SharedState* ss) {
   if (ss->button & PREVIOUS_PRESSED) {
+    if (*(pc->permanent_val) != pc->evw.value) {
+      *(pc->permanent_val) = pc->evw.value;
+      saved_settings_write(&settings);
+    }
     ss->state = STATE_MENU;
   } else if (ss->button & NEXT_PRESSED) {
-    *(pc->permanent_val) = pc->evw.value;
-    // TODO: Write value to permanent storage
-    ss->state = STATE_MENU;
+    // TODO: implement a way for different settings to offer testing mechanisms.
   } else {
     enter_value_widget_update(&(pc->evw), -ss->gimbal_x_dir, -ss->gimbal_y_dir);
   }
