@@ -7,6 +7,7 @@
 #include "enter_value_widget.h"
 #include "render_common.h"
 #include "run.h"
+#include "saved_settings.h"
 
 struct EnterValueWidget count_evw;
 
@@ -75,13 +76,18 @@ static void _render_distance(
   bitmap_str(bm, terminus8x16, str, 0, ypos, bitmap_SET);
 }
 
+static inline uint32_t settle_ms(void) {
+  const struct SavedSettings* settings = saved_settings_get();
+  return settings->settle_dsecs * 100;
+}
+
 static void _render_time(
     struct Bitmap* bm,
     int16_t ypos,
     const struct SharedState* ss,
     const struct MotorControl* motor_snap) {
   uint32_t time_secs = (ss->shot_count * ss->shutter_delay_ms +
-      (ss->shot_count - 1) * (SETTLE_MS + estimate_seek_time_ms(motor_snap, ss->start_pos)) + 999)
+      (ss->shot_count - 1) * (settle_ms() + estimate_seek_time_ms(motor_snap, ss->start_pos)) + 999)
       / 1000;
   const int32_t hours = time_secs / 3600;
   time_secs -= (hours * 3600);

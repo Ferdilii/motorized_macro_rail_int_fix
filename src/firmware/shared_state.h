@@ -26,8 +26,6 @@
 #define PREVIOUS_PRESSED 0x02
 //#define SHUTTER_PRESSED  0x04  currently handled in button.c exclusively
 
-#define SETTLE_MS 500
-
 struct SharedState {
   struct Bitmap bitmap;
 

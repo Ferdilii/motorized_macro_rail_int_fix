@@ -5,6 +5,7 @@
 
 #include "fatal.h"
 #include "render_common.h"
+#include "saved_settings.h"
 #include "shutter.h"
 #include "oledm/font/terminus8x16.h"
 
@@ -66,12 +67,17 @@ static void _shutter_wait(struct SharedState* ss) {
   }
 }
 
+static inline uint32_t settle_ms(void) {
+  const struct SavedSettings* settings = saved_settings_get();
+  return settings->settle_dsecs * 100;
+}
+
 static void _wait_motor_stop(struct SharedState* ss) {
   if (!motor_control_check_stopped(&(ss->motor))) {
     // not there yet
     return;
   }
-  rs.wait_end_ms = uptime_ms() + SETTLE_MS;
+  rs.wait_end_ms = uptime_ms() + settle_ms();
   rs.state = RUN_STATE_WAIT_SETTLE;
 }
 
@@ -182,7 +188,8 @@ void _total_str_append(
     const struct MotorControl* motor_snap,
     char* str) {
   uint32_t time_secs = (ss->shot_count * ss->shutter_delay_ms +
-      (ss->shot_count - 1) * (SETTLE_MS + estimate_seek_time_ms(motor_snap, ss->start_pos)) + 999)
+      (ss->shot_count - 1) * (settle_ms() +
+        estimate_seek_time_ms(motor_snap, ss->start_pos)) + 999)
       / 1000;
   _time_append(str, time_secs);
 }
