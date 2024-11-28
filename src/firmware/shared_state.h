@@ -20,6 +20,7 @@
 #define STATE_MENU 7
 #define STATE_MAX_VELOCITY 8
 #define STATE_ACCELERATION 9
+#define STATE_BACKLASH 10
 
 // bits for buttons bit field
 #define NEXT_PRESSED     0x01

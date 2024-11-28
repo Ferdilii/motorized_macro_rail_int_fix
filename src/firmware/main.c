@@ -5,6 +5,8 @@
 #include <oledm/oledm.h>
 #include "shared_state.h"
 
+#include "acceleration.h"
+#include "backlash.h"
 #include "buttons.h"
 #include "end_point_select.h"
 #include "gimbal_update.h"
@@ -91,6 +93,12 @@ static void update(void) {
       break;
     case STATE_MAX_VELOCITY:
       max_velocity_update(&state);
+      break;
+    case STATE_ACCELERATION:
+      acceleration_update(&state);
+      break;
+    case STATE_BACKLASH:
+      backlash_update(&state);
       break;
     default:
       fatal(&state, "UNKNOWN_STATE: %d", state.state);

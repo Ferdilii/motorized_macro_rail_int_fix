@@ -4,6 +4,7 @@
 #include "oledm/font/terminus8x16.h"
 
 #include "acceleration.h"
+#include "backlash.h"
 #include "max_velocity.h"
 #include "render_common.h"
 
@@ -35,6 +36,10 @@ static void _update(struct SharedState* ss) {
       case 2:
         acceleration_init(items[index]);
         ss->state = STATE_ACCELERATION;
+        break;
+      case 3:
+        backlash_init(items[index]);
+        ss->state = STATE_BACKLASH;
         break;
       default:
         // not yet implemented
