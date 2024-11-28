@@ -1,6 +1,7 @@
 add_executable(macro_rail_automater
         main.c
 
+        acceleration.c
         buttons.c
         end_point_select.c
         enter_value_widget.c

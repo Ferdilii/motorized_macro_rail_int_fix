@@ -2,6 +2,8 @@
 
 #include "misc/gimbal.h"
 #include "oledm/font/terminus8x16.h"
+
+#include "acceleration.h"
 #include "max_velocity.h"
 #include "render_common.h"
 
@@ -29,6 +31,10 @@ static void _update(struct SharedState* ss) {
       case 1:
         max_velocity_init(items[index]);
         ss->state = STATE_MAX_VELOCITY;
+        break;
+      case 2:
+        acceleration_init(items[index]);
+        ss->state = STATE_ACCELERATION;
         break;
       default:
         // not yet implemented
