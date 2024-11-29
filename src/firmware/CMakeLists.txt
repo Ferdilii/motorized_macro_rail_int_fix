@@ -18,6 +18,7 @@ add_executable(macro_rail_automater
         render_common.c
         run.c
         saved_settings.c
+        settle_seconds.c
         shot_count.c
         shutter.c
         shutter_delay.c

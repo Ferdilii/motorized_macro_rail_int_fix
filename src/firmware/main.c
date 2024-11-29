@@ -16,6 +16,7 @@
 #include "menu.h"
 #include "run.h"
 #include "saved_settings.h"
+#include "settle_seconds.h"
 #include "shot_count.h"
 #include "shutter_delay.h"
 #include "shutter.h"
@@ -59,9 +60,9 @@
 //             +-------------------------------------+
 
 
-struct OLEDM display;
-struct SharedState state;
-uint8_t bitmap_data[DISPLAY_WIDTH * DISPLAY_ROWS];
+static struct OLEDM display;
+static struct SharedState state;
+static uint8_t bitmap_data[DISPLAY_WIDTH * DISPLAY_ROWS];
 
 static void update(void) {
   state.main_led_claimed = 0;
@@ -99,6 +100,9 @@ static void update(void) {
       break;
     case STATE_BACKLASH:
       backlash_update(&state);
+      break;
+    case STATE_SETTLE_SECONDS:
+      settle_seconds_update(&state);
       break;
     default:
       fatal(&state, "UNKNOWN_STATE: %d", state.state);

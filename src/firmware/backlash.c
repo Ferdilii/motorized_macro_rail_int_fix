@@ -1,6 +1,5 @@
 #include "backlash.h"
 
-#include "gimbal_jog.h"
 #include "parameter_change.h"
 #include "saved_settings.h"
 #include "motor_control.h"

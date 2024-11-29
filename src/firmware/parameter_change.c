@@ -33,13 +33,16 @@ static void _update(
     struct ParameterChange* pc,
     struct SharedState* ss) {
   if (ss->button & PREVIOUS_PRESSED) {
-    if (*(pc->permanent_val) != pc->evw.value) {
+    if (motor_control_check_stopped(&(ss->motor)) &&
+        (*(pc->permanent_val) != pc->evw.value)) {
       *(pc->permanent_val) = pc->evw.value;
       saved_settings_write(&settings);
     }
     ss->state = STATE_MENU;
   } else if (ss->button & NEXT_PRESSED) {
-    pc->test_mode = 1 - pc->test_mode;
+    if (motor_control_check_stopped(&(ss->motor))) {
+      pc->test_mode = 1 - pc->test_mode;
+    }
   } else if (!pc->test_mode) {
     enter_value_widget_update(&(pc->evw), -ss->gimbal_x_dir, -ss->gimbal_y_dir);
   }
