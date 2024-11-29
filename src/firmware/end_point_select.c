@@ -9,8 +9,10 @@
 #include "saved_settings.h"
 
 static inline uint8_t next_ok(const struct MotorControl* motor_snap) {
-  // need at least 1mm forward or backward (200 steps)
-  return (motor_snap->current_pos >= 200) || (motor_snap->current_pos <= -200);
+  // need at least 1mm forward or backward
+  const struct SavedSettings* settings = saved_settings_get();
+  return (motor_snap->current_pos >= settings->steps_per_mm) ||
+          (motor_snap->current_pos <= -settings->steps_per_mm);
 }
 
 static void update(struct SharedState* ss, const struct MotorControl* motor_snap, uint8_t is_start) {
@@ -41,9 +43,9 @@ static void update(struct SharedState* ss, const struct MotorControl* motor_snap
 }
 
 static void render_position(struct Bitmap* bm, const struct MotorControl* motor_snap) {
-  // 200 steps per mm
+  const struct SavedSettings* settings = saved_settings_get();
   char str[32];
-  const float pos = (motor_snap->current_pos) / 200.0;
+  const float pos = (motor_snap->current_pos) / (float)(settings->steps_per_mm);
   snprintf(str, sizeof(str), "Plate:   %5.2fmm", pos);
   bitmap_str(bm, terminus8x16, str, 0, 32, bitmap_SET);
 

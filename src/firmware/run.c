@@ -199,7 +199,8 @@ void _render(struct SharedState* ss, const struct MotorControl* motor_snap) {
   char str[32];
   _render_title(ss);
 
-  const float pos_mm = motor_snap->current_pos / 200.0;
+  const struct SavedSettings* settings = saved_settings_get();
+  const float pos_mm = motor_snap->current_pos / (float)(settings->steps_per_mm);
   int16_t ypos = 32;
   snprintf(str, sizeof(str), "Pos:   %5.2fmm", pos_mm);
   bitmap_str(bm, terminus8x16, str, 0, ypos, bitmap_SET);

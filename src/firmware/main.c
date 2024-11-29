@@ -20,6 +20,7 @@
 #include "shot_count.h"
 #include "shutter_delay.h"
 #include "shutter.h"
+#include "steps_per_mm.h"
 
 // A4988 Stepper Motor Controller (Reference only)
 //
@@ -103,6 +104,9 @@ static void update(void) {
       break;
     case STATE_SETTLE_SECONDS:
       settle_seconds_update(&state);
+      break;
+    case STATE_STEPS_PER_MM:
+      steps_per_mm_update(&state);
       break;
     default:
       fatal(&state, "UNKNOWN_STATE: %d", state.state);

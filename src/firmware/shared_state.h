@@ -22,6 +22,7 @@
 #define STATE_ACCELERATION 9
 #define STATE_BACKLASH 10
 #define STATE_SETTLE_SECONDS 11
+#define STATE_STEPS_PER_MM 12
 
 // bits for buttons bit field
 #define NEXT_PRESSED     0x01

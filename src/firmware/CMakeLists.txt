@@ -22,6 +22,7 @@ add_executable(macro_rail_automater
         shot_count.c
         shutter.c
         shutter_delay.c
+        steps_per_mm.c
         )
 
 # pull in common dependencies

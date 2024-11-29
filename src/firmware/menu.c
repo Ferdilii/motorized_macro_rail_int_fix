@@ -7,6 +7,8 @@
 #include "backlash.h"
 #include "max_velocity.h"
 #include "render_common.h"
+#include "settle_seconds.h"
+#include "steps_per_mm.h"
 
 const static char* items[] = {
   "End Position",  // idx 0
@@ -40,6 +42,14 @@ static void _update(struct SharedState* ss) {
       case 3:
         backlash_init(items[index]);
         ss->state = STATE_BACKLASH;
+        break;
+      case 4:
+        settle_seconds_init(items[index]);
+        ss->state = STATE_SETTLE_SECONDS;
+        break;
+      case 5:
+        steps_per_mm_init(items[index]);
+        ss->state = STATE_STEPS_PER_MM;
         break;
       default:
         // not yet implemented
