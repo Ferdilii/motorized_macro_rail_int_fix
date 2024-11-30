@@ -1,7 +1,7 @@
 (export (version "E")
   (design
     (source "/home/mattwach/git/macro_rail_automator/macro_rail_kicad/macro_rail_kicad.kicad_sch")
-    (date "2024-11-29T09:05:02-0800")
+    (date "2024-11-30T08:10:49-0800")
     (tool "Eeschema 8.0.4+dfsg-1")
     (sheet (number "1") (name "/") (tstamps "/")
       (title_block
@@ -68,9 +68,10 @@
       (tstamps "3cc388db-6144-45e2-ad13-03eb08225de3"))
     (comp (ref "C3")
       (value "10u")
+      (footprint "Capacitor_THT:C_Disc_D3.8mm_W2.6mm_P2.50mm")
       (description "Unpolarized capacitor")
       (fields
-        (field (name "Footprint"))
+        (field (name "Footprint") "Capacitor_THT:C_Disc_D3.8mm_W2.6mm_P2.50mm")
         (field (name "Datasheet"))
         (field (name "Description") "Unpolarized capacitor"))
       (libsource (lib "Device") (part "C") (description "Unpolarized capacitor"))
@@ -242,9 +243,9 @@
       (tstamps "42467b3b-e79f-442c-a1a5-3b8ef08f9a2b"))
     (comp (ref "U1")
       (value "Pico")
-      (footprint "RPi_Pico:RPi_Pico_SMD_TH")
+      (footprint "RP-Pico:RPi_Pico_SMD_TH")
       (fields
-        (field (name "Footprint") "RPi_Pico:RPi_Pico_SMD_TH")
+        (field (name "Footprint") "RP-Pico:RPi_Pico_SMD_TH")
         (field (name "Datasheet"))
         (field (name "Description")))
       (libsource (lib "RP-Pico") (part "Pico") (description ""))

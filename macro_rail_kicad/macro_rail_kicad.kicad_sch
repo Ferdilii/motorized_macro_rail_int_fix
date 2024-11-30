@@ -5255,7 +5255,7 @@
 				)
 			)
 		)
-		(property "Footprint" "RPi_Pico:RPi_Pico_SMD_TH"
+		(property "Footprint" "RP-Pico:RPi_Pico_SMD_TH"
 			(at 78.74 50.8 90)
 			(effects
 				(font
@@ -7152,7 +7152,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_THT:C_Disc_D3.8mm_W2.6mm_P2.50mm"
 			(at 162.2552 36.83 0)
 			(effects
 				(font
