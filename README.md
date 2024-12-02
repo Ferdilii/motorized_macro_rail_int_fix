@@ -1,0 +1,292 @@
+# Macro Focusing Rail Conversion
+
+This is a project for a macro focusing rail.  It is used with special
+"stacking" software to increase the depth of field of very small images.  This
+rail works as a modification to an existing commercial rail, although building
+up a rail from scratch would be straight forward as well given the popularity
+of 3D printers and small CNC machines which would use the same parts.
+
+## Background
+
+Taking images of very small objects is known as [macro photography](https://en.wikipedia.org/wiki/Macro_photography).
+Using a [specialized lens](https://www.bhphotovideo.com/c/product/1399604-REG/venus_optics_ve2528sfe_laowa_25mm_f_2_8_2_5_5x.html),
+or a [attachable modifier](https://www.bhphotovideo.com/c/product/275182-REG/Raynox_DCR_250_DCR_250_2_5x_Super_Macro.html)
+makes this type of photography possible.
+
+Unfortunately, due to the physics of photographic lenses, taking photos of very
+small object typically has a very low depth of field, where only a thin slice
+of the object is in focus, often much less than 1mm.
+
+![low DOF image]()
+
+In general photography, it is possible to "stop down" the aperture to increase
+the depth of field.  That is true in macro photography as well, but even stopping
+down often does not sufficiently address the depth of field problem.
+
+A modern solution is to take many photos where the focus point is slightly
+shifted, then combine these using software.  For example, we would take these
+photos:
+
+
+![photo1]()
+![photo2]()
+![photo3]()
+(and N more)
+
+and combine them into this "stacked" image:
+
+![stacked image]()
+
+The project here helps to take the source photos in a predictable and
+consistent way.
+
+## Alternatives
+
+### Manual Approaches
+
+* You can use manual focus on your lens to achieve a similar result but it
+may be very challenging to get the step size correct and consistent.  The
+result will thus often have "blurry" areas where there was no in-focus source
+image to use.  There is the risk of moving the camera every time you touch it.
+* You can buy a manual focus rail at many different qualities and price points.
+That is the starting point for this project.  The nice thing about these
+rails is that they are a bit more "field friendly" in their simplicity.  The
+downside is that full manual mode can be more work and you risk moving
+the camera slightly as you interact with the rail.
+
+### Automated approaches
+
+* You can buy commercial rails at different price points.  Here is
+[one](https://cognisys-inc.com/stackshot-macro-rail-package.html) and
+here is [another](https://www.wemacro.com/US/index.php/product/wemacro-rail-with-power-bank-cable-for-outside/).
+One thing I think is a downside of these solutions is the
+interface.  One uses buttons and the other uses a phone app - both seem a bit
+cumbersome compared to an analog stick when it comes to positioning the camera.
+* [Some cameras](https://fujifilm-x.com/en-gb/learning-centre/using-focus-bracketing-and-stacking/)
+have built in [focus stacking](https://en.wikipedia.org/wiki/Focus_stacking)
+features while other support remote
+control phone/computer [apps](https://camranger.com/camranger-2/) that add the
+feature. A limitation here is that you will be limited to autofocus lenses and
+higher-magnification lenses usually do not offer autofocus as an option.
+
+## Parts List
+
+These are the parts and equipment I used.  Of course, any of them could be
+swapped with alternatives with varying degrees of challenge depending on the
+part:
+
+### Parts
+
+Prices are what I found in late 2024.  Shipping not included and sometimes
+you need to buy more than you need.  Check out [Digikey](http://www.digikey.com)
+as an option for bundling everything together.
+
+* [Raspberry PI Pico](https://www.adafruit.com/product/4864) ($4).  You could
+opt for the [unit with Wifi/Bluetooth](https://www.adafruit.com/product/5526)
+if you want to try and trigger your camera wirelessly but note that this
+enhancement will require firmware changes and could be a challenge.
+* [128x128 OLED](https://www.amazon.com/dp/B0CFF435XZ) ($12).  The UI is 
+designed for this resolution using a 8x16 font.  You could go with a 128x64
+and switch to an 8x8 font.  This would require mostly-straightforward
+firmware changes and I would consider it "medium" challenge modification.
+* [4 push-buttons](https://www.adafruit.com/product/4183) ($2).
+* [1 power switch](https://www.amazon.com/Hxchen-Through-Self-Locking-Mounting-Switches/dp/B07V1TRMMC) ($1).
+Optional but recommended so that you have a quick way to power off the unit if
+you need to for any reason.
+* [Joystick](https://betafpv.com/products/literadio-transmitter-nano-gimbal-for-literadio-3-and-2-se?variant=39628763529350) ($6).
+I'm using an RC gimbal (pitch-roll type) which is very precise.  You
+an get these new or salvage them from an old radio.  Alternatively,
+you can opt for a commonly-available "PS2 stick" that will be less
+precise but possibly good-enough.
+* [Voltage Regulator](https://www.adafruit.com/product/2164) ($1) most stepper
+motors need a minimum of 12V, which is beyond what the PI Pico onboard regulator
+can handle, thus you'll need a regulator to help it out.  I went with the famous
+[LM7805](https://www.adafruit.com/product/2164) which will be powering the Pico
+and OLED.  Anything between 3.3V and 5V which can deliver > 200 mA should be well
+into the sufficiency range.
+* [A4988 Stepper Motor Driver](https://www.amazon.com/HiLetgo-Stepstick-Stepper-Printer-Compatible/dp/B07BND65C8?crid=3AT50Q4D52D5J) ($2).
+A microcontroller is not designed to power a motor directly and you will need
+power electronics.  The [A4988](https://www.pololu.com/file/0j450/a4988_dmos_microstepping_driver_with_translator.pdf)
+gives you both the power and an easy-to-use interface which makes the firmware
+less complex and improves the quality and safety over what most DIY efforts
+with an H-bridge could manage.
+* [Power connector](https://www.amazon.com/DaierTek-5-5x2-1mm-Female-Connector-Barrel/dp/B096XJWZJQ) ($1).
+I'm going with a 5.5mm barrel jack but it's really up to you.  The design will
+support between 12V and around 30V but you'll want to double check the specs
+of your chosen motor and voltage regulators if you want to go over 12.
+* [Camera interface](https://www.amazon.com/dp/B01ASF0N3) ($1).  I went with
+a 2.5mm jack for this but since it's the not the camera side, your options
+are flexible.  Most cameras support a switch-style shutter release.  If yours
+doesn't, you can probably improvise something or go with the manual shutter
+release option.
+
+### Equipment
+
+* 3D printer.  This is used to create the motor-to-rail interface and
+the housing for the electronics.  There are many techniques with wood working,
+metalworking, [CNC](https://www.sainsmart.com/products/sainsmart-genmitsu-cnc-router-3018-pro-diy-kit),
+etc, that could be alternatively used if you have the needed skills and equipment.
+
+## Electronics Build
+
+Here is the schematic.
+
+![schematic](img/schematic.png)
+
+There are around 2 dozen connections to be made here which makes most
+assembly methods possible.  Here is the whole thing implemented on
+a breadboard:
+
+![breadboard]()
+
+You could transfer the electronics to a [perf board]() and be done
+with this step.  Since I have a 3018 CNC machine, I decided to go
+a little farther and cut out a PCB:
+
+![pcb layout]()
+
+![cnc photo]()
+
+![finsihed board]()
+
+If you want to use a CNC, chemical etch, or order a manufactured board,
+you can find the needed files in the [`motor_rail_kicad/`]() directory.
+
+## Macro Rail Interface
+
+The goal is to interface the stepper motor with the macro rail of your
+choosing.  I ended up going with the [NMS-200]() focusing rail which
+I have mixed opinions on, it's not as sturdy as I was hoping for but
+the photos come out fine anyay.  I might try a cheaper one or potentially
+DIY one with some steel rods and linear bearings, although this does
+increase the overall complexity of the project.
+
+For the route I took, only two printed parts are needed.  One interfaces
+the rail to the motor using a clamping interface:
+
+![clamp interface]()
+
+The other part interfaces the motor shaft to the finger adjustment knob
+
+![shaft interface]()
+
+By using the freely-available [OpenSCAD]() you can adapt the clamp
+interface to various different rails by editing
+[`motor_mount/focus_rail.scad`]() and changing the following parameters
+to match your rail:
+
+```
+RAIL_BODY_WIDTH = 37.8;
+RAIL_BODY_HEIGHT = 20;
+```
+
+The numbers above (in mm) are for the [NM-200s](https://www.amazon.com/dp/B0BXKFGLF3).
+
+The finger interface design should be adable to most (but not all) rail
+designs.  The file to change is [`motor_mount/knob.scad`]() with the following
+variables likely being relevant:
+
+```
+KNOB_DIAMETER = 15.1;
+KNOB_INSET_DIAMETER = 13.2;
+...
+finger_cutout_diameter = 4;
+finger_cutout_count = 8;
+```
+
+## Process Walkthrough
+
+This section talks about the end-to-end experience of using the rail.
+
+### Setup
+
+You first need to attach the stepper motor to the rail by sliding it on and
+gently tightening the bolts (don't overdo it).  The motor can easily be
+detached if you don't need it for a given session.`
+
+![attach rail]()
+
+Next line up the camera and target and make sure that nothing is moving.
+
+![camera setup]()
+
+It's good to have a light on your subject to reduce to exposure time and make
+the light consistent.  Where you place the light is an artistic choice but side
+lighting is a good starting point.  Flash is an option but you might need to
+slow down your process to allow the flash to charge between shots.
+
+You'll want manual everything on your camera, focus, shutter speed, aperture,
+ISO and white balance.  If these parameters change in any of the photos,
+it will cause issues when stacking.
+
+I suggest f/5.6, f/8 or f/11 for aperture.  Wider apertures will have (possibly
+not perceptible) sharpness improvements due to less diffraction but you
+will need to take more images to due to less depth of field.
+
+### Find most distant point
+
+Power on the focusing rail and use the joystick to find the farthest out point
+(note you can also find the closest point first, if you prefer).
+
+![interface]()
+
+![back of camera]()
+
+### Find closest point
+
+Hit the 'next' button and find the closest point.
+
+![interface]()
+
+![back of camera]()
+
+### Choose shot delay
+
+Hit the 'next' button to choose the shot delay. My exposure settings indicate
+that a photo will take 1/8th of a second to take.  I thus give a little extra
+at 0.3 seconds
+
+![back of camera]()
+
+![interface]()
+
+### Choose image count
+
+The correct image count depends on many variables:
+
+- How magnified the subject actually is
+- How many megapixels your camera has and if you plan to pixel peep
+- Your choice of aperture setting
+
+You'll need to experiment.  If you do not know where to begin, I suggest f/8
+and 0.2mm which is probably a bit overkill (but again, it really depends).
+
+Hit the 'next' button and choose your shot count
+
+![interface]()
+
+### Take photos
+
+Hit the 'next' button to take all of the photos.  You can pause the process with
+the 'next' button or cancel it with the 'back' button.
+
+When all photos are taken, you have the option of repeating the process in the
+reverse direction with the 'next' button or starting over with the 'back' button.
+
+### Load onto computer and run software
+
+I suggest Helicon focus for reasonably priced, turn key software with a free trial
+period.  The software is for mac or windows but I am running it in Linux with Wine
+and it runs fine.
+
+![helicon interface]()
+![helicon result]()
+
+If you want a free/open source solution, check out the [focus stack](https://github.com/PetteriAimonen/focus-stack)
+project.  The main downside of going this route is that the excellent
+post-stack retouching features of Helicon are not present, but many people
+are able to use the software to produce excellent images regardless:
+
+![focus stack interface]()
+![focus stack result]()
+
