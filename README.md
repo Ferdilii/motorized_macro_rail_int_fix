@@ -143,7 +143,7 @@ You could transfer the electronics to a [perf board]() and be done
 with this step.  Since I have a 3018 CNC machine, I decided to go
 a little farther and cut out a PCB:
 
-![pcb layout]()
+![pcb layout](img/kicad_pcb.png)
 
 ![cnc photo]()
 
@@ -155,10 +155,10 @@ you can find the needed files in the [`motor_rail_kicad/`]() directory.
 ## Macro Rail Interface
 
 The goal is to interface the stepper motor with the macro rail of your
-choosing.  I ended up going with the [NMS-200]() focusing rail which
-I have mixed opinions on, it's not as sturdy as I was hoping for but
-the photos come out fine anyay.  I might try a cheaper one or potentially
-DIY one with some steel rods and linear bearings, although this does
+choosing.  I ended up going with the [NM-200s](https://www.amazon.com/dp/B0BXKFGLF3)
+focusing rail which I have mixed opinions on, it's not as sturdy as I was
+hoping for but the photos come out fine anyay.  I might try a cheaper one or
+potentially DIY one with some steel rods and linear bearings, although this does
 increase the overall complexity of the project.
 
 For the route I took, only two printed parts are needed.  One interfaces
@@ -170,10 +170,10 @@ The other part interfaces the motor shaft to the finger adjustment knob
 
 ![shaft interface]()
 
-By using the freely-available [OpenSCAD]() you can adapt the clamp
-interface to various different rails by editing
-[`motor_mount/focus_rail.scad`]() and changing the following parameters
-to match your rail:
+By using the freely-available [OpenSCAD](https://openscad.org/) you can adapt
+the clamp interface to various different rails by editing
+[`motor_mount/focus_rail.scad`](motor_mount/focus_rail.scad) and changing
+the following parameters to match your rail:
 
 ```
 RAIL_BODY_WIDTH = 37.8;
@@ -182,7 +182,7 @@ RAIL_BODY_HEIGHT = 20;
 
 The numbers above (in mm) are for the [NM-200s](https://www.amazon.com/dp/B0BXKFGLF3).
 
-The finger interface design should be adable to most (but not all) rail
+The finger interface design should be adaptable to most (but not all) rail
 designs.  The file to change is [`motor_mount/knob.scad`]() with the following
 variables likely being relevant:
 
