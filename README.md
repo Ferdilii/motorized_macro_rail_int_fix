@@ -1,4 +1,4 @@
-# Macro Focusing Rail Conversion
+# Macro Focusing Rail Automator
 
 This is a project for a macro focusing rail.  It is used with special
 "stacking" software to increase the depth of field of very small images.  This
@@ -151,6 +151,48 @@ a little farther and cut out a PCB:
 
 If you want to use a CNC, chemical etch, or order a manufactured board,
 you can find the needed files in the [`motor_rail_kicad/`]() directory.
+
+## Code Build
+
+Here you have the "easy" option of uploading a precompiled `.uf2` file to your
+pico or the "flexible" option of building the binary yourself.  Both options are
+free.
+
+### Precompiled
+
+There are many guides for how to do this, just a Google search away. Here is my
+version.
+
+* While holding down the 'BOOTSEL` button, plug in the Pico via USB
+* It should mount as a USB drive
+* Copy the `.uf2` file to the USB drive
+* Unplug and replug the PICO
+
+There are easier ways you can explore as well:
+
+* There is a `picotool` program which allows you to load the `.uf2` in a more
+traditional way.  I prefer it.
+* Pin 30 on the PICO is called "RUN".  If you ground it, it will reset the PICO.
+If you ground it while holding "BOOTSEL", it's the same effect as unplugging
+and replugging but ergonomically easier and with less USB port wear-and-tear.  I put a switch between `RUN` and ground whenever I choose the PICO for this reason.
+
+### Build yourself
+
+To start, you'll need a working development environment.  I'll point you to the
+[official docs](https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf) if you are not there yet.
+
+Once your blinking light project is working, your should be close to done.
+
+* First, go into the `src/` directory.
+* In Linux, type `./bootstrap.sh`.  In Windows, you'll need to follow
+the steps listed in `./bootstrap.sh` which are identical to the official
+docs.
+* `cd build`
+* `make`
+
+At this point, you'll hopefully have your own `.uf2` file that you can load
+on the your Pico.
+
 
 ## Macro Rail Interface
 
