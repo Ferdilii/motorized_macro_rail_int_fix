@@ -1,6 +1,6 @@
-# Macro Focusing Rail Automator
+# Motorized Macro Rail
 
-This is a project for a macro focusing rail.  It is used with special
+This is a project for a motorized macro focusing rail.  It is used with special
 "stacking" software to increase the depth of field of very small images.  This
 rail works as a modification to an existing commercial rail, although building
 up a rail from scratch would be straight forward as well given the popularity
@@ -13,9 +13,9 @@ Using a [specialized lens](https://www.bhphotovideo.com/c/product/1399604-REG/ve
 or a [attachable modifier](https://www.bhphotovideo.com/c/product/275182-REG/Raynox_DCR_250_DCR_250_2_5x_Super_Macro.html)
 makes this type of photography possible.
 
-Unfortunately, due to the physics of photographic lenses, taking photos of very
-small object typically has a very low depth of field, where only a thin slice
-of the object is in focus, often much less than 1mm.
+Unfortunately, due to the [physics of photographic lenses](https://en.wikipedia.org/wiki/Depth_of_field), taking photos of very
+small object typically has a very low depth of field, where only a thin plane
+of the object appears in focus, often much less than 1mm.
 
 ![low DOF image]()
 
@@ -47,19 +47,19 @@ consistent way.
 * You can use manual focus on your lens to achieve a similar result but it
 may be very challenging to get the step size correct and consistent.  The
 result will thus often have "blurry" areas where there was no in-focus source
-image to use.  There is the risk of moving the camera every time you touch it.
+image to use.  There is also the risk of moving the camera every time you touch it.
 * You can buy a manual focus rail at many different qualities and price points.
 That is the starting point for this project.  The nice thing about these
 rails is that they are a bit more "field friendly" in their simplicity.  The
-downside is that full manual mode can be more work and you risk moving
-the camera slightly as you interact with the rail.
+downside is that using them manually can feel like tedious work and you risk moving
+the camera as you interact with the rail.
 
 ### Automated approaches
 
 * You can buy commercial rails at different price points.  Here is
 [one](https://cognisys-inc.com/stackshot-macro-rail-package.html) and
 here is [another](https://www.wemacro.com/US/index.php/product/wemacro-rail-with-power-bank-cable-for-outside/).
-One thing I think is a downside of these solutions is the
+Price aside, one thing I think is a downside of these solutions is the
 interface.  One uses buttons and the other uses a phone app - both seem a bit
 cumbersome compared to an analog stick when it comes to positioning the camera.
 * [Some cameras](https://fujifilm-x.com/en-gb/learning-centre/using-focus-bracketing-and-stacking/)
@@ -67,7 +67,7 @@ have built in [focus stacking](https://en.wikipedia.org/wiki/Focus_stacking)
 features while other support remote
 control phone/computer [apps](https://camranger.com/camranger-2/) that add the
 feature. A limitation here is that you will be limited to autofocus lenses and
-higher-magnification lenses usually do not offer autofocus as an option.
+[higher-magnification](https://www.bhphotovideo.com/c/product/1712870-REG/venus_optics_ve9028fe_laowa_90mm_f_2_8_2x.html) lenses usually do not offer autofocus as an option.
 
 ## Parts List
 
@@ -78,43 +78,40 @@ part:
 ### Parts
 
 Prices are what I found in late 2024.  Shipping not included and sometimes
-you need to buy more than you need.  Check out [Digikey](http://www.digikey.com)
-as an option for bundling everything together.
+you need to buy more than you need.  I am mostly suggesting [Digikey](http://www.digikey.com) here because they let you choose low part counts.
 
-* [Raspberry PI Pico](https://www.adafruit.com/product/4864) ($4).  You could
-opt for the [unit with Wifi/Bluetooth](https://www.adafruit.com/product/5526)
+
+* [Raspberry PI Pico](https://www.digikey.com/en/products/detail/raspberry-pi/SC0915/13624793) ($4).  You could
+opt for the [unit with Wifi/Bluetooth](https://www.digikey.com/en/products/detail/raspberry-pi/SC0918/16608263)
 if you want to try and trigger your camera wirelessly but note that this
 enhancement will require firmware changes and could be a challenge.
 * [128x128 OLED](https://www.amazon.com/dp/B0CFF435XZ) ($12).  The UI is 
 designed for this resolution using a 8x16 font.  You could go with a 128x64
 and switch to an 8x8 font.  This would require mostly-straightforward
 firmware changes and I would consider it "medium" challenge modification.
-* [4 push-buttons](https://www.adafruit.com/product/4183) ($2).
-* [1 power switch](https://www.amazon.com/Hxchen-Through-Self-Locking-Mounting-Switches/dp/B07V1TRMMC) ($1).
-Optional but recommended so that you have a quick way to power off the unit if
-you need to for any reason.
+* [4 push-buttons](https://www.digikey.com/en/products/detail/schurter-inc/1301-9314-24/8536705) ($1).
 * [Joystick](https://betafpv.com/products/literadio-transmitter-nano-gimbal-for-literadio-3-and-2-se?variant=39628763529350) ($6).
 I'm using an RC gimbal (pitch-roll type) which is very precise.  You
 an get these new or salvage them from an old radio.  Alternatively,
 you can opt for a commonly-available "PS2 stick" that will be less
 precise but possibly good-enough.
-* [Voltage Regulator](https://www.adafruit.com/product/2164) ($1) most stepper
+* [Voltage Regulator](https://www.digikey.com/en/products/detail/texas-instruments/LM7805CT-NOPB/3901929) ($2) most stepper
 motors need a minimum of 12V, which is beyond what the PI Pico onboard regulator
 can handle, thus you'll need a regulator to help it out.  I went with the famous
-[LM7805](https://www.adafruit.com/product/2164) which will be powering the Pico
+[LM7805](https://www.digikey.com/en/products/detail/texas-instruments/LM7805CT-NOPB/3901929) which will be powering the Pico
 and OLED.  Anything between 3.3V and 5V which can deliver > 200 mA should be well
 into the sufficiency range.
-* [A4988 Stepper Motor Driver](https://www.amazon.com/HiLetgo-Stepstick-Stepper-Printer-Compatible/dp/B07BND65C8?crid=3AT50Q4D52D5J) ($2).
+* [A4988 Stepper Motor Driver](https://www.amazon.com/HiLetgo-Stepstick-Stepper-Printer-Compatible/dp/B07BND65C8) ($2).
 A microcontroller is not designed to power a motor directly and you will need
 power electronics.  The [A4988](https://www.pololu.com/file/0j450/a4988_dmos_microstepping_driver_with_translator.pdf)
 gives you both the power and an easy-to-use interface which makes the firmware
 less complex and improves the quality and safety over what most DIY efforts
 with an H-bridge could manage.
-* [Power connector](https://www.amazon.com/DaierTek-5-5x2-1mm-Female-Connector-Barrel/dp/B096XJWZJQ) ($1).
+* [Power connector](https://www.digikey.com/en/products/detail/mpd-memory-protection-devices/EJ501B/2439533) ($1).
 I'm going with a 5.5mm barrel jack but it's really up to you.  The design will
 support between 12V and around 30V but you'll want to double check the specs
 of your chosen motor and voltage regulators if you want to go over 12.
-* [Camera interface](https://www.amazon.com/dp/B01ASF0N3) ($1).  I went with
+* [Camera interface](https://www.digikey.com/en/products/detail/same-sky-formerly-cui-devices/MJ-2508/281259) ($1).  I went with
 a 2.5mm jack for this but since it's the not the camera side, your options
 are flexible.  Most cameras support a switch-style shutter release.  If yours
 doesn't, you can probably improvise something or go with the manual shutter
