@@ -24,14 +24,16 @@ static void update(struct SharedState* ss) {
 static void render(struct SharedState* ss) {
   struct Bitmap* bm = &(ss->bitmap);
   render_common(bm, "Shutter Delay", "StartP", "Count");
-  const int16_t ypos = 64;
+  int16_t ypos = 64;
   bitmap_str(bm, terminus8x16, "Seconds", 0, ypos, bitmap_SET);
   enter_value_widget_render(&shutter_evw, bm, 128, ypos, 1); 
+  ypos += 16;
+  bitmap_str(bm, terminus8x16, "(0.0 for manual)", 0, ypos, bitmap_SET);
 }
 
 void shutter_delay_init(struct SharedState* ss) {
   ss->shutter_delay_ms = 1000;
-  enter_value_widget_init(&shutter_evw, 1, 1, 999);
+  enter_value_widget_init(&shutter_evw, 1, 0, 999);
 }
 
 void shutter_delay_update(struct SharedState* ss) {
