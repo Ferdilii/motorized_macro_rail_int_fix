@@ -179,7 +179,7 @@ and replugging but ergonomically easier and with less USB port wear-and-tear.  I
 ### Build yourself
 
 To start, you'll need a working development environment.  I'll point you to the
-[official docs](https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf) if you are not there yet.
+[official docs](https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf) if you are not there yet.  I personally prefer following Appendix C "Manually configure your environment" first over the Visual Studio docs, then add Visual Studio code later so I have both options available.
 
 Once your blinking light project is working, your should be close to done.
 
