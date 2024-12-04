@@ -115,7 +115,7 @@ of your chosen motor and voltage regulators if you want to go over 12.
 a 2.5mm jack for this but since it's the not the camera side, your options
 are flexible.  Most cameras support a switch-style shutter release.  If yours
 doesn't, you can probably improvise something or go with the manual shutter
-release option.
+release option the firmware provides (more on that later).
 
 ### Equipment
 
@@ -123,6 +123,8 @@ release option.
 the housing for the electronics.  There are many techniques with wood working,
 metalworking, [CNC](https://www.sainsmart.com/products/sainsmart-genmitsu-cnc-router-3018-pro-diy-kit),
 etc, that could be alternatively used if you have the needed skills and equipment.
+* Camera gear.  More on that in the process walkthrough later.  In short, just about
+any camera with interchangeable lenses can be used. 
 
 ## Electronics Build
 
@@ -160,25 +162,28 @@ free.
 There are many guides for how to do this, just a Google search away. Here is my
 version.
 
-* While holding down the 'BOOTSEL` button, plug in the Pico via USB
+* While holding down the `BOOTSEL` button, plug in the Pico via USB
 * It should mount as a USB drive
 * Copy the `.uf2` file to the USB drive
-* Unplug and replug the PICO
+* Unplug and replug the Pico
 
 There are easier ways you can explore as well:
 
 * There is a `picotool` program which allows you to load the `.uf2` in a more
 traditional way.  I prefer it.
-* Pin 30 on the PICO is called "RUN".  If you ground it, it will reset the PICO.
-If you ground it while holding "BOOTSEL", it's the same effect as unplugging
-and replugging but ergonomically easier and with less USB port wear-and-tear.  I put a switch between `RUN` and ground whenever I choose the PICO for this reason.
+* Pin 30 on the Pico is named `RUN`.  If you drive it to 0V, it will reset the PICO.
+If you do this while holding `BOOTSEL`, the effect same is the same as unplugging
+and replugging but ergonomically easier and with less USB port wear-and-tear.  I
+put a switch between `RUN` and ground (battery negative) whenever I choose the
+Pico for this reason (as is done in the schematic above).
 
-### Build yourself
+### Build firmware yourself
 
 To start, you'll need a working development environment.  I'll point you to the
 [official docs](https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf) if you are not there yet.  I personally prefer following Appendix C "Manually configure your environment" first over the Visual Studio docs, then add Visual Studio code later so I have both options available.
 
-Once your blinking light project is working, your should be close to done.
+Once your blinking light project is working, your should be close to done.  Here
+are the command line instructions (use the official Pico docs as a guide for VS Code)
 
 * First, go into the `src/` directory.
 * In Linux, type `./bootstrap.sh`.  In Windows, you'll need to follow
@@ -196,9 +201,9 @@ on the your Pico.
 The goal is to interface the stepper motor with the macro rail of your
 choosing.  I ended up going with the [NM-200s](https://www.amazon.com/dp/B0BXKFGLF3)
 focusing rail which I have mixed opinions on, it's not as sturdy as I was
-hoping for but the photos come out fine anyay.  I might try a cheaper one or
-potentially DIY one with some steel rods and linear bearings, although this does
-increase the overall complexity of the project.
+hoping for but the photos come out fine anyway.  I *might* try a cheaper one or
+potentially DIY one with some steel rods and linear bearings, if I find the
+time/motivation.
 
 For the route I took, only two printed parts are needed.  One interfaces
 the rail to the motor using a clamping interface:
@@ -209,7 +214,7 @@ The other part interfaces the motor shaft to the finger adjustment knob
 
 ![shaft interface]()
 
-By using the freely-available [OpenSCAD](https://openscad.org/) you can adapt
+By using the freely-available [OpenSCAD](https://openscad.org/), you can adapt
 the clamp interface to various different rails by editing
 [`motor_mount/focus_rail.scad`](motor_mount/focus_rail.scad) and changing
 the following parameters to match your rail:
@@ -240,7 +245,7 @@ This section talks about the end-to-end experience of using the rail.
 ### Setup
 
 You first need to attach the stepper motor to the rail by sliding it on and
-gently tightening the bolts (don't overdo it).  The motor can easily be
+*gently* tightening the bolts (don't overdo it).  The motor can easily be
 detached if you don't need it for a given session.`
 
 ![attach rail]()
@@ -256,7 +261,7 @@ slow down your process to allow the flash to charge between shots.
 
 You'll want manual everything on your camera, focus, shutter speed, aperture,
 ISO and white balance.  If these parameters change in any of the photos,
-it will cause issues when stacking.
+it can create problems with the stacking software.
 
 I suggest f/5.6, f/8 or f/11 for aperture.  Wider apertures will have (possibly
 not perceptible) sharpness improvements due to less diffraction but you
@@ -289,6 +294,11 @@ at 0.3 seconds
 
 ![interface]()
 
+If you don't have the remote shutter working with your camera, you have
+the option of choosing `0.0` here.  In that case, the rail will pause
+after each photo, giving you as much time as you need to manually take
+the photo.  In this mode, the "next" button is used to continue.
+
 ### Choose image count
 
 The correct image count depends on many variables:
@@ -306,8 +316,11 @@ Hit the 'next' button and choose your shot count
 
 ### Take photos
 
-Hit the 'next' button to take all of the photos.  You can pause the process with
-the 'next' button or cancel it with the 'back' button.
+Hit the `next` button to take all of the photos.  You can pause/resume the process
+with the `next` button or cancel it with the `back` button.  If you find a need
+to abort everything quickly, you can press the `reset` button but this will
+lead to the motor driving current through your `a4988` chip if it's spinning
+so I suggest reserving `reset` for exceptional situations.
 
 When all photos are taken, you have the option of repeating the process in the
 reverse direction with the 'next' button or starting over with the 'back' button.
