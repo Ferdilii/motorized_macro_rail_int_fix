@@ -77,12 +77,12 @@ static void _render(struct SharedState* ss) {
 
   uint8_t idx = menu_idx <= 2 ? 0 : 1;
   const uint8_t end_idx = idx + 5;
-  int16_t ypos = 32;
+  int16_t ypos = TEXT_HEIGHT;
 
-  for (; idx < end_idx; ++idx) {
+  for (; idx < end_idx; ++idx, ypos+=TEXT_HEIGHT) {
     bitmap_str(
         bm,
-        terminus8x16,
+        TEXT_FONT,
         items[idx],
         0,
         ypos,

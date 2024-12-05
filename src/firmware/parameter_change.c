@@ -53,18 +53,18 @@ static void _render(
     struct SharedState* ss) {
   struct Bitmap* bm = &(ss->bitmap);
   render_common(bm, pc->title, "Back", pc->test_mode ? "Edit" : "Test");
-  int16_t y = 64;
-  bitmap_str(bm, terminus8x16, "Value", 0, y, bitmap_SET);
+  int16_t y = TEXT_HEIGHT * 4;
+  bitmap_str(bm, TEXT_FONT, "Value", 0, y, bitmap_SET);
   enter_value_widget_render(&(pc->evw), bm, 128, y, pc->decimal_places); 
-  y += 16;
+  y += TEXT_HEIGHT;
 
   char str[32];
   sprintf(str, "Previous %7d", *(pc->permanent_val));
-  bitmap_str(bm, terminus8x16, str, 0, y, bitmap_SET);
-  y += 16;
+  bitmap_str(bm, TEXT_FONT, str, 0, y, bitmap_SET);
+  y += TEXT_HEIGHT;
 
   sprintf(str, "Default %8d", pc->default_val);
-  bitmap_str(bm, terminus8x16, str, 0, y, bitmap_SET);
+  bitmap_str(bm, TEXT_FONT, str, 0, y, bitmap_SET);
 }
 
 void parameter_change_update(

@@ -2,10 +2,11 @@
 #include <stdio.h>
 
 #include "oledm/font/terminus8x16.h"
+#include "shared_state.h"
 
 static void _render_title(struct Bitmap* bm, const char* title) {
-  bitmap_str(bm, terminus8x16, title, 0, 0, bitmap_SET);
-  bitmap_hline(bm, 0, 17, 128, bitmap_SET);
+  bitmap_str(bm, TEXT_FONT, title, 0, 0, bitmap_SET);
+  bitmap_hline(bm, 0, TEXT_HEIGHT + 1, 128, bitmap_SET);
 }
 
 static void _render_guide(
@@ -15,8 +16,8 @@ static void _render_guide(
   // 0123456789012345
   // <pppppp  nnnnnn>
   snprintf(str, sizeof(str), "<%-6s  %6s>", prev_action, next_action);
-  bitmap_str(bm, terminus8x16, str, 0, 112, bitmap_SET);
-  bitmap_hline(bm, 0, 110, 128, bitmap_SET);
+  bitmap_str(bm, TEXT_FONT, str, 0, TEXT_HEIGHT * 7, bitmap_SET);
+  bitmap_hline(bm, 0, TEXT_HEIGHT * 7 - 2, 128, bitmap_SET);
 }
 
 void render_common(

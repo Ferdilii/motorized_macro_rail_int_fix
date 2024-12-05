@@ -44,7 +44,7 @@ static void update(
 }
 
 static void _render_image_count(struct Bitmap* bm, int16_t ypos) {
-  bitmap_str(bm, terminus8x16, "Images:", 0, ypos, bitmap_SET);
+  bitmap_str(bm, TEXT_FONT, "Images:", 0, ypos, bitmap_SET);
   enter_value_widget_render(&count_evw, bm, 128, ypos, 0); 
 }
 
@@ -60,8 +60,8 @@ static void _render_distance(
         "Dist:  %5d.%1dmm",
         dist_um / 1000,
         (dist_um % 1000) / 100);
-    bitmap_str(bm, terminus8x16, str, 0, ypos, bitmap_SET);
-    ypos += 16;
+    bitmap_str(bm, TEXT_FONT, str, 0, ypos, bitmap_SET);
+    ypos += TEXT_HEIGHT;
     if (dist_um < 0) {
       dist_um = -dist_um;
     }
@@ -73,7 +73,7 @@ static void _render_distance(
       "Step:  %3d.%03dmm",
       dist_um / 1000,
       dist_um % 1000);
-  bitmap_str(bm, terminus8x16, str, 0, ypos, bitmap_SET);
+  bitmap_str(bm, TEXT_FONT, str, 0, ypos, bitmap_SET);
 }
 
 static inline uint32_t settle_ms(void) {
@@ -101,7 +101,7 @@ static void _render_time(
       hours,
       minutes,
       time_secs);
-  bitmap_str(bm, terminus8x16, str, 0, ypos, bitmap_SET);
+  bitmap_str(bm, TEXT_FONT, str, 0, ypos, bitmap_SET);
 }
 
 static void render(
@@ -109,11 +109,11 @@ static void render(
     const struct MotorControl* motor_snap) {
   struct Bitmap* bm = &(ss->bitmap);
   render_common(bm, "Shot Count", "Delay", "START");
-  int16_t ypos = 32;
+  int16_t ypos = TEXT_HEIGHT * 2;
   _render_image_count(bm, ypos);
-  ypos += 16;
+  ypos += TEXT_HEIGHT;
   _render_distance(bm, ypos, motor_snap->current_pos, ss->shot_count);
-  ypos += 32;
+  ypos += TEXT_HEIGHT * 2;
   _render_time(bm, ypos, ss, motor_snap);
 }
 

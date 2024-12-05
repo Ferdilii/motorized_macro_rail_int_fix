@@ -15,10 +15,10 @@ void fatal(struct SharedState* state, const char* format, ...) {
 void fatal_update(struct SharedState* state) {
   bitmap_str(
     &(state->bitmap),
-    terminus8x16,
+    TEXT_FONT,
     state->fatal_err,
     0,
-    64,
+    TEXT_HEIGHT * 4,
     bitmap_SET);
 
   // blink areound 5 times a second (12 frames would be close)

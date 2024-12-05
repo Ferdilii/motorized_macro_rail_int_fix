@@ -46,25 +46,31 @@ static void render_position(struct Bitmap* bm, const struct MotorControl* motor_
   const struct SavedSettings* settings = saved_settings_get();
   char str[32];
   const float pos = (motor_snap->current_pos) / (float)(settings->steps_per_mm);
+  uint16_t ypos = TEXT_HEIGHT * 2;
   snprintf(str, sizeof(str), "Plate:   %5.2fmm", pos);
-  bitmap_str(bm, terminus8x16, str, 0, 32, bitmap_SET);
+  bitmap_str(bm, TEXT_FONT, str, 0, ypos, bitmap_SET);
+  ypos += TEXT_HEIGHT;
 
   snprintf(str, sizeof(str), "%8d", (int32_t)(motor_snap->current_pos));
-  bitmap_str(bm, terminus8x16, str, 64, 48, bitmap_SET);
+  bitmap_str(bm, TEXT_FONT, str, 64, ypos, bitmap_SET);
+  ypos += TEXT_HEIGHT;
 
   snprintf(str, sizeof(str), "Motor:  %8d", (int32_t)(motor_snap->motor_pos / 2));
-  bitmap_str(bm, terminus8x16, str, 0, 64, bitmap_SET);
+  bitmap_str(bm, TEXT_FONT, str, 0, ypos, bitmap_SET);
+  ypos += TEXT_HEIGHT;
 }
 
 static void render_backlash(struct Bitmap* bm, const struct MotorControl* motor_snap) {
   char str[32];
   const int32_t backlash = (int16_t)((motor_snap->motor_pos / 2) - motor_snap->current_pos);
   snprintf(str, sizeof(str), "Backlash:  %5d", backlash);
-  bitmap_str(bm, terminus8x16, str, 0, 80, bitmap_SET);
+
+  uint16_t ypos = TEXT_HEIGHT * 5;
+  bitmap_str(bm, TEXT_FONT, str, 0, ypos, bitmap_SET);
 
   // convert backlash from a full scale to a -63 to 63 scale
   const int32_t scaled_bl = backlash * 63 / (int32_t)motor_snap->backlash;
-  const uint16_t y = 112;
+  const uint16_t y = TEXT_HEIGHT * 7;
   bitmap_vline(bm, 0, y-7, 7, bitmap_SET);
   bitmap_vline(bm, 32, y-5, 5, bitmap_SET);
   bitmap_vline(bm, 64, y-7, 7, bitmap_SET);

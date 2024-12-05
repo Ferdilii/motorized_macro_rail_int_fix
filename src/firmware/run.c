@@ -205,20 +205,20 @@ void _render(struct SharedState* ss, const struct MotorControl* motor_snap) {
 
   const struct SavedSettings* settings = saved_settings_get();
   const float pos_mm = motor_snap->current_pos / (float)(settings->steps_per_mm);
-  int16_t ypos = 32;
+  int16_t ypos = TEXT_HEIGHT * 2;
   snprintf(str, sizeof(str), "Pos:   %5.2fmm", pos_mm);
-  bitmap_str(bm, terminus8x16, str, 0, ypos, bitmap_SET);
-  ypos += 16;
+  bitmap_str(bm, TEXT_FONT, str, 0, ypos, bitmap_SET);
+  ypos += TEXT_HEIGHT;
   snprintf(str, sizeof(str), "Shot: %4d/%4d", rs.shot_idx + 1, ss->shot_count);
-  bitmap_str(bm, terminus8x16, str, 0, ypos, bitmap_SET);
-  ypos += 16;
+  bitmap_str(bm, TEXT_FONT, str, 0, ypos, bitmap_SET);
+  ypos += TEXT_HEIGHT;
   strcpy(str, "Elapsed:");
   _elapsed_str_append(str);
-  bitmap_str(bm, terminus8x16, str, 0, ypos, bitmap_SET);
-  ypos += 16;
+  bitmap_str(bm, TEXT_FONT, str, 0, ypos, bitmap_SET);
+  ypos += TEXT_HEIGHT;
   strcpy(str, "Total:  ");
   _total_str_append(ss, motor_snap, str);
-  bitmap_str(bm, terminus8x16, str, 0, ypos, bitmap_SET);
+  bitmap_str(bm, TEXT_FONT, str, 0, ypos, bitmap_SET);
 }
 
 void run_update(struct SharedState* ss) {

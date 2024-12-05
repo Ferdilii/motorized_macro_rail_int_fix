@@ -91,8 +91,8 @@ if you want to try and trigger your camera wirelessly but note that this
 enhancement will require firmware changes and could be a challenge.
 * [128x128 OLED](https://www.amazon.com/dp/B0CFF435XZ) ($12).  The UI is 
 designed for this resolution using a 8x16 font.  You could go with a 128x64
-and switch to an 8x8 font.  This would require mostly-straightforward
-firmware changes and I would consider it a "medium" challenge modification.
+and switch to an 8x8 font.  See [src/firmware/README.md](src/firmware/README.md)
+for more details.
 * [4 push-buttons](https://www.digikey.com/en/products/detail/schurter-inc/1301-9314-24/8536705) ($1).
 * [Joystick](https://betafpv.com/products/literadio-transmitter-nano-gimbal-for-literadio-3-and-2-se?variant=39628763529350) ($6).
 I'm using an RC gimbal (pitch-roll type) which is very precise.  You

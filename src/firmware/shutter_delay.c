@@ -24,11 +24,11 @@ static void update(struct SharedState* ss) {
 static void render(struct SharedState* ss) {
   struct Bitmap* bm = &(ss->bitmap);
   render_common(bm, "Shutter Delay", "StartP", "Count");
-  int16_t ypos = 64;
-  bitmap_str(bm, terminus8x16, "Seconds", 0, ypos, bitmap_SET);
+  int16_t ypos = TEXT_HEIGHT * 4;
+  bitmap_str(bm, TEXT_FONT, "Seconds", 0, ypos, bitmap_SET);
   enter_value_widget_render(&shutter_evw, bm, 128, ypos, 1); 
-  ypos += 16;
-  bitmap_str(bm, terminus8x16, "(0.0 for manual)", 0, ypos, bitmap_SET);
+  ypos += TEXT_HEIGHT;
+  bitmap_str(bm, TEXT_FONT, "(0.0 for manual)", 0, ypos, bitmap_SET);
 }
 
 void shutter_delay_init(struct SharedState* ss) {

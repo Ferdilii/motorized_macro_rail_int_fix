@@ -5,6 +5,8 @@
 #define DISPLAY_WIDTH 128
 #define DISPLAY_HEIGHT 128
 #define DISPLAY_ROWS 16
+#define TEXT_HEIGHT 16
+#define TEXT_FONT terminus8x16
 
 #include <inttypes.h>
 #include <oledm/bitmap.h>

@@ -1,6 +1,7 @@
 #include "enter_value_widget.h"
 #include <string.h>
 
+#include "shared_state.h"
 #include "oledm/font/terminus8x16.h"
 
 void enter_value_widget_init(
@@ -86,7 +87,7 @@ void enter_value_widget_render(
   char c = '-';
   if (evw->value < 0) {
     value = -evw->value;
-    bitmap_strLen(bm, terminus8x16, &c, 1, xpos, y, bitmap_SET);
+    bitmap_strLen(bm, TEXT_FONT, &c, 1, xpos, y, bitmap_SET);
     xpos += 8;
   }
   for (int8_t digit = digits; digit >= 0; --digit) {
@@ -94,7 +95,7 @@ void enter_value_widget_render(
     c = '0' + v;
     bitmap_strLen(
         bm,
-        terminus8x16,
+        TEXT_FONT,
         &c,
         1,
         xpos,
@@ -103,7 +104,7 @@ void enter_value_widget_render(
     xpos += 8;
     if ((decimal_places > 0) && (digit == decimal_places)) {
       c = '.';
-      bitmap_strLen(bm, terminus8x16, &c, 1, xpos, y, bitmap_SET);
+      bitmap_strLen(bm, TEXT_FONT, &c, 1, xpos, y, bitmap_SET);
       xpos += 8;
     }
   }
