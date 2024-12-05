@@ -90,13 +90,13 @@ opt for the [unit with Wifi/Bluetooth](https://www.digikey.com/en/products/detai
 if you want to try and trigger your camera wirelessly but note that this
 enhancement will require firmware changes and could be a challenge.
 * [128x128 OLED](https://www.amazon.com/dp/B0CFF435XZ) ($12).  The UI is 
-designed for this resolution using a 8x16 font.  You could go with a 128x64
-and switch to an 8x8 font.  See [src/firmware/README.md](src/firmware/README.md)
-for more details.
+designed for this resolution using a 8x16 font.  With some firmware changes, you
+could go with a 128x64 and switch to an 8x8 font.  See
+[src/firmware/README.md](src/firmware/README.md) for more details.
 * [4 push-buttons](https://www.digikey.com/en/products/detail/schurter-inc/1301-9314-24/8536705) ($1).
 * [Joystick](https://betafpv.com/products/literadio-transmitter-nano-gimbal-for-literadio-3-and-2-se?variant=39628763529350) ($6).
 I'm using an RC gimbal (pitch-roll type) which is very precise.  You
-an get these new or salvage them from an old radio.  Alternatively,
+an get these new or salvage one from an old RC radio.  Alternatively,
 you can opt for a commonly-available "PS2 stick" that will be less
 precise but possibly good-enough.
 * [Voltage Regulator](https://www.digikey.com/en/products/detail/texas-instruments/LM7805CT-NOPB/3901929) ($2) most stepper
@@ -106,16 +106,15 @@ can handle, thus you'll need a regulator to help it out.  I went with the famous
 and OLED.  Anything between 3.3V and 5V which can deliver > 200 mA should be well
 into the sufficiency range.
 * [A4988 Stepper Motor Driver](https://www.amazon.com/HiLetgo-Stepstick-Stepper-Printer-Compatible/dp/B07BND65C8) ($2).
-A microcontroller is not designed to power a motor directly and you will need
+A Pico microcontroller is not designed to power a motor directly and you will need
 power electronics.  The [A4988](https://www.pololu.com/file/0j450/a4988_dmos_microstepping_driver_with_translator.pdf)
 gives you both the power and an easy-to-use interface which makes the firmware
-less complex and improves the quality and safety over what most DIY efforts
-with an H-bridge could manage.
+less complex and provides a number of protections (such as overcurrent protection).
 * [Power connector](https://www.digikey.com/en/products/detail/mpd-memory-protection-devices/EJ501B/2439533) ($1).
 I'm going with a 5.5mm barrel jack but it's really up to you.  The design will
-support between 12V and around 30V but you'll want to double check the specs
-of your chosen motor and voltage regulators if you want to go over 12.
-* [Camera interface](https://www.digikey.com/en/products/detail/same-sky-formerly-cui-devices/MJ-2508/281259) ($1).  I went with
+support between 12V and around 30V but you'll want to double check the limits
+of your chosen motor and voltage regulators.
+* [Camera remote shutter release](https://www.digikey.com/en/products/detail/same-sky-formerly-cui-devices/MJ-2508/281259) ($1).  I went with
 a 2.5mm jack for this but since it's the not the camera side, your options
 are flexible.  Most cameras support a switch-style shutter release.  If yours
 doesn't, you can probably improvise something or go with the manual shutter
@@ -150,15 +149,15 @@ a little farther and cut out a PCB:
 
 ![cnc photo]()
 
-![finsihed board]()
+![finished board]()
 
 If you want to use a CNC, chemical etch, or order a manufactured board,
-you can find the needed files in the [`motor_rail_kicad/`]() directory.
+you can find the needed files in the [`motor_rail_kicad/`](motor_rail_kicad) directory.
 
 ## Code Build
 
 Here you have the "easy" option of uploading a precompiled `.uf2` file to your
-pico or the "flexible" option of building the binary yourself.  Both options are
+Pico or the "flexible" option of building the binary yourself.  Both options are
 free.
 
 ### Precompiled
@@ -171,14 +170,14 @@ version.
 * Copy the `.uf2` file to the USB drive
 * Unplug and replug the Pico
 
-There are easier ways you can explore as well:
+There are alternatives you can explore as well:
 
-* There is a `picotool` program which allows you to load the `.uf2` in a more
-traditional way.  I prefer it.
-* Pin 30 on the Pico is named `RUN`.  If you drive it to 0V, it will reset the PICO.
+* There is a [`picotool`](https://github.com/raspberrypi/picotool) program which
+allows you to load the `.uf2` directly.  I prefer it.
+* [Pin 30 on the Pico](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html#pinout-and-design-files) is named `RUN`.  If you drive it to 0V, it will reset the PICO.
 If you do this while holding `BOOTSEL`, the effect same is the same as unplugging
 and replugging but ergonomically easier and with less USB port wear-and-tear.  I
-put a switch between `RUN` and ground (battery negative) whenever I choose the
+put a switch between `RUN` and ground (battery negative) whenever I go with a
 Pico for this reason (as is done in the schematic above).
 
 ### Build firmware yourself
@@ -204,21 +203,26 @@ on the your Pico.
 
 The goal is to interface the stepper motor with the macro rail of your
 choosing.  I ended up going with the [NM-200s](https://www.amazon.com/dp/B0BXKFGLF3)
-focusing rail which I have mixed opinions on, it's not as sturdy as I was
-hoping for but the photos come out fine anyway.  I *might* try a cheaper one or
-potentially DIY one with some steel rods and linear bearings, if I find the
-time/motivation.
+focusing rail which I find sufficient but not amazing.  It has some flex which
+leads to some shifts between photos but the final result looks good regardless.
+I *might* try a cheaper one or potentially DIY one with some steel rods and
+linear bearings, if I find the time/motivation.
 
 For the route I took, only two printed parts are needed.  One interfaces
 the rail to the motor using a clamping interface:
 
-![clamp interface]()
+![clamp interface](img/motor_mount.png)
 
-The other part interfaces the motor shaft to the finger adjustment knob
+The other printed part interfaces the motor shaft to the finger adjustment
+knob:
 
-![shaft interface]()
+![shaft interface](img/flange.png)
 
-By using the freely-available [OpenSCAD](https://openscad.org/), you can adapt
+I have included rendered `.stl` files in the [motor_mount/stl](motor_mount/stl)
+directory that you make be able to use directly if you have a compatible rail.
+
+If you do not have a a matching rail, you can probably make a few tweaks to the
+model and be there.  By using the freely-available [OpenSCAD](https://openscad.org/), you can adapt
 the clamp interface to various different rails by editing
 [`motor_mount/focus_rail.scad`](motor_mount/focus_rail.scad) and changing
 the following parameters to match your rail:
