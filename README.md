@@ -1,20 +1,23 @@
 # Motorized Macro Rail
 
 This is a project for a motorized macro focusing rail.  It is used with special
-"stacking" software to increase the depth of field of very small images.  This
+"stacking" software to increase the depth of field of macro images.  This
 rail works as a modification to an existing commercial rail, although building
 up a rail from scratch would be straight forward as well given the popularity
-of 3D printers and small CNC machines which would use the same parts.
+of 3D printers and small CNC machines which use similar parts.
 
 ## Background
 
-Taking images of very small objects is known as [macro photography](https://en.wikipedia.org/wiki/Macro_photography).
-Using a [specialized lens](https://www.bhphotovideo.com/c/product/1399604-REG/venus_optics_ve2528sfe_laowa_25mm_f_2_8_2_5_5x.html),
-or a [attachable modifier](https://www.bhphotovideo.com/c/product/275182-REG/Raynox_DCR_250_DCR_250_2_5x_Super_Macro.html)
+Taking images of very small objects is known as [macro
+photography](https://en.wikipedia.org/wiki/Macro_photography).  Using a
+[specialized
+lens](https://www.bhphotovideo.com/c/product/1399604-REG/venus_optics_ve2528sfe_laowa_25mm_f_2_8_2_5_5x.html),
+or an [attachable
+modifier](https://www.bhphotovideo.com/c/product/275182-REG/Raynox_DCR_250_DCR_250_2_5x_Super_Macro.html)
 makes this type of photography possible.
 
-Unfortunately, due to the [physics of photographic lenses](https://en.wikipedia.org/wiki/Depth_of_field), taking photos of very
-small object typically has a very low depth of field, where only a thin plane
+Due to the [physics of photographic lenses](https://en.wikipedia.org/wiki/Depth_of_field), taking photos of very
+small objects typically has a very low depth of field, where only a thin plane
 of the object appears in focus, often much less than 1mm.
 
 ![low DOF image]()
@@ -64,7 +67,7 @@ interface.  One uses buttons and the other uses a phone app - both seem a bit
 cumbersome compared to an analog stick when it comes to positioning the camera.
 * [Some cameras](https://fujifilm-x.com/en-gb/learning-centre/using-focus-bracketing-and-stacking/)
 have built in [focus stacking](https://en.wikipedia.org/wiki/Focus_stacking)
-features while other support remote
+features while others support remote
 control phone/computer [apps](https://camranger.com/camranger-2/) that add the
 feature. A limitation here is that you will be limited to autofocus lenses and
 [higher-magnification](https://www.bhphotovideo.com/c/product/1712870-REG/venus_optics_ve9028fe_laowa_90mm_f_2_8_2x.html) lenses usually do not offer autofocus as an option.
@@ -77,8 +80,9 @@ part:
 
 ### Parts
 
-Prices are what I found in late 2024.  Shipping not included and sometimes
-you need to buy more than you need.  I am mostly suggesting [Digikey](http://www.digikey.com) here because they let you choose low part counts.
+Prices are what I found in late 2024.  I am mostly suggesting
+[Digikey](http://www.digikey.com) here because they let you purchase low part
+counts.
 
 
 * [Raspberry PI Pico](https://www.digikey.com/en/products/detail/raspberry-pi/SC0915/13624793) ($4).  You could
@@ -88,7 +92,7 @@ enhancement will require firmware changes and could be a challenge.
 * [128x128 OLED](https://www.amazon.com/dp/B0CFF435XZ) ($12).  The UI is 
 designed for this resolution using a 8x16 font.  You could go with a 128x64
 and switch to an 8x8 font.  This would require mostly-straightforward
-firmware changes and I would consider it "medium" challenge modification.
+firmware changes and I would consider it a "medium" challenge modification.
 * [4 push-buttons](https://www.digikey.com/en/products/detail/schurter-inc/1301-9314-24/8536705) ($1).
 * [Joystick](https://betafpv.com/products/literadio-transmitter-nano-gimbal-for-literadio-3-and-2-se?variant=39628763529350) ($6).
 I'm using an RC gimbal (pitch-roll type) which is very precise.  You
