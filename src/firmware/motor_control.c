@@ -299,13 +299,6 @@ void motor_control_stop_loop(struct MotorControl* mc) {
 }
 
 
-
-void motor_control_stop(struct MotorControl* mc) {
-  spin_lock_unsafe_blocking(mc->lock);
-  mc->running = 0;
-  spin_unlock_unsafe(mc->lock);
-}
-
 void motor_control_set_max_velocity(struct MotorControl* mc, uint32_t steps_per_sec) {
   spin_lock_unsafe_blocking(mc->lock);
   mc->max_velocity = steps_per_sec;

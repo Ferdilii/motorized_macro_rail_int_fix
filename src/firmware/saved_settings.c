@@ -86,7 +86,7 @@ static void saved_settings_write_internal(struct MotorControl* mc) {
   ss->checksum = calc_checksum(&settings);
   DEBUG_LOG("saved_settings_write_internal: checksum=%08x max_vel=%d\n",
   ss->checksum, ss->max_velocity);
-  motor_control_stop(mc);
+  motor_control_stop_loop(mc);
   uint32_t ints = save_and_disable_interrupts();
   flash_range_erase(FLASH_OFFSET, FLASH_SECTOR_SIZE);
   flash_range_program(FLASH_OFFSET, buff, FLASH_PAGE_SIZE);

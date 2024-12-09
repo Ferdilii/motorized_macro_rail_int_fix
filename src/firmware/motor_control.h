@@ -75,9 +75,6 @@ void motor_control_start_loop(struct MotorControl* mc);
 // stop if motor_control_check_stopped is false.
 void motor_control_stop_loop(struct MotorControl* mc);
 
-// Stops the motor control loop
-void motor_control_stop(struct MotorControl* mc);
-
 #ifdef TEST
 // runs one iteration of the motor control loop.
 void motor_control_loop(struct MotorControl* mc);
