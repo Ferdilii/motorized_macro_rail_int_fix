@@ -21,9 +21,8 @@ void max_velocity_init(const char* title) {
 
 static void _test_mode(struct SharedState* ss) {
   struct MotorControl motor_snap;
-  struct SavedSettings* settings = parameter_change_settings();
   motor_control_snapshot(&motor_snap, &(ss->motor));
-  gimbal_jog(ss, &motor_snap, settings->max_velocity);
+  gimbal_jog(ss, &motor_snap, pc.evw.value);
 }
 
 void max_velocity_update(struct SharedState* ss) {
