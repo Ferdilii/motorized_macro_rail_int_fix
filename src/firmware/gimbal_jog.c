@@ -7,7 +7,7 @@
 void gimbal_jog(
     struct SharedState* ss,
     const struct MotorControl* motor_snap,
-    uint32_t max_velocity) {
+    int32_t max_velocity) {
   uint16_t y = ss->gimbal_y_pos;
   int32_t new_jv = 0;
   if (y > (GIMBAL_CALIBRATE_CENTER + DEADZONE)) {

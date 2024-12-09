@@ -6,7 +6,7 @@
 void gimbal_jog(
     struct SharedState* ss,
     const struct MotorControl* motor_snap,
-    uint32_t max_velocity);
+    int32_t max_velocity);
 
 #endif
 
