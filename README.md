@@ -2,7 +2,7 @@
 
 This is a project for a motorized macro focusing rail.  It is used with special
 "stacking" software to increase the depth of field of macro images.  This
-rail works as a modification to an existing commercial rail, although building
+project is presented as a modification to an existing commercial rail, although building
 up a rail from scratch would be straight forward as well given the popularity
 of 3D printers and small CNC machines which use similar parts.
 
@@ -47,9 +47,9 @@ consistent way.
 
 ### Manual Approaches
 
-* You can use manual focus on your lens to achieve a similar result but it
-may be very challenging to get the step size correct and consistent.  The
-result will thus often have "blurry" areas where there was no in-focus source
+* You can use manual focus on your lens to achieve a similar result. That said, it
+can be challenging to get the step size correct and consistent.  The
+final stacked image will thus often have "blurry" areas where there was no in-focus source
 image to use.  There is also the risk of moving the camera every time you touch it.
 * You can buy a manual focus rail at many different qualities and price points.
 That is the starting point for this project.  The nice thing about these
@@ -97,8 +97,8 @@ could go with a 128x64 and switch to an 8x8 font.  See
 * [Joystick](https://betafpv.com/products/literadio-transmitter-nano-gimbal-for-literadio-3-and-2-se?variant=39628763529350) ($6).
 I'm using an RC gimbal (pitch-roll type) which is very precise.  You
 an get these new or salvage one from an old RC radio.  Alternatively,
-you can opt for a commonly-available "PS2 stick" that will be less
-precise but possibly good-enough.
+you can opt for a commonly-available ["PS2 stick"](https://www.amazon.com/HiLetgo-Controller-JoyStick-Breakout-Arduino/dp/B00P7QBGD2)
+that will be less precise but possibly good-enough.
 * [Voltage Regulator](https://www.digikey.com/en/products/detail/texas-instruments/LM7805CT-NOPB/3901929) ($2) most stepper
 motors need a minimum of 12V, which is beyond what the PI Pico onboard regulator
 can handle, thus you'll need a regulator to help it out.  I went with the famous
@@ -116,7 +116,7 @@ support between 12V and around 30V but you'll want to double check the limits
 of your chosen motor and voltage regulators.
 * [Camera remote shutter release](https://www.digikey.com/en/products/detail/same-sky-formerly-cui-devices/MJ-2508/281259) ($1).  I went with
 a 2.5mm jack for this but since it's the not the camera side, your options
-are flexible.  Most cameras support a switch-style shutter release.  If yours
+are flexible.  Many cameras support a simple electronic shutter release.  If yours
 doesn't, you can probably improvise something or go with the manual shutter
 release option the firmware provides (more on that later).
 
@@ -175,8 +175,8 @@ There are alternatives you can explore as well:
 * There is a [`picotool`](https://github.com/raspberrypi/picotool) program which
 allows you to load the `.uf2` directly.  I prefer it.
 * [Pin 30 on the Pico](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html#pinout-and-design-files) is named `RUN`.  If you drive it to 0V, it will reset the PICO.
-If you do this while holding `BOOTSEL`, the effect same is the same as unplugging
-and replugging but ergonomically easier and with less USB port wear-and-tear.  I
+If you do this while holding `BOOTSEL`, you can upload firmware which is
+ergonomically easier and with less USB port wear-and-tear.  I
 put a switch between `RUN` and ground (battery negative) whenever I go with a
 Pico for this reason (as is done in the schematic above).
 
@@ -204,7 +204,7 @@ on the your Pico.
 The goal is to interface the stepper motor with the macro rail of your
 choosing.  I ended up going with the [NM-200s](https://www.amazon.com/dp/B0BXKFGLF3)
 focusing rail which I find sufficient but not amazing.  It has some flex which
-leads to some shifts between photos but the final result looks good regardless.
+leads to some shifts between photos but the stacking software compensates for this.
 I *might* try a cheaper one or potentially DIY one with some steel rods and
 linear bearings, if I find the time/motivation.
 
@@ -222,7 +222,7 @@ I have included rendered `.stl` files in the [motor_mount/stl](motor_mount/stl)
 directory that you make be able to use directly if you have a compatible rail.
 
 If you do not have a a matching rail, you can probably make a few tweaks to the
-model and be there.  By using the freely-available [OpenSCAD](https://openscad.org/), you can adapt
+model and have a working result.  By using the freely-available [OpenSCAD](https://openscad.org/), you can adapt
 the clamp interface to various different rails by editing
 [`motor_mount/focus_rail.scad`](motor_mount/focus_rail.scad) and changing
 the following parameters to match your rail:
@@ -296,7 +296,11 @@ Hit the 'next' button and find the closest point.
 
 Hit the 'next' button to choose the shot delay. My exposure settings indicate
 that a photo will take 1/8th of a second to take.  I thus give a little extra
-at 0.3 seconds
+at 0.3 seconds.  If your camera offers a setting for
+["electronic shutter"](https://photographylife.com/mechanical-electronic-shutter-efcs),
+I suggest turning it on as any amount of
+[shutter shock](https://photographylife.com/shutter-shock) is especially
+visible during macro work.
 
 ![back of camera]()
 
