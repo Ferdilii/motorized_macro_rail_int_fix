@@ -1,4 +1,3 @@
-#include "pico/multicore.h"
 #include <pico/stdlib.h>
 #include <string.h>
 
@@ -129,7 +128,7 @@ static void start_motor_control(void) {
       settings->backlash,
       settings->max_velocity,
       settings->acceleration);
-  motor_control_start(&state.motor);
+  motor_control_start_loop(&state.motor);
 }
 
 
@@ -154,7 +153,7 @@ static void init() {
   shutter_delay_init(&state);
   shot_count_init(&state);
   gimbal_update_init(&state);
-  multicore_launch_core1(start_motor_control);
+  start_motor_control();
 }
 
 int main(void) {

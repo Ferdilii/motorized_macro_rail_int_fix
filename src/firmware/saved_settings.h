@@ -6,6 +6,7 @@
 // (shell prompt over USB) and storing/loading from flash.
 
 #include <inttypes.h>
+#include "shared_state.h"
 
 //Change this when adding fields.  It will cause all settings to reset
 #define SAVED_SETTINGS_VERSION 1
@@ -43,6 +44,7 @@ const struct SavedSettings* saved_settings_get(void);
 // thus should only be done occasionally.
 // This also disables interrupts (as previous usage of flash write have
 // deemed this necessary).
-void saved_settings_write(const struct SavedSettings* ss);
+void saved_settings_write(
+    struct SharedState* state, const struct SavedSettings* ss);
 
 #endif

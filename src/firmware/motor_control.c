@@ -2,6 +2,7 @@
 #include "motor_control.h"
 #include "motor_driver.h"
 #include <math.h>
+#include "pico/multicore.h"
 
 #ifdef TEST
 void sleep_us(uint32_t unused) { }
@@ -13,6 +14,10 @@ void sleep_us(uint32_t unused) { }
 #define LOOP_DELAY_US 50
 // sleep after 500000 us
 #define IDLE_CYCLES_BEFORE_SLEEP (500000 / LOOP_DELAY_US)
+
+#define RUNNING_FALSE 0
+#define RUNNING_TRUE 1
+#define RUNNING_REQUEST_STOP 2
 
 static inline uint8_t near_zero(float v, float threshold) {
   return (v < threshold) && (v > -threshold);
@@ -49,6 +54,7 @@ void motor_control_init(
   motor_driver_init();
   motor_driver_sleep();
   mc->sleep = 1;
+  mc->running = RUNNING_FALSE;
 }
 
 static float update_physics_normalized(
@@ -228,11 +234,13 @@ void motor_control_loop(struct MotorControl* mcp) {
   }
 }
 
-void motor_control_start(struct MotorControl* mc) {
-  mc->running = 1;
-  uint8_t running = 1;
+static struct MotorControl* _start_mc;  // used only for starting the loop on CPU1
+static void _motor_control_start(void) {
+  struct MotorControl* mc = _start_mc;  // capture a copy so we are not dependent on the global
+  mc->running = RUNNING_TRUE;
+  uint8_t running = RUNNING_TRUE;
 
-  while (running) {
+  while (running == RUNNING_TRUE) {
     spin_lock_unsafe_blocking(mc->lock);
     motor_control_loop(mc);
     running = mc->running;
@@ -246,7 +254,51 @@ void motor_control_start(struct MotorControl* mc) {
     }
     sleep_us(LOOP_DELAY_US);
   }
+
+  motor_control_loop(mc);
+  mc->running = RUNNING_FALSE;
+  spin_unlock_unsafe(mc->lock);
 }
+
+void motor_control_start_loop(struct MotorControl* mc) {
+  _start_mc = mc;
+  multicore_launch_core1(_motor_control_start);
+}
+
+void motor_control_stop_loop(struct MotorControl* mc) {
+  spin_lock_unsafe_blocking(mc->lock);
+  uint8_t running = mc->running;
+  spin_unlock_unsafe(mc->lock);
+  if (running != RUNNING_TRUE) {
+    return;
+  }
+
+  if (!motor_control_check_stopped(mc)) {
+    motor_control_set_jog_velocity(mc, 0);
+    sleep_ms(50);
+    while (!motor_control_check_stopped(mc)) {
+      sleep_ms(50);
+    }
+  }
+
+  spin_lock_unsafe_blocking(mc->lock);
+  mc->running = RUNNING_REQUEST_STOP;
+  spin_unlock_unsafe(mc->lock);
+
+  while (1) {
+    spin_lock_unsafe_blocking(mc->lock);
+    uint8_t running = mc->running;
+    spin_unlock_unsafe(mc->lock);
+    if (running == RUNNING_FALSE) {
+      break;
+    }
+    sleep_ms(50);
+  }
+
+  multicore_reset_core1();
+}
+
+
 
 void motor_control_stop(struct MotorControl* mc) {
   spin_lock_unsafe_blocking(mc->lock);

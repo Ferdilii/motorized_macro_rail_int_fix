@@ -72,7 +72,7 @@ const struct SavedSettings* saved_settings_get(void) {
   return &settings;
 }
 
-static void saved_settings_write_internal(void) {
+static void saved_settings_write_internal(struct MotorControl* mc) {
   DEBUG_LOG("saved_settings_write_internal\n");
   uint8_t buff[FLASH_PAGE_SIZE];
   memset(buff, 0, sizeof(buff));
@@ -86,15 +86,17 @@ static void saved_settings_write_internal(void) {
   ss->checksum = calc_checksum(&settings);
   DEBUG_LOG("saved_settings_write_internal: checksum=%08x max_vel=%d\n",
   ss->checksum, ss->max_velocity);
+  motor_control_stop(mc);
   uint32_t ints = save_and_disable_interrupts();
   flash_range_erase(FLASH_OFFSET, FLASH_SECTOR_SIZE);
   flash_range_program(FLASH_OFFSET, buff, FLASH_PAGE_SIZE);
   restore_interrupts(ints);
   DEBUG_LOG("saved_settings_write_internal: done\n");
+  motor_control_start_loop(mc);
 }
 
-void saved_settings_write(const struct SavedSettings* ss) {
+void saved_settings_write(struct SharedState* state, const struct SavedSettings* ss) {
   memcpy(&settings, ss, sizeof(struct SavedSettings));
-  saved_settings_write_internal();
+  saved_settings_write_internal(&(state->motor));
 }
 

@@ -69,9 +69,11 @@ void motor_control_init(
     uint32_t max_velocity,
     uint32_t acceleration);
 
-// Starts the motor control loop.  Blocks until stop is called thus
-// this should be run on CPU1.
-void motor_control_start(struct MotorControl* mc);
+// Starts the motor control loop on CPU1
+void motor_control_start_loop(struct MotorControl* mc);
+// stops the motor control loop.  The control loop will not
+// stop if motor_control_check_stopped is false.
+void motor_control_stop_loop(struct MotorControl* mc);
 
 // Stops the motor control loop
 void motor_control_stop(struct MotorControl* mc);

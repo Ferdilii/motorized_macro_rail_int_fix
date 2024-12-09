@@ -36,7 +36,7 @@ static void _update(
     if (motor_control_check_stopped(&(ss->motor)) &&
         (*(pc->permanent_val) != pc->evw.value)) {
       *(pc->permanent_val) = pc->evw.value;
-      saved_settings_write(&settings);
+      saved_settings_write(ss, &settings);
     }
     ss->state = STATE_MENU;
   } else if (ss->button & NEXT_PRESSED) {
