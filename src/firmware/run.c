@@ -38,7 +38,7 @@ void run_init(void) {
 static void _take_photo(uint32_t shutter_delay_ms) {
   rs.wait_end_ms = uptime_ms() + shutter_delay_ms;
   shutter_release(SHUTTER_RELEASE_MS);
-  if (shutter_delay_ms) {
+  if (shutter_delay_ms == 0) {
     // let the user decide when to proceed
     rs.paused = 1;
   }
