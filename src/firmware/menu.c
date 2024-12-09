@@ -11,12 +11,12 @@
 #include "steps_per_mm.h"
 
 const static char* items[] = {
-  "End Position",  // idx 0
-  "Max Vel (step/s)",  // idx 0
-  "Accel (step/s*s)",  // idx 0
-  "Backlash (steps)", // idx 1
-  "Settle Seconds",   // idx 1
-  "Steps / mm",    // idx 1
+  "End Position",  // idx 0-3
+  "Max Vel (step/s)",  // idx 0-3
+  "Accel (step/s*s)",  // idx 1-4
+  "Backlash (steps)", // idx 2-5
+  "Settle Seconds",   // idx 2-5
+  "Steps / mm",    // idx 2-5
 };
 
 #define NUM_ITEMS (sizeof(items) / sizeof(items[0]))
@@ -75,9 +75,15 @@ static void _render(struct SharedState* ss) {
   struct Bitmap* bm = &(ss->bitmap);
   render_common(bm, "Settings", "End Pos", "Select");
 
-  uint8_t idx = menu_idx <= 2 ? 0 : 1;
-  const uint8_t end_idx = idx + 5;
-  int16_t ypos = TEXT_HEIGHT;
+  const int8_t num_items = sizeof(items) / sizeof(items[0]);
+  int8_t idx = menu_idx - 1;
+  if (idx < 0) {
+    idx = 0;
+  } else if ((idx + 4) > num_items) {
+    idx = num_items - 4;
+  }
+  const uint8_t end_idx = idx + 4;
+  int16_t ypos = TEXT_HEIGHT * 2;
 
   for (; idx < end_idx; ++idx, ypos+=TEXT_HEIGHT) {
     bitmap_str(
