@@ -355,7 +355,7 @@ uint32_t estimate_seek_time_ms(const struct MotorControl* mv, int32_t steps) {
   // Physics 101
   // d = t*v + 0.5 * a * t * t  (solve for t)
   // 0.5 * a * t^2 + v*t - d = 0
-  // x = (-b +- sqrt(b*b - 4*a*c)) / (2 * a)
+  // x = (-b +- sqrt(b*b - 4*a*c)) / (2 * a)   standard quadratic formula
   // x = t
   // a = 0.5 * acc
   // b = v
@@ -365,8 +365,11 @@ uint32_t estimate_seek_time_ms(const struct MotorControl* mv, int32_t steps) {
   const float c = -0.5 * (float)steps;
   const float t1 = (-b + sqrt(b*b - 4*a*c)) / (2 * a);
   const float t2 = (-b - sqrt(b*b - 4*a*c)) / (2 * a);
+  // I thought the calculations below should be * 2000 but this led to results
+  // that were twice as big.  I think I'm missing someting but just using x1000
+  // for now until I can think about it more.
   if (t1 > 0) {
-    return (uint32_t)(t1 * 2000);  // 2000 is for *2 (slow up and down) and convert to ms
+    return (uint32_t)(t1 * 1000);
   }
-  return (uint32_t)(t2 * 2000);  // 2000 is for *2 (slow up and down) and convert to ms
+  return (uint32_t)(t2 * 1000);
 }
