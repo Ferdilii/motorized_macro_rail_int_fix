@@ -11,6 +11,7 @@
 #include "end_point_select.h"
 #include "gimbal_update.h"
 #include "fatal.h"
+#include "logging.h"
 #include "main_led.h"
 #include "max_velocity.h"
 #include "menu.h"
@@ -112,6 +113,8 @@ static void update(void) {
       fatal(&state, "UNKNOWN_STATE: %d", state.state);
   }
 
+  logging_update(&state);
+
   bitmap_render_fast(&display, &state.bitmap, 0, 0); 
   if (!state.main_led_claimed) {
     main_led_put(state.frame_idx & 0x20);
@@ -131,6 +134,7 @@ static void start_motor_control(void) {
 
 
 static void init() {
+  logging_init();
   sleep_ms(50);
   saved_settings_init();
   main_led_init();

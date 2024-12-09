@@ -9,6 +9,7 @@ add_executable(macro_rail_automater
         fatal.c
         gimbal_jog.c
         gimbal_update.c
+        logging.c
         main_led.c
         max_velocity.c
         menu.c
@@ -44,3 +45,7 @@ target_link_libraries(macro_rail_automater
 
 # create map/bin/hex file etc.
 pico_add_extra_outputs(macro_rail_automater)
+
+# enable usb output, disable uart output
+pico_enable_stdio_usb(macro_rail_automater 1)
+pico_enable_stdio_uart(macro_rail_automater 0)
