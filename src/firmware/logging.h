@@ -4,9 +4,10 @@
 //#define DEBUG
 
 #ifdef DEBUG
-  #define DEBUG_LOG(FMT, ...) printf(FMT "\n", __VA_ARGS__)
+  #include <stdio.h>
+  #define DEBUG_LOG(...) printf(__VA_ARGS__)
 #else
-  #define DEBUG_LOG(FMT, ...)
+  #define DEBUG_LOG(...)
 #endif
 
 #include "shared_state.h"

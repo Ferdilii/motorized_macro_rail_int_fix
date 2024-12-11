@@ -1,7 +1,6 @@
 #include "saved_settings.h"
 #include "hardware/flash.h"
 #include "hardware/sync.h"
-#include "logging.h"
 #include <string.h>
 
 #define FLASH_OFFSET (PICO_FLASH_SIZE_BYTES - FLASH_SECTOR_SIZE)
@@ -30,25 +29,16 @@ static uint8_t validate_settings(void) {
       (settings.eyecatcher[1] != 'A') ||
       (settings.eyecatcher[2] != 'R') ||
       (settings.eyecatcher[3] != 'F')) {
-    DEBUG_LOG("validate_settings: bad eyecatcher: %02x%02x%02x%02x\n",
-    settings.eyecatcher[0],
-    settings.eyecatcher[1],
-    settings.eyecatcher[2],
-    settings.eyecatcher[3]);
-
     return 0;
   }
   uint32_t checksum = calc_checksum(&settings);
   if (checksum != settings.checksum) {
-    DEBUG_LOG("validate_settings: checksum calc=%08x flash=%08x\n",
-    checksum, settings.checksum);
     return 0;
   }
   return 1;
 }
 
 static void init_default_settings(void) {
-  DEBUG_LOG("init_default_settings\n");
   memset(&settings, 0, sizeof(struct SavedSettings));
   settings.version = SAVED_SETTINGS_VERSION;
   settings.max_velocity = DEFAULT_MAX_VELOCITY;
@@ -59,12 +49,10 @@ static void init_default_settings(void) {
 }
 
 void saved_settings_init(void) {
-  DEBUG_LOG("saved_settings_init\n");
   memcpy(&settings, FLASH_ADDRESS, sizeof(struct SavedSettings));
   if (!validate_settings()) {
     init_default_settings();
   }
-  DEBUG_LOG("saved_settings_init: max_vel=%d\n", settings.max_velocity);
 }
 
 
@@ -73,7 +61,6 @@ const struct SavedSettings* saved_settings_get(void) {
 }
 
 static void saved_settings_write_internal(struct MotorControl* mc) {
-  DEBUG_LOG("saved_settings_write_internal\n");
   uint8_t buff[FLASH_PAGE_SIZE];
   memset(buff, 0, sizeof(buff));
   memcpy(buff, &settings, sizeof(struct SavedSettings));
@@ -83,15 +70,12 @@ static void saved_settings_write_internal(struct MotorControl* mc) {
   ss->eyecatcher[2] = 'R';
   ss->eyecatcher[3] = 'F';
   ss->version = SAVED_SETTINGS_VERSION;
-  ss->checksum = calc_checksum(&settings);
-  DEBUG_LOG("saved_settings_write_internal: checksum=%08x max_vel=%d\n",
-  ss->checksum, ss->max_velocity);
+  ss->checksum = calc_checksum(ss);
   motor_control_stop_loop(mc);
   uint32_t ints = save_and_disable_interrupts();
   flash_range_erase(FLASH_OFFSET, FLASH_SECTOR_SIZE);
   flash_range_program(FLASH_OFFSET, buff, FLASH_PAGE_SIZE);
   restore_interrupts(ints);
-  DEBUG_LOG("saved_settings_write_internal: done\n");
   motor_control_start_loop(mc);
 }
 

@@ -12,7 +12,7 @@ void logging_init(void) {
 
 void logging_update(struct SharedState* ss) {
   ss->main_led_claimed = 1;
-  main_led_put(state.frame_idx & 0x08);
+  main_led_put(ss->frame_idx & 0x08);
 }
 #else
 void logging_init(void) {
