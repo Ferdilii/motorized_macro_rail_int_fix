@@ -20,17 +20,16 @@ void backlash_init(const char* title) {
 
 static void _test_mode(struct SharedState* ss) {
   struct MotorControl motor_snap;
-  struct SavedSettings* settings = parameter_change_settings();
   motor_control_snapshot(&motor_snap, &(ss->motor));
-  if (motor_snap.backlash != settings->backlash) {
-    motor_control_try_backlash(&(ss->motor), settings->backlash);
+  if (motor_snap.backlash != pc.evw.value) {
+    motor_control_try_backlash(&(ss->motor), pc.evw.value);
   }
   if (ss->gimbal_y_dir > 0) {
     motor_control_try_set_current_pos(
-        &(ss->motor), motor_snap.current_pos + settings->backlash); 
+        &(ss->motor), motor_snap.current_pos + pc.evw.value); 
   } else if (ss->gimbal_y_dir < 0) {
     motor_control_try_set_current_pos(
-        &(ss->motor), motor_snap.current_pos - settings->backlash); 
+        &(ss->motor), motor_snap.current_pos - pc.evw.value); 
   }
 }
 
