@@ -55,7 +55,6 @@ static int32_t _get_distance(void) {
 
 static void _test_mode(struct SharedState* ss) {
   struct MotorControl motor_snap;
-  struct SavedSettings* settings = parameter_change_settings();
   motor_control_snapshot(&motor_snap, &(ss->motor));
 
   switch (state) {
@@ -71,7 +70,7 @@ static void _test_mode(struct SharedState* ss) {
       break;
     case STATE_MOVING:
       if (motor_control_check_stopped(&(ss->motor))) {
-        wait_ms = uptime_ms() + (settings->settle_dsecs * 100);
+        wait_ms = uptime_ms() + (pc.evw.value * 100);
         state = STATE_SETTLE;
       }
       break;
@@ -86,7 +85,7 @@ static void _test_mode(struct SharedState* ss) {
 
 void settle_seconds_update(struct SharedState* ss) {
   parameter_change_update(&pc, ss);
-  if (pc.test_mode) {
+  if (pc.test_mode || (state != STATE_IDLE)) {
     _test_mode(ss);
   }
 }
