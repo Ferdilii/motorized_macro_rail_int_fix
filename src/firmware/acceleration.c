@@ -21,10 +21,10 @@ void acceleration_init(const char* title) {
 
 static void _test_mode(struct SharedState* ss) {
   struct MotorControl motor_snap;
-  struct SavedSettings* settings = parameter_change_settings();
+  const struct SavedSettings* settings = saved_settings_get();
   motor_control_snapshot(&motor_snap, &(ss->motor));
-  if (motor_snap.acceleration != settings->acceleration) {
-    motor_control_set_acceleration(&(ss->motor), settings->acceleration);
+  if (motor_snap.acceleration != pc.evw.value) {
+    motor_control_set_acceleration(&(ss->motor), pc.evw.value);
   }
   gimbal_jog(ss, &motor_snap, settings->max_velocity);
 }
