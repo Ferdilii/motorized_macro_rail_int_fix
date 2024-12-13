@@ -25,6 +25,7 @@
 #define STATE_BACKLASH 10
 #define STATE_SETTLE_SECONDS 11
 #define STATE_STEPS_PER_MM 12
+#define STATE_A4988_CALIBRATE 13
 
 // bits for buttons bit field
 #define NEXT_PRESSED     0x01

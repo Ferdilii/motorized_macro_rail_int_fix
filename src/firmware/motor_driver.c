@@ -62,3 +62,7 @@ void motor_driver_wake(void) {
 void motor_driver_sleep(void) {
   gpio_put(SLEEP_PIN, SLEEP_ENABLED);
 }
+
+uint8_t motor_driver_is_step_high(void) {
+  return gpio_get(STEP_PIN) != 0;
+}

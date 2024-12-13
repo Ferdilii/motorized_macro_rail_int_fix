@@ -71,8 +71,7 @@ void motor_control_init(
 
 // Starts the motor control loop on CPU1
 void motor_control_start_loop(struct MotorControl* mc);
-// stops the motor control loop.  The control loop will not
-// stop if motor_control_check_stopped is false.
+// stops the motor and motor control loop.
 void motor_control_stop_loop(struct MotorControl* mc);
 
 #ifdef TEST

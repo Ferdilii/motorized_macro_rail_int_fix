@@ -4,6 +4,7 @@
 #include <oledm/oledm.h>
 #include "shared_state.h"
 
+#include "a4988_calibrate.h"
 #include "acceleration.h"
 #include "backlash.h"
 #include "buttons.h"
@@ -107,6 +108,9 @@ static void update(void) {
       break;
     case STATE_STEPS_PER_MM:
       steps_per_mm_update(&state);
+      break;
+    case STATE_A4988_CALIBRATE:
+      a4988_calibrate_update(&state);
       break;
     default:
       fatal(&state, "UNKNOWN_STATE: %d", state.state);

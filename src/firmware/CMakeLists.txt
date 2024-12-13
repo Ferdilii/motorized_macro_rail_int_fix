@@ -1,6 +1,7 @@
 add_executable(macro_rail_automater
         main.c
 
+        a4988_calibrate.c
         acceleration.c
         backlash.c
         buttons.c
