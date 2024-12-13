@@ -21,11 +21,11 @@ void steps_per_mm_init(const char* title) {
 static void _test_mode(struct SharedState* ss) {
   struct MotorControl motor_snap;
   motor_control_snapshot(&motor_snap, &(ss->motor));
-  if (ss->gimbal_y_dir > 0) {
-    motor_control_try_set_current_pos(
+  if (ss->gimbal_y_dir < 0) {
+    motor_control_try_target_position(
         &(ss->motor), motor_snap.current_pos + pc.evw.value); 
-  } else if (ss->gimbal_y_dir < 0) {
-    motor_control_try_set_current_pos(
+  } else if (ss->gimbal_y_dir > 0) {
+    motor_control_try_target_position(
         &(ss->motor), motor_snap.current_pos - pc.evw.value); 
   }
 }

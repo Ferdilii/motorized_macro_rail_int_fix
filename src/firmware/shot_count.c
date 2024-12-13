@@ -22,7 +22,8 @@ static void reinit_count_evw(
 
   // go for about a 0.2mm step size by default
   // 0.2mm is 40 steps
-  ss->shot_count = (max_shots / 40) + 1;
+  const struct SavedSettings* settings = saved_settings_get();
+  ss->shot_count = (max_shots * settings->steps_per_mm / 8000) + 1;
 }
 
 static void update(
@@ -49,30 +50,25 @@ static void _render_image_count(struct Bitmap* bm, int16_t ypos) {
 }
 
 static void _render_distance(
-    struct Bitmap* bm, int16_t ypos, int32_t current_pos, uint32_t shot_count) {
+    struct Bitmap* bm,
+    int16_t ypos,
+    int32_t current_pos,
+    int32_t shot_count,
+    int32_t steps_per_mm) {
   char str[32];
-  int32_t dist_um = 0;
+  float dist_mm = 0;
   if (shot_count > 1) {
-    dist_um = current_pos * 5;
-    snprintf(
-        str,
-        sizeof(str),
-        "Dist:  %5d.%1dmm",
-        dist_um / 1000,
-        (dist_um % 1000) / 100);
+    dist_mm = (float)current_pos / (float)steps_per_mm;
+
+    snprintf(str, sizeof(str), "Dist:  %5.1fmm", dist_mm);
     bitmap_str(bm, TEXT_FONT, str, 0, ypos, bitmap_SET);
     ypos += TEXT_HEIGHT;
-    if (dist_um < 0) {
-      dist_um = -dist_um;
-    }
-    dist_um /= (shot_count - 1);
+    dist_mm /= (shot_count - 1);
   }
-  snprintf(
-      str,
-      sizeof(str),
-      "Step:  %3d.%03dmm",
-      dist_um / 1000,
-      dist_um % 1000);
+  if (dist_mm < 0) {
+    dist_mm = -dist_mm;
+  }
+  snprintf(str, sizeof(str), "Step:  %3.3fmm", dist_mm);
   bitmap_str(bm, TEXT_FONT, str, 0, ypos, bitmap_SET);
 }
 
@@ -112,7 +108,13 @@ static void render(
   int16_t ypos = TEXT_HEIGHT * 2;
   _render_image_count(bm, ypos);
   ypos += TEXT_HEIGHT;
-  _render_distance(bm, ypos, motor_snap->current_pos, ss->shot_count);
+  const struct SavedSettings* settings = saved_settings_get();
+  _render_distance(
+      bm,
+      ypos,
+      motor_snap->current_pos,
+      ss->shot_count,
+      settings->steps_per_mm);
   ypos += TEXT_HEIGHT * 2;
   _render_time(bm, ypos, ss, motor_snap);
 }
