@@ -59,14 +59,15 @@ static void _test_mode(struct SharedState* ss) {
 
   switch (state) {
     case STATE_IDLE:
-      if (ss->gimbal_y_dir > 0) {
-        motor_control_try_set_current_pos(
+      if (ss->gimbal_y_dir < 0) {
+        motor_control_try_target_position(
             &(ss->motor), motor_snap.current_pos + _get_distance()); 
-      } else if (ss->gimbal_y_dir < 0) {
-        motor_control_try_set_current_pos(
+        state = STATE_MOVING;
+      } else if (ss->gimbal_y_dir > 0) {
+        motor_control_try_target_position(
             &(ss->motor), motor_snap.current_pos - _get_distance()); 
+        state = STATE_MOVING;
       }
-      state = STATE_MOVING;
       break;
     case STATE_MOVING:
       if (motor_control_check_stopped(&(ss->motor))) {
@@ -75,8 +76,10 @@ static void _test_mode(struct SharedState* ss) {
       }
       break;
     case STATE_SETTLE:
-      shutter_release(20);
-      state = STATE_IDLE;
+      if (uptime_ms() > wait_ms) {
+        shutter_release(20);
+        state = STATE_IDLE;
+      }
       break;
     default:
       fatal(ss, "Unknown settle state: %d", state);

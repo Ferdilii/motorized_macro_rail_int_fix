@@ -24,10 +24,10 @@ static void _test_mode(struct SharedState* ss) {
   if (motor_snap.backlash != pc.evw.value) {
     motor_control_try_backlash(&(ss->motor), pc.evw.value);
   }
-  if (ss->gimbal_y_dir > 0) {
+  if (ss->gimbal_y_dir < 0) {
     motor_control_try_target_position(
         &(ss->motor), motor_snap.current_pos + pc.evw.value); 
-  } else if (ss->gimbal_y_dir < 0) {
+  } else if (ss->gimbal_y_dir > 0) {
     motor_control_try_target_position(
         &(ss->motor), motor_snap.current_pos - pc.evw.value); 
   }
