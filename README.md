@@ -246,6 +246,41 @@ finger_cutout_diameter = 4;
 finger_cutout_count = 8;
 ```
 
+## Motor Current Calibration
+
+If you power on the unit and press the "previous button", you are taken to
+a menu that lets you chang the following settings:
+
+* Max Velocity: The maximum motor turn speed.  Too high of a value may cause the
+stepper motor to miss steps o rlead to long spin down times if acceleration
+is ot raised as well.
+* Acceletaion: The maximum motor acceleration/decelleration.  Too high of a
+a value may cause the motor to miss steps or lead to rail vibrations.
+* Backlash: When the moto switches direction, it will take some slack before
+the main gear is engaged, this is known as backlash.  If you want a perfect
+value, you can run the test mode with a caliper attached to the rail.
+It's usually not critical that this number be fully tuned.
+* Settle Seconds: This is how long the controller should wait between
+stopping the rail and taking a photo.  The intent is to allow any
+vibrations/oscillations from rail decelleration to subside.
+* Steps / mm: This relates to both your motors steps/rotation and
+your rails rotations/mm.  For my case, I'mm using a 200 steps/rotation
+stepper motor and a 1 rotation/mm rail, this my number will be
+200 * 1 = 200.
+
+### Important
+
+* A4988 calibration.  This sets the motor in a "wake" state with
+the step signal held high.  The intent is for you to measure the
+motor current to adjust the current potentiometer on the A4988.
+If you do not do this, the motor may be starved of current and
+run poorly.  Intructions on how to calibrate are
+[here](https://www.pololu.com/product/1182) with
+alternate instructions
+[here](https://ardufocus.com/howto/a4988-motor-current-tuning/).
+Read the directions before attempting the process to lower
+the risk of damage to your A4988 or motor.
+
 ## Process Walkthrough
 
 This section talks about the end-to-end experience of using the rail.
