@@ -23,7 +23,7 @@ static void reinit_count_evw(
   // go for about a 0.2mm step size by default
   // 0.2mm is 40 steps
   const struct SavedSettings* settings = saved_settings_get();
-  ss->shot_count = (max_shots * settings->steps_per_mm / 8000) + 1;
+  ss->shot_count = (max_shots * 5 / settings->steps_per_mm) + 1;
 }
 
 static void update(
