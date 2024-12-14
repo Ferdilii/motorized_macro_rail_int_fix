@@ -1,4 +1,4 @@
-add_executable(macro_rail_automater
+add_executable(motorized_macro_rail
         main.c
 
         a4988_calibrate.c
@@ -28,7 +28,7 @@ add_executable(macro_rail_automater
         )
 
 # pull in common dependencies
-target_link_libraries(macro_rail_automater
+target_link_libraries(motorized_macro_rail
     pico_multicore
     pico_stdlib
     hardware_adc
@@ -45,8 +45,8 @@ target_link_libraries(macro_rail_automater
 )
 
 # create map/bin/hex file etc.
-pico_add_extra_outputs(macro_rail_automater)
+pico_add_extra_outputs(motorized_macro_rail)
 
 # enable usb output, disable uart output
-pico_enable_stdio_usb(macro_rail_automater 1)
-pico_enable_stdio_uart(macro_rail_automater 0)
+pico_enable_stdio_usb(motorized_macro_rail 1)
+pico_enable_stdio_uart(motorized_macro_rail 0)
