@@ -58,9 +58,7 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [
-        "lib_footprint_mismatch|181610000|107950000|b62f1540-51a6-4be4-918a-ab307caa0684|00000000-0000-0000-0000-000000000000"
-      ],
+      "drc_exclusions": [],
       "meta": {
         "version": 2
       },
@@ -234,6 +232,7 @@
   },
   "erc": {
     "erc_exclusions": [
+      "lib_symbol_issues|1714500|660400|98d60c3f-2c7c-44b9-ac85-0d8177bd12e9|00000000-0000-0000-0000-000000000000|||",
       "lib_symbol_issues|1816100|660400|98d60c3f-2c7c-44b9-ac85-0d8177bd12e9|00000000-0000-0000-0000-000000000000|||",
       "lib_symbol_issues|787400|508000|16083706-e166-4e44-815f-385241176c95|00000000-0000-0000-0000-000000000000|||",
       "power_pin_not_driven|1270000|279400|8f02f36b-ed33-4eed-96e1-e21cfddb7a53|00000000-0000-0000-0000-000000000000|/359f6f2d-5d47-46bf-9afb-387b783e105a|/359f6f2d-5d47-46bf-9afb-387b783e105a|",
@@ -490,7 +489,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "macro_rail_kicad.net",
-      "plot": "",
+      "plot": "export/",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "",
