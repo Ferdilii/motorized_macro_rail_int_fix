@@ -2,9 +2,9 @@
 
 This is a project for a motorized macro focusing rail.  It is used with special
 "stacking" software to increase the depth of field of macro images.  This
-project is presented as a modification to an existing commercial rail, although building
-up a rail from scratch would be straight forward as well given the popularity
-of 3D printers and small CNC machines which use similar parts.
+project is presented as a modification to an existing commercial rail, but could
+be easily extended to use a custom built rail (using steel rods and linear
+bearings commonly used in at-home 3D printers and CNC mahines).
 
 ## Background
 
@@ -40,7 +40,7 @@ and combine them into this "stacked" image:
 
 ![stacked image]()
 
-The project here helps to take the source photos in a predictable and
+The project here helps to take the capture photos in an automated and
 consistent way.
 
 ## Alternatives
@@ -51,9 +51,10 @@ consistent way.
 can be challenging to get the step size correct and consistent.  The
 final stacked image will thus often have "blurry" areas where there was no in-focus source
 image to use.  There is also the risk of moving the camera every time you touch it.
+Still, this can be a good way to start and get famiiar with the process.
 * You can buy a manual focus rail at many different qualities and price points.
 That is the starting point for this project.  The nice thing about these
-rails is that they are a bit more "field friendly" in their simplicity.  The
+rails is that they simple to use and eacy to pack up for field work.  The
 downside is that using them manually can feel like tedious work and you risk moving
 the camera as you interact with the rail.
 
@@ -101,7 +102,7 @@ you can opt for a commonly-available ["PS2 stick"](https://www.amazon.com/HiLetg
 that will be less precise but possibly good-enough.
 * [Voltage Regulator](https://www.digikey.com/en/products/detail/texas-instruments/LM7805CT-NOPB/3901929) ($2) most stepper
 motors need a minimum of 12V, which is beyond what the PI Pico onboard regulator
-can handle, thus you'll need a regulator to help it out.  I went with the famous
+can accept as input, thus you'll need a regulator to help it out.  I went with the famous
 [LM7805](https://www.digikey.com/en/products/detail/texas-instruments/LM7805CT-NOPB/3901929) which will be powering the Pico
 and OLED.  Anything between 3.3V and 5V which can deliver > 200 mA should be well
 into the sufficiency range.
@@ -119,6 +120,17 @@ a 2.5mm jack for this but since it's the not the camera side, your options
 are flexible.  Many cameras support a simple electronic shutter release.  If yours
 doesn't, you can probably improvise something or go with the manual shutter
 release option the firmware provides (more on that later).
+* [4N25 Optocoupler](https://www.digikey.com/en/products/detail/liteon/4N25/385762) (<$1)
+This is used to trigger the camera.  An optocoupler triggers the camera using light,
+meaning that the electrical system of the camera and focus rail are fully isolated.  This
+is probably overkill, safety wise, but otocouplers are only a few more cents than
+a transistor so why not.
+* [100 Ohm resistor](https://www.digikey.com/en/products/detail/vishay-dale/RLR07C1000GSB14/3141196) (<$1)
+The optocoupler needs one of these.
+* [470 uF capacitor](https://www.digikey.com/en/products/detail/rubycon/6-3YXJ470M6-3X11/3134408) (<$1)
+The a4988 motor driver requests one of these on the motor voltage input to smooth
+out voltage transisents that are common with powering motors.
+* [2x 10 uF capacitor](https://www.digikey.com/en/products/detail/tdk-corporation/FK28X5R0J106MR000/2815522) (<$1) These help smooth the 5V power supply.
 
 ### Equipment
 
