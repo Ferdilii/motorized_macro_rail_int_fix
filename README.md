@@ -86,6 +86,9 @@ Prices are what I found in late 2024.  I am mostly suggesting
 counts.
 
 
+* [Stepper motor](https://www.amazon.com/gp/product/B0B93L4H57) ($11) Any Nema 17 motor designed
+for 3D printers will work well.  I'm using a lower power pancake style motor, which is still
+sufficient for the job (as the leverage on a macro rail knob is very high)
 * [Raspberry PI Pico](https://www.digikey.com/en/products/detail/raspberry-pi/SC0915/13624793) ($4).  You could
 opt for the [unit with Wifi/Bluetooth](https://www.digikey.com/en/products/detail/raspberry-pi/SC0918/16608263)
 if you want to try and trigger your camera wirelessly but note that this
@@ -131,6 +134,13 @@ The optocoupler needs one of these.
 The a4988 motor driver requests one of these on the motor voltage input to smooth
 out voltage transisents that are common with powering motors.
 * [2x 10 uF capacitor](https://www.digikey.com/en/products/detail/tdk-corporation/FK28X5R0J106MR000/2815522) (<$1) These help smooth the 5V power supply.
+
+You will also need a rail.  I went with the [NM-200s](https://www.amazon.com/dp/B0BXKFGLF3?th=1)
+which I acquired on sale for $150.  I'd say the [NM-180s](https://www.amazon.com/dp/B08BCCFQC3)
+is likely as good for $130 retail.  There are also a number of cheaper options that I have no
+direct experience with, such as [this one for $89](https://www.amazon.com/Adjustment-Photography-360%C2%B0Rotating-Compatibility-MS18/dp/B0C89CLJ8N).  If you go with a NM-??? rail as I used, you can use the proveded `.STL` files directly.  For other rails
+you will need to resize the adapter using the free OpenSCAD and instructions provided later
+in this document.
 
 ### Equipment
 
@@ -179,13 +189,13 @@ version.
 
 * While holding down the `BOOTSEL` button, plug in the Pico via USB
 * It should mount as a USB drive
-* Copy the `.uf2` file to the USB drive
+* Copy the [`firmware/macro_rail_automater.uf2`](firmware/macro_rail_automater.uf2) file to the USB drive
 * Unplug and replug the Pico
 
 There are alternatives you can explore as well:
 
 * There is a [`picotool`](https://github.com/raspberrypi/picotool) program which
-allows you to load the `.uf2` directly.  I prefer it.
+allows you to load the `macro_rail_automater.uf2` file directly.  I prefer it.
 * [Pin 30 on the Pico](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html#pinout-and-design-files) is named `RUN`.  If you drive it to 0V, it will reset the PICO.
 If you do this while holding `BOOTSEL`, you can upload firmware which is
 ergonomically easier and with less USB port wear-and-tear.  I
@@ -207,11 +217,11 @@ docs.
 * `cd build`
 * `make`
 
-At this point, you'll hopefully have your own `.uf2` file that you can load
+At this point, you'll hopefully have your own `macro_rail_automater.uf2` file that you can load
 on the your Pico.
 
 
-## Macro Rail Interface
+## Macro Rail Physical Interface
 
 The goal is to interface the stepper motor with the macro rail of your
 choosing.  I ended up going with the [NM-200s](https://www.amazon.com/dp/B0BXKFGLF3)
@@ -246,7 +256,7 @@ RAIL_BODY_HEIGHT = 20;
 
 The numbers above (in mm) are for the [NM-200s](https://www.amazon.com/dp/B0BXKFGLF3).
 
-The finger interface design should be adaptable to most (but not all) rail
+The knob interface design should be adaptable to most (but not all) rail
 designs.  The file to change is [`motor_mount/knob.scad`]() with the following
 variables likely being relevant:
 
@@ -259,6 +269,13 @@ finger_cutout_count = 8;
 ```
 
 ## Motor Current Calibration
+
+You will need to calibrate your A4988 driver board to set the current properly
+for your chosen stepper motor.  Intructions on how to calibrate are
+[here](https://www.pololu.com/product/1182) with alternate instructions
+[here](https://ardufocus.com/howto/a4988-motor-current-tuning/).
+
+## Firmware Settings
 
 If you power on the unit and press the "previous button", you are taken to
 a menu that lets you chang the following settings:
@@ -275,23 +292,25 @@ It's usually not critical that this number be fully tuned.
 * Settle Seconds: This is how long the controller should wait between
 stopping the rail and taking a photo.  The intent is to allow any
 vibrations/oscillations from rail decelleration to subside.
-* Steps / mm: This relates to both your motors steps/rotation and
-your rails rotations/mm.  For my case, I'mm using a 200 steps/rotation
-stepper motor and a 1 rotation/mm rail, this my number will be
-200 * 1 = 200.
+
+### Steps / mm
+
+This final menu item relates to both your motors steps/rotation and
+your rails rotations/mm.  The a4988 driver is configured in 16x microstep
+mode, meaning that 16 steps equal one step on the motor.  The formula to use
+is
+
+```
+  motor_steps_per_rotation * 16 / mm_per_rotation
+```
+
+For my case,
+I'm personally using a
+[200 steps/rotation stepper motor](https://www.amazon.com/gp/product/B0B93L4H57) and a 
+[1 rotation/mm rail](https://www.amazon.com/dp/B0BXKFGLF3),
+thus my number will be 200 * 16 / 1 = 3200.
 
 ### Important
-
-* A4988 calibration.  This sets the motor in a "wake" state with
-the step signal held high.  The intent is for you to measure the
-motor current to adjust the current potentiometer on the A4988.
-If you do not do this, the motor may be starved of current and
-run poorly.  Intructions on how to calibrate are
-[here](https://www.pololu.com/product/1182) with
-alternate instructions
-[here](https://ardufocus.com/howto/a4988-motor-current-tuning/).
-Read the directions before attempting the process to lower
-the risk of damage to your A4988 or motor.
 
 ## Process Walkthrough
 
