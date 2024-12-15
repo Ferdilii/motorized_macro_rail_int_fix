@@ -12,11 +12,11 @@
 #define SAVED_SETTINGS_VERSION 1
 
 // defaults
-#define DEFAULT_MAX_VELOCITY 150
-#define DEFAULT_ACCELERATION 150
+#define DEFAULT_MAX_VELOCITY 4800
+#define DEFAULT_ACCELERATION 4800
 #define DEFAULT_BACKLASH 25
 #define DEFAULT_SETTLE_DSECS 10
-#define DEFAULT_STEPS_PER_MM 200
+#define DEFAULT_STEPS_PER_MM 3200
 
 // Here are the settings.  The checksum, eyecatcher and version fields
 // are there to detect the cases where setting have not ever been written

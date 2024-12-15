@@ -14,8 +14,8 @@ void max_velocity_init(const char* title) {
       title,
       &(settings->max_velocity),
       DEFAULT_MAX_VELOCITY,
-      10,
-      9999,
+      100,
+      99999,
       0);
 }
 

@@ -13,7 +13,7 @@ void sleep_us(uint32_t unused) { }
 // Run the loop around 10khz
 #define LOOP_DELAY_US 50
 // sleep after 500000 us
-#define IDLE_CYCLES_BEFORE_SLEEP (500000 / LOOP_DELAY_US)
+#define IDLE_CYCLES_BEFORE_SLEEP (10000000 / LOOP_DELAY_US)
 
 #define RUNNING_FALSE 0
 #define RUNNING_TRUE 1

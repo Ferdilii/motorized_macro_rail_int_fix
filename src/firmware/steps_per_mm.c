@@ -14,7 +14,7 @@ void steps_per_mm_init(const char* title) {
       &(settings->steps_per_mm),
       DEFAULT_STEPS_PER_MM,
       100,
-      800,
+      99999,
       0);
 }
 

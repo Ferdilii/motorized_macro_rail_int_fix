@@ -14,8 +14,8 @@ void acceleration_init(const char* title) {
       title,
       &(settings->acceleration),
       DEFAULT_ACCELERATION,
-      10,
-      9999,
+      100,
+      99999,
       0);
 }
 
