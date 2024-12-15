@@ -1,7 +1,6 @@
 add_executable(motorized_macro_rail
         main.c
 
-        a4988_calibrate.c
         acceleration.c
         backlash.c
         buttons.c

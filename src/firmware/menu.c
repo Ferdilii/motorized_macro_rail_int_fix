@@ -3,7 +3,6 @@
 #include "misc/gimbal.h"
 #include "oledm/font/terminus8x16.h"
 
-#include "a4988_calibrate.h"
 #include "acceleration.h"
 #include "backlash.h"
 #include "max_velocity.h"
@@ -17,8 +16,7 @@ const static char* items[] = {
   "Accel (step/s*s)",  // idx 1-4
   "Backlash (steps)", // idx 2-5
   "Settle Seconds",   // idx 2-5
-  "Steps / mm",    // idx 3-6
-  "A4988 Calibrate",  // idx 3-6
+  "Steps / mm",    // idx 2-5
 };
 
 #define NUM_ITEMS (sizeof(items) / sizeof(items[0]))
@@ -52,10 +50,6 @@ static void _update(struct SharedState* ss) {
       case 5:
         steps_per_mm_init(items[index]);
         ss->state = STATE_STEPS_PER_MM;
-        break;
-      case 6:
-        a4988_calibrate_init(ss, items[index]);
-        ss->state = STATE_A4988_CALIBRATE;
         break;
       default:
         // not yet implemented
