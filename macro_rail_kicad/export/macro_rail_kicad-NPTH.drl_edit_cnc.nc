@@ -4,7 +4,7 @@
 (Type: G-code from Geometry)
 (Units: MM)
 
-(Created on Saturday, 14 December 2024 at 20:22)
+(Created on Sunday, 15 December 2024 at 09:08)
 
 (Specially modified by mattwach to work with the Sainsmart 3080 that I have.)
 
@@ -31,7 +31,7 @@
 (X,Y Toolchange: 0.0000, 0.0000 mm)
 (Z Start: None mm)
 (Z End: 0.5 mm)
-(X,Y End: 0.0000, 0.0000 mm)
+(X,Y End: None mm)
 (Steps per circle: 64)
 (Preprocessor Excellon: default)
 
@@ -68,6 +68,5 @@ G01 Z0
 G00 Z2.0000
 M05
 G00 Z0.50
-G00 X0.0 Y0.0
 
 
