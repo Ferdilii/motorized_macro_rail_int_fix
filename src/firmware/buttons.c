@@ -4,9 +4,9 @@
 #include <misc/debounce.h>
 #include "shutter.h"
 
-#define SHUTTER_BUTTON_GPIO 7
+#define SHUTTER_BUTTON_GPIO 9
 #define PREVIOUS_BUTTON_GPIO 8
-#define NEXT_BUTTON_GPIO 9
+#define NEXT_BUTTON_GPIO 7
 
 #define DEBOUNCE_MS 10
 

@@ -1,10 +1,10 @@
 #include "motor_driver.h"
 #include "pico/stdlib.h"
 
-#define RESET_PIN 10 // Active low
-#define SLEEP_PIN 11 // Active low
-#define STEP_PIN 12 
-#define DIRECTION_PIN 13
+#define RESET_PIN 13 // Active low
+#define SLEEP_PIN 12 // Active low
+#define STEP_PIN 11 
+#define DIRECTION_PIN 10
 
 // Clarify active low pins
 #define SLEEP_ENABLED 0
