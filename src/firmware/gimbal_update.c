@@ -4,10 +4,10 @@
 #include "hardware/adc.h"
 #include <inttypes.h>
 
-#define GIMBAL_X_GPIO 26
-#define GIMBAL_X_ADC 0
-#define GIMBAL_Y_GPIO 27
-#define GIMBAL_Y_ADC 1
+#define GIMBAL_X_GPIO 27
+#define GIMBAL_X_ADC 1
+#define GIMBAL_Y_GPIO 26
+#define GIMBAL_Y_ADC 0
 
 struct GimbalCalibrate gcal_x;
 struct GimbalCalibrate gcal_y;
