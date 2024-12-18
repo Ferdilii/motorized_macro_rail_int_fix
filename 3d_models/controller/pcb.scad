@@ -5,6 +5,7 @@ include <NopSCADlib/vitamins/pin_headers.scad>
 include <NopSCADlib/vitamins/buttons.scad>
 include <NopSCADlib/vitamins/components.scad>
 include <NopSCADlib/vitamins/dip.scad>
+include <NopSCADlib/vitamins/axials.scad> 
 
 
 PCB_XSIZE = 119.4;
@@ -60,6 +61,20 @@ module pcb() {
         PCB_ZSIZE]) rz(90) pdip(6, "OPTO");
   }
 
+  module resistor() {
+    translate([
+        53.5,
+        28,
+        PCB_ZSIZE]) ax_res(res1_8, 100);
+  }
+
+  module gimbal_header() {
+    translate([
+        95.2,
+        3.2,
+        PCB_ZSIZE]) jst_xh_header(jst_xh_header, 4);
+  }
+
   board();
   pico();
   button();
@@ -68,6 +83,8 @@ module pcb() {
   tx(pin_spacing * 19) button();
   vreg();
   opto();
+  resistor();
+  gimbal_header();
 }
 
 $fa=2.0;
