@@ -170,14 +170,17 @@ a breadboard:
 ![breadboard](img/breadboard.jpg)
 
 You could transfer the electronics to a [perf board]() and be done
-with this step.  Since I have a 3018 CNC machine, I decided to go
-a little farther and cut out a PCB:
+with this step.  
 
 ![pcb layout](img/kicad_pcb.png)
 
-![cnc photo]()
+Since I have a 3018 CNC machine, I decided to go a little farther and cut out a PCB:
 
-![finished board]()
+![cnc photo](img/cnc_pcb.jpg)
+
+Here is the board flipped over and populated with components:
+
+![finished board](img/assembled_pcb.jpg)
 
 If you want to use a CNC, chemical etch, or order a manufactured board,
 you can find the needed files in the [`motor_rail_kicad/`](motor_rail_kicad) directory.
