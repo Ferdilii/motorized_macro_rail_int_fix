@@ -1,11 +1,14 @@
 use <mattwach/util.scad>
 include <mattwach/vitamins/electronics/pi_pico.scad>
+include <mattwach/vitamins/electronics/capacitor.scad>
+include <mattwach/vitamins/electronics/a4988_carrier.scad>
 include <NopSCADlib/core.scad>
 include <NopSCADlib/vitamins/pin_headers.scad>
 include <NopSCADlib/vitamins/buttons.scad>
 include <NopSCADlib/vitamins/components.scad>
 include <NopSCADlib/vitamins/dip.scad>
 include <NopSCADlib/vitamins/axials.scad> 
+include <NopSCADlib/vitamins/radials.scad> 
 
 
 PCB_XSIZE = 119.4;
@@ -96,6 +99,27 @@ module pcb() {
         PCB_ZSIZE]) rz(180) pin_header(2p54header, 2, 1, right_angle = true);
   }
 
+  module power_cap() {
+    translate([
+        91.5,
+        48.3,
+        PCB_ZSIZE + 4.3]) rx(90) ry(90) rd_electrolytic(ECAP8x11, "470uF16V");
+  }
+
+  module smoothing_cap() {
+    translate([
+        86.3,
+        33.5,
+        PCB_ZSIZE]) ceramic_capacitor();
+  }
+
+  module a4988() {
+    translate([
+        81.25,
+        48.2,
+        PCB_ZSIZE + header_zsize]) rz(180) a4988_carrier();
+  }
+
   board();
   pico();
   button();
@@ -109,6 +133,10 @@ module pcb() {
   motor_header();
   power_header();
   opto_header();
+  power_cap();
+  smoothing_cap();
+  ty(6.2) smoothing_cap();
+  a4988();
 }
 
 $fa=2.0;
