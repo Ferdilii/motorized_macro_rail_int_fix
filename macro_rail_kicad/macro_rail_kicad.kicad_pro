@@ -492,7 +492,7 @@
       "plot": "export/",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "export/macro_rail_kicad.step",
       "svg": "/home/mattwach/git/motorized_macro_rail/macro_rail_kicad/export/",
       "vrml": ""
     },
