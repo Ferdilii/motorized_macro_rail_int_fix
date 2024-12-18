@@ -2,6 +2,7 @@ use <mattwach/util.scad>
 include <mattwach/vitamins/electronics/pi_pico.scad>
 include <mattwach/vitamins/electronics/capacitor.scad>
 include <mattwach/vitamins/electronics/a4988_carrier.scad>
+include <mattwach/vitamins/electronics/oled.scad>
 include <NopSCADlib/core.scad>
 include <NopSCADlib/vitamins/pin_headers.scad>
 include <NopSCADlib/vitamins/buttons.scad>
@@ -120,6 +121,13 @@ module pcb() {
         PCB_ZSIZE + header_zsize]) rz(180) a4988_carrier();
   }
 
+  module oled() {
+    translate([
+        15.6,
+        5.2,
+        PCB_ZSIZE + header_zsize]) oled_128x128_1_5in_spi();
+  }
+
   board();
   pico();
   button();
@@ -137,6 +145,7 @@ module pcb() {
   smoothing_cap();
   ty(6.2) smoothing_cap();
   a4988();
+  oled();
 }
 
 $fa=2.0;
