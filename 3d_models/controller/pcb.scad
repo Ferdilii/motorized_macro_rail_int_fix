@@ -75,6 +75,27 @@ module pcb() {
         PCB_ZSIZE]) jst_xh_header(jst_xh_header, 4);
   }
 
+  module motor_header() {
+    translate([
+        72.4,
+        53.4,
+        PCB_ZSIZE]) rz(180) pin_header(2p54header, 4, 1, right_angle = true);
+  }
+
+  module power_header() {
+    translate([
+        106.65,
+        47.6,
+        PCB_ZSIZE]) rz(180) pin_header(2p54header, 2, 1, right_angle = true);
+  }
+
+  module opto_header() {
+    translate([
+        55.85,
+        44.6,
+        PCB_ZSIZE]) rz(180) pin_header(2p54header, 2, 1, right_angle = true);
+  }
+
   board();
   pico();
   button();
@@ -85,6 +106,9 @@ module pcb() {
   opto();
   resistor();
   gimbal_header();
+  motor_header();
+  power_header();
+  opto_header();
 }
 
 $fa=2.0;
