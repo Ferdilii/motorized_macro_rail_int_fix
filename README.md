@@ -43,6 +43,13 @@ and combine them into this "stacked" image:
 The project here helps to take the capture photos in an automated and
 consistent way.
 
+Note that taking these photos requires either a specialized lens, an attachable lens
+filter or an extension tube.  There are endless resources on the web on
+gettings started.  Here is [one for the basics](https://digital-photography-school.com/macro-photography-for-beginners-part-1/).
+Here is one for [extreme macro](https://ferdychristant.com/my-journey-into-extreme-macro-8ddef548e9f3), which is where a rail comes into play.
+The amount of detail in this article is impressive and seems beyond what you'll
+need to know to start experimenting, but a useful reference as you progress.
+
 ## Alternatives
 
 ### Manual Approaches
@@ -51,12 +58,12 @@ consistent way.
 can be challenging to get the step size correct and consistent.  The
 final stacked image will thus often have "blurry" areas where there was no in-focus source
 image to use.  There is also the risk of moving the camera every time you touch it.
-Still, this can be a good way to start and get famiiar with the process.
+Still, this can be a no-cost way to start and get famiiar with the process.
 * You can buy a manual focus rail at many different qualities and price points.
 That is the starting point for this project.  The nice thing about these
 rails is that they simple to use and eacy to pack up for field work.  The
 downside is that using them manually can feel like tedious work and you risk moving
-the camera as you interact with the rail.
+the camera and introducing vibrations as you interact with the rail.
 
 ### Automated approaches
 
@@ -112,8 +119,7 @@ into the sufficiency range.
 * [A4988 Stepper Motor Driver](https://www.amazon.com/HiLetgo-Stepstick-Stepper-Printer-Compatible/dp/B07BND65C8) ($2).
 A Pico microcontroller is not designed to power a motor directly and you will need
 power electronics.  The [A4988](https://www.pololu.com/file/0j450/a4988_dmos_microstepping_driver_with_translator.pdf)
-gives you both the power and an easy-to-use interface which makes the firmware
-less complex and provides a number of protections (such as overcurrent protection).
+gives you both the power and an easy-to-use interface which make the motor run smooth and quiet (using microstepping) and provides a number of protections (such as overcurrent protection).
 * [Power connector](https://www.digikey.com/en/products/detail/mpd-memory-protection-devices/EJ501B/2439533) ($1).
 I'm going with a 5.5mm barrel jack but it's really up to you.  The design will
 support between 12V and around 30V but you'll want to double check the limits
@@ -161,7 +167,7 @@ There are around 2 dozen connections to be made here which makes most
 assembly methods possible.  Here is the whole thing implemented on
 a breadboard:
 
-![breadboard]()
+![breadboard](img/breadboard.jpg)
 
 You could transfer the electronics to a [perf board]() and be done
 with this step.  Since I have a 3018 CNC machine, I decided to go
