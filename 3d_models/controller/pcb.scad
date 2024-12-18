@@ -4,6 +4,7 @@ include <NopSCADlib/core.scad>
 include <NopSCADlib/vitamins/pin_headers.scad>
 include <NopSCADlib/vitamins/buttons.scad>
 include <NopSCADlib/vitamins/components.scad>
+include <NopSCADlib/vitamins/dip.scad>
 
 
 PCB_XSIZE = 119.4;
@@ -52,6 +53,13 @@ module pcb() {
         PCB_ZSIZE + 1]) rz(-90) TO220("7805", leads = 3, lead_length = 5);
   }
 
+  module opto() {
+    translate([
+        54.5,
+        36.8,
+        PCB_ZSIZE]) rz(90) pdip(6, "OPTO");
+  }
+
   board();
   pico();
   button();
@@ -59,6 +67,7 @@ module pcb() {
   ty(pin_spacing * 10) button();
   tx(pin_spacing * 19) button();
   vreg();
+  opto();
 }
 
 $fa=2.0;
