@@ -127,6 +127,8 @@ module gimbal() {
   gimbal_stick();
 }
 
+/*
 $fa=2.0;
 $fs=0.5;
 gimbal();
+*/

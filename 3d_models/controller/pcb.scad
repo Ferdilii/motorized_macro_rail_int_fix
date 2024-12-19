@@ -148,6 +148,8 @@ module pcb() {
   oled();
 }
 
+/*
 $fa=2.0;
 $fs=0.5;
 pcb();
+*/
