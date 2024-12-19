@@ -11,45 +11,45 @@ controller_fillet = 7;
 controller_base_thickness = 2;
 controller_xsize = PCB_XSIZE + pcb_x * 2;
 controller_ysize = PCB_YSIZE + pcb_y + pcb_ypad;
+pcb_top_clearance = 7;
 gimbal_z = controller_base_thickness + 20;
-pcb_top_clearance = 5;
 pcb_z = controller_base_thickness + gimbal_z - pcb_top_clearance;
 
-module controller_slice(zsize) {
+module controller_slice(inset, zsize) {
+  fillet = controller_fillet - inset;
   module corner() {
-    cylinder(r=controller_fillet, h=zsize);
+    cylinder(r=fillet, h=zsize);
   }
-
-  #cube([
-      controller_xsize,
-      controller_ysize,
-      zsize]);
 
   module upper() {
     hull() {
-      txy(controller_fillet, controller_ysize - controller_fillet) corner();
-      txy(controller_xsize - controller_fillet, controller_ysize - controller_fillet) corner();
-      txy(controller_fillet, pcb_y + controller_fillet - pcb_ypad) corner();
-      txy(controller_xsize - 1, pcb_y - pcb_ypad) cube([1,1,zsize]);
+      txy(fillet + inset, controller_ysize - fillet - inset) corner();
+      txy(controller_xsize - fillet - inset,
+          controller_ysize - fillet - inset) corner();
+      txy(fillet + inset, pcb_y + fillet - pcb_ypad + inset) corner();
+      txy(controller_xsize - 1 - inset,
+          pcb_y - pcb_ypad + inset) cube([1,1,zsize]);
     }
   }
 
   module lower() {
     hull() {
-      txy(controller_xsize - controller_fillet, controller_fillet) corner();
-      txy(controller_xsize + controller_fillet - GIMBAL_HOLE_XSPAN - gimbal_xpad * 2, controller_fillet) corner();
-      txy(controller_xsize - GIMBAL_HOLE_XSPAN - gimbal_xpad * 2, pcb_y - pcb_ypad)
-        cube([GIMBAL_HOLE_XSPAN + gimbal_xpad * 2,1,zsize]);
+      txy(controller_xsize - fillet - inset, fillet + inset) corner();
+      txy(controller_xsize + fillet - GIMBAL_HOLE_XSPAN - gimbal_xpad * 2 + inset,
+          fillet + inset) corner();
+      txy(controller_xsize - GIMBAL_HOLE_XSPAN - gimbal_xpad * 2 + inset,
+          pcb_y - pcb_ypad + inset) cube([
+            GIMBAL_HOLE_XSPAN + gimbal_xpad * 2 - inset * 2, 1, zsize]);
     }
   }
 
   module inner() {
     translate([
-        controller_xsize - GIMBAL_HOLE_XSPAN - gimbal_xpad * 2 - controller_fillet,
-        pcb_y - pcb_ypad - controller_fillet,
+        controller_xsize - GIMBAL_HOLE_XSPAN - gimbal_xpad * 2 - fillet + inset,
+        pcb_y - pcb_ypad - fillet + inset,
         0]) difference() {
-          cube([controller_fillet + 1, controller_fillet + 1, zsize]);
-          tz(-overlap) cylinder(r=controller_fillet, h=zsize + overlap * 2);
+          cube([fillet + 1, fillet + 1, zsize]);
+          tz(-overlap) cylinder(r=fillet, h=zsize + overlap * 2);
     }
   }
 
@@ -61,8 +61,12 @@ module controller_slice(zsize) {
 }
 
 module controller() {
-
-  controller_slice(controller_base_thickness);
+  zsize = pcb_z + pcb_top_clearance + 3;
+  wall_thickness = 3;
+  color("#700") difference() {
+    controller_slice(0, zsize);
+    tz(controller_base_thickness) controller_slice(wall_thickness, zsize);
+  }
 }
 
 module placed_pcb() {
