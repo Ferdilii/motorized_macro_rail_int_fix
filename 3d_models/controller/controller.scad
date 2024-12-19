@@ -2,11 +2,12 @@ use <mattwach/util.scad>
 include <pcb.scad>
 include <gimbal.scad>
 
-pcb_x = 5;
-gimbal_xpad = 7;
-gimbal_ypad = gimbal_xpad;
-pcb_ypad = 5;
-pcb_y = GIMBAL_HOLE_YSPAN + gimbal_ypad * 2;
+pcb_x = 8;
+gimbal_xpad = 11;
+gimbal_ypad_top = 6;
+gimbal_ypad_bottom = 10;
+pcb_ypad = 10;
+pcb_y = GIMBAL_HOLE_YSPAN + gimbal_ypad_top + gimbal_ypad_bottom;
 controller_fillet = 7;
 controller_base_thickness = 2;
 controller_xsize = PCB_XSIZE + pcb_x * 2;
@@ -62,7 +63,7 @@ module controller_slice(inset, zsize) {
 
 module controller() {
   zsize = pcb_z + pcb_top_clearance + 3;
-  wall_thickness = 3;
+  wall_thickness = 6;
   color("#700") difference() {
     controller_slice(0, zsize);
     tz(controller_base_thickness) controller_slice(wall_thickness, zsize);
@@ -79,7 +80,7 @@ module placed_pcb() {
 
 module placed_gimbal() {
   gimbal_x = controller_xsize - GIMBAL_HOLE_XSPAN / 2 - gimbal_xpad;
-  gimbal_y = GIMBAL_HOLE_YSPAN / 2 + gimbal_ypad;
+  gimbal_y = GIMBAL_HOLE_YSPAN / 2 + gimbal_ypad_bottom;
   translate([
       gimbal_x,
       gimbal_y,
