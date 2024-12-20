@@ -239,12 +239,34 @@ module cover() {
         -overlap]) cylinder(d=boot_port_width, h=cover_thickness + overlap * 2);
   }
 
+  module a9488_port() {
+    fillet = 3;
+    port_x = pcb_x + 62.45;
+    port_y = pcb_y + 34.5;
+    port_xsize = 19.8;
+    port_ysize = 14.7;
+    module corner() {
+      translate([
+          port_x,
+          port_y,
+          -overlap]) cylinder(r = fillet, h=cover_thickness + overlap * 2);
+    }
+
+    hull() {
+      txy(fillet, fillet) corner();
+      txy(port_xsize - fillet, fillet) corner();
+      txy(port_xsize - fillet, port_ysize - fillet) corner();
+      txy(fillet, port_ysize - fillet) corner();
+    }
+  }
+
   color("#ddd", 0.2) tz(controller_zsize) difference() {
     controller_slice(0, cover_thickness);
     mounting_holes();
     left_buttons_port();
     right_button_port();
     boot_button_port();
+    a9488_port();
   }
 }
 
