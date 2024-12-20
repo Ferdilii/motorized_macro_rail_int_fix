@@ -4,7 +4,7 @@ include <gimbal.scad>
 
 pcb_x = 9;
 gimbal_xpad = 13;
-gimbal_ypad_top = 6;
+gimbal_ypad_top = 10;
 gimbal_ypad_bottom = 12;
 pcb_ypad = 11;
 pcb_y = GIMBAL_HOLE_YSPAN + gimbal_ypad_top + gimbal_ypad_bottom;
@@ -63,7 +63,7 @@ module controller_slice(inset, zsize) {
 
 module controller(open_view=false) {
   zsize = open_view ? 2 : pcb_z + pcb_top_clearance + 5;
-  wall_thickness = 4;
+  wall_thickness = 3;
   hole_inset = 6.2;
 
   module top_plate_mounting_posts() {
@@ -151,6 +151,6 @@ module placed_gimbal() {
 
 $fa=2.0;
 $fs=0.5;
-controller(true);
-*placed_pcb();
+controller(false);
+placed_pcb();
 placed_gimbal();
