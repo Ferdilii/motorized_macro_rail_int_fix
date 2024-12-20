@@ -2,3 +2,4 @@
 build
 macro_rail_kicad-backups
 *.lck
+*.cb.b*
