@@ -172,6 +172,20 @@ module controller(open_view=false) {
         port_z]) rx(-90) cylinder(d=port_diameter, h=wall_thickness + overlap * 2);
   }
 
+  module usb_port() {
+    port_y = pcb_y + 19;
+    port_z = pcb_z + 5.5;
+    port_ysize = 16;
+    port_zsize = 10;
+    translate([
+        controller_xsize - wall_thickness - overlap,
+        port_y - port_ysize / 2,
+        port_z - port_zsize / 2]) #cube([
+          wall_thickness + overlap * 2,
+          port_ysize,
+          port_zsize]);
+  }
+
   color("#700") difference() {
     union() {
       difference() {
@@ -187,6 +201,7 @@ module controller(open_view=false) {
     gimbal_mounting_holes();
     motor_pin_port();
     remote_trigger_port();
+    usb_port();
   }
 }
 
