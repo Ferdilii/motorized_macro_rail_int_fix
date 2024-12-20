@@ -162,6 +162,30 @@ module controller(open_view=false) {
           port_zsize]);
   }
 
+  module xt60_port() {
+    port_x = pcb_x + 100;
+    port_xsize = 15.7;
+    port_zsize = 8.3;
+    port_z = 10;
+    hole_span = 20.5;
+    translate([
+        port_x - port_xsize / 2,
+        controller_ysize - wall_thickness - overlap,
+        port_z - port_zsize / 2]) cube([
+          port_xsize,
+          wall_thickness + overlap * 2,
+          port_zsize]);
+    module hole() {
+      hole_size = 2.5;
+      translate([
+          port_x,
+          controller_ysize - wall_thickness - overlap,
+          port_z]) rx(-90) cylinder(d=hole_size, h=wall_thickness + overlap * 2);
+    }
+    tx(hole_span / 2) hole();
+    tx(-hole_span / 2) hole();
+  }
+
   module remote_trigger_port() {
     port_diameter = 4;
     port_x = 64;
@@ -200,6 +224,7 @@ module controller(open_view=false) {
     pcb_mount_holes();
     gimbal_mounting_holes();
     motor_pin_port();
+    xt60_port();
     remote_trigger_port();
     usb_port();
   }
