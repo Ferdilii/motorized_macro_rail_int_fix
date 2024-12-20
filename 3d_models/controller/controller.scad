@@ -15,6 +15,8 @@ controller_xsize = PCB_XSIZE + pcb_x * 2;
 controller_ysize = PCB_YSIZE + pcb_y + pcb_ypad;
 pcb_top_clearance = 7;
 gimbal_z = controller_base_thickness + 20;
+gimbal_x = controller_xsize - GIMBAL_HOLE_XSPAN / 2 - gimbal_xpad;
+gimbal_y = GIMBAL_HOLE_YSPAN / 2 + gimbal_ypad_bottom;
 pcb_z = controller_base_thickness + gimbal_z - pcb_top_clearance;
 
 module controller_slice(inset, zsize) {
@@ -95,7 +97,6 @@ module controller(open_view=false) {
     txy(controller_xsize - hole_inset, hole_inset) hole();
   }
 
-
   module pcb_mounts() {
     post_diameter = 9;
     module post() {
@@ -120,6 +121,29 @@ module controller(open_view=false) {
     txy(pcb_x + 115.55, pcb_y + 3.75) hole();
   }
 
+  module gimbal_mounting_posts() {
+    post_diameter = 7;
+    module post() {
+      cylinder(d=post_diameter, h=gimbal_z);
+    }
+    txy(gimbal_x - GIMBAL_HOLE_XSPAN / 2, gimbal_y - GIMBAL_HOLE_YSPAN / 2) post();
+    txy(gimbal_x + GIMBAL_HOLE_XSPAN / 2, gimbal_y - GIMBAL_HOLE_YSPAN / 2) post();
+    txy(gimbal_x - GIMBAL_HOLE_XSPAN / 2, gimbal_y + GIMBAL_HOLE_YSPAN / 2) post();
+    txy(gimbal_x + GIMBAL_HOLE_XSPAN / 2, gimbal_y + GIMBAL_HOLE_YSPAN / 2) post();
+  }
+
+  module gimbal_mounting_holes() {
+    module hole() {
+      hole_diameter = 3.5;
+      hole_depth = 10;
+      tz(gimbal_z - hole_depth) cylinder(d=hole_diameter, h=hole_depth + overlap);
+    }
+    txy(gimbal_x - GIMBAL_HOLE_XSPAN / 2, gimbal_y - GIMBAL_HOLE_YSPAN / 2) hole();
+    txy(gimbal_x + GIMBAL_HOLE_XSPAN / 2, gimbal_y - GIMBAL_HOLE_YSPAN / 2) hole();
+    txy(gimbal_x - GIMBAL_HOLE_XSPAN / 2, gimbal_y + GIMBAL_HOLE_YSPAN / 2) hole();
+    txy(gimbal_x + GIMBAL_HOLE_XSPAN / 2, gimbal_y + GIMBAL_HOLE_YSPAN / 2) hole();
+  }
+
   color("#700") difference() {
     union() {
       difference() {
@@ -128,9 +152,11 @@ module controller(open_view=false) {
       }
       top_plate_mounting_posts();
       pcb_mounts();
+      gimbal_mounting_posts();
     }
     top_place_mouting_holes();
     pcb_mount_holes();
+    gimbal_mounting_holes();
   }
 }
 
@@ -142,8 +168,6 @@ module placed_pcb() {
 }
 
 module placed_gimbal() {
-  gimbal_x = controller_xsize - GIMBAL_HOLE_XSPAN / 2 - gimbal_xpad;
-  gimbal_y = GIMBAL_HOLE_YSPAN / 2 + gimbal_ypad_bottom;
   translate([
       gimbal_x,
       gimbal_y,
@@ -152,6 +176,6 @@ module placed_gimbal() {
 
 $fa=2.0;
 $fs=0.5;
-controller(true);
-placed_pcb();
-placed_gimbal();
+controller(false);
+*placed_pcb();
+*placed_gimbal();
