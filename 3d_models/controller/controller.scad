@@ -18,6 +18,7 @@ gimbal_z = controller_base_thickness + 20;
 gimbal_x = controller_xsize - GIMBAL_HOLE_XSPAN / 2 - gimbal_xpad;
 gimbal_y = GIMBAL_HOLE_YSPAN / 2 + gimbal_ypad_bottom;
 pcb_z = controller_base_thickness + gimbal_z - pcb_top_clearance;
+wall_thickness = 2.5;
 
 module controller_slice(inset, zsize) {
   fillet = controller_fillet - inset / 2;
@@ -66,7 +67,6 @@ module controller_slice(inset, zsize) {
 
 module controller(open_view=false) {
   zsize = open_view ? 2 : pcb_z + pcb_top_clearance + 5;
-  wall_thickness = 2.5;
   hole_inset = 4.9;
 
   module top_plate_mounting_posts() {
@@ -144,6 +144,20 @@ module controller(open_view=false) {
     txy(gimbal_x + GIMBAL_HOLE_XSPAN / 2, gimbal_y + GIMBAL_HOLE_YSPAN / 2) hole();
   }
 
+  module motor_pin_port() {
+    port_x = pcb_x + 66;
+    port_z = pcb_z + 0.7;
+    port_xsize = 13;
+    port_zsize = 5;
+    translate([
+        port_x,
+        controller_ysize - wall_thickness - overlap,
+        port_z]) cube([
+          port_xsize,
+          wall_thickness + overlap * 2,
+          port_zsize]);
+  }
+
   color("#700") difference() {
     union() {
       difference() {
@@ -157,6 +171,7 @@ module controller(open_view=false) {
     top_place_mouting_holes();
     pcb_mount_holes();
     gimbal_mounting_holes();
+    motor_pin_port();
   }
 }
 
@@ -177,5 +192,5 @@ module placed_gimbal() {
 $fa=2.0;
 $fs=0.5;
 controller(false);
-*placed_pcb();
-*placed_gimbal();
+placed_pcb();
+placed_gimbal();
