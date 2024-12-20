@@ -61,8 +61,8 @@ module controller_slice(inset, zsize) {
   }
 }
 
-module controller() {
-  zsize = pcb_z + pcb_top_clearance + 5;
+module controller(open_view=false) {
+  zsize = open_view ? 2 : pcb_z + pcb_top_clearance + 5;
   wall_thickness = 4;
   hole_inset = 6.2;
 
@@ -125,6 +125,6 @@ module placed_gimbal() {
 
 $fa=2.0;
 $fs=0.5;
-controller();
+controller(true);
 placed_pcb();
 placed_gimbal();
