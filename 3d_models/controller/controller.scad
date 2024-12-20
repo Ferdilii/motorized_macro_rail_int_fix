@@ -308,7 +308,7 @@ module cover() {
         -overlap]) cylinder(r = port_diameter, h=cover_thickness + overlap * 2);
   }
 
-  color("#ddd", 0.2) tz(controller_zsize) difference() {
+  color("#ddd", 0.3) tz(controller_zsize) difference() {
     controller_slice(0, cover_thickness);
     mounting_holes();
     left_buttons_port();
@@ -341,9 +341,9 @@ $fa=2.0;
 $fs=0.5;
 // comment out everything but controller for the 3d print model
 controller(false);
-*placed_pcb();
-*placed_gimbal();
-*cover();
+placed_pcb();
+placed_gimbal();
+cover();
 // comment out everything but this to create a dxf projection
 *cover_projection();
 

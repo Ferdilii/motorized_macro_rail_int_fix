@@ -319,7 +319,17 @@ I'm personally using a
 [1 rotation/mm rail](https://www.amazon.com/dp/B0BXKFGLF3),
 thus my number will be 200 * 16 / 1 = 3200.
 
-### Important
+## Controller Case
+
+In the folder [3d_models/controller](3d_models/controller/), there is a file named [controller.scad](3d_models/controller/controller.scad), which OpenSCAD will render like this:
+
+![controller image](img/controller.png)
+
+Now this model is intended for the parts and PCB model that I went with.  If you went with
+different parts, made your own PCB, or do not have a CND machine for the cover, you can either
+try to modify the given design or make a custom one using whatever parts / methods work for you.
+
+As for this model, [I AM HERE]
 
 ## Process Walkthrough
 
