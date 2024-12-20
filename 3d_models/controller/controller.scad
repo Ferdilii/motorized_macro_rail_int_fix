@@ -260,6 +260,14 @@ module cover() {
     }
   }
 
+  module gimbal_port() {
+    port_diameter = 20;
+    translate([
+        gimbal_x,
+        gimbal_y,
+        -overlap]) cylinder(r = port_diameter, h=cover_thickness + overlap * 2);
+  }
+
   color("#ddd", 0.2) tz(controller_zsize) difference() {
     controller_slice(0, cover_thickness);
     mounting_holes();
@@ -267,6 +275,7 @@ module cover() {
     right_button_port();
     boot_button_port();
     a9488_port();
+    gimbal_port();
   }
 }
 
