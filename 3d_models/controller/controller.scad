@@ -192,6 +192,8 @@ module controller(open_view=false) {
 
 module cover() {
   cover_thickness = 3;
+  port_width = 16;
+
   module mounting_holes() {
     module hole() {
       hole_diameter = 2.1;
@@ -201,9 +203,48 @@ module cover() {
       txy(plate_mounting_holes[i][0], plate_mounting_holes[i][1]) hole();
     }
   }
+
+  module left_buttons_port() {
+    port_x = pcb_x + 8.35;
+    port_y = pcb_y + 23.1;
+    port_span = 25.4;
+    module port_end() {
+      translate([
+          port_x,
+          port_y,
+          -overlap]) cylinder(d=port_width, h=cover_thickness + overlap * 2);
+    }
+    hull() {
+      ty(-port_span / 2) port_end();
+      ty(port_span / 2) port_end();
+    }
+  }
+
+  module right_button_port() {
+    port_x = pcb_x + 56.6;
+    port_y = pcb_y + 10.4;
+    translate([
+        port_x,
+        port_y,
+        -overlap]) cylinder(d=port_width, h=cover_thickness + overlap * 2);
+  }
+
+  module boot_button_port() {
+    port_x = pcb_x + 102.95;
+    port_y = pcb_y + 22.2;
+    boot_port_width = 8;
+    translate([
+        port_x,
+        port_y,
+        -overlap]) cylinder(d=boot_port_width, h=cover_thickness + overlap * 2);
+  }
+
   color("#ddd", 0.2) tz(controller_zsize) difference() {
     controller_slice(0, cover_thickness);
     mounting_holes();
+    left_buttons_port();
+    right_button_port();
+    boot_button_port();
   }
 }
 
