@@ -333,9 +333,17 @@ module placed_gimbal() {
       gimbal_z]) gimbal();
 }
 
+module cover_projection() {
+  projection() cover();
+}
+
 $fa=2.0;
 $fs=0.5;
+// comment out everything but controller for the 3d print model
 controller(false);
-placed_pcb();
-placed_gimbal();
-cover();
+*placed_pcb();
+*placed_gimbal();
+*cover();
+// comment out everything but this to create a dxf projection
+*cover_projection();
+
