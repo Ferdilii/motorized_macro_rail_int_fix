@@ -2,11 +2,12 @@ use <mattwach/util.scad>
 include <pcb.scad>
 include <gimbal.scad>
 
-pcb_x = 9;
-gimbal_xpad = 13;
+pcb_x = 8;
+gimbal_xpad = 10;
 gimbal_ypad_top = 10;
-gimbal_ypad_bottom = 12;
-pcb_ypad = 11;
+gimbal_ypad_bottom = 10;
+
+pcb_ypad = 8;
 pcb_y = GIMBAL_HOLE_YSPAN + gimbal_ypad_top + gimbal_ypad_bottom;
 controller_fillet = 10;
 controller_base_thickness = 2;
@@ -63,11 +64,11 @@ module controller_slice(inset, zsize) {
 
 module controller(open_view=false) {
   zsize = open_view ? 2 : pcb_z + pcb_top_clearance + 5;
-  wall_thickness = 3;
-  hole_inset = 6.2;
+  wall_thickness = 2.5;
+  hole_inset = 4.9;
 
   module top_plate_mounting_posts() {
-    post_diameter = 9;
+    post_diameter = 5.5;
     module post() {
       cylinder(d=post_diameter, h=zsize);
     }
@@ -78,6 +79,22 @@ module controller(open_view=false) {
     txy(controller_xsize - GIMBAL_HOLE_XSPAN - gimbal_xpad * 2 + hole_inset, hole_inset) post();
     txy(controller_xsize - hole_inset, hole_inset) post();
   }
+
+  module top_place_mouting_holes() {
+    module hole() {
+      hole_diameter = 3.5;
+      hole_depth = 10;
+      tz(zsize - hole_depth) cylinder(d=hole_diameter, h=hole_depth + overlap);
+    }
+
+    txy(hole_inset, controller_ysize - hole_inset) hole();
+    txy(controller_xsize - hole_inset, controller_ysize - hole_inset) hole();
+    txy(hole_inset, pcb_y - pcb_ypad + hole_inset) hole();
+    txy(controller_xsize - GIMBAL_HOLE_XSPAN - gimbal_xpad * 2, pcb_y - pcb_ypad + 1) hole();
+    txy(controller_xsize - GIMBAL_HOLE_XSPAN - gimbal_xpad * 2 + hole_inset, hole_inset) hole();
+    txy(controller_xsize - hole_inset, hole_inset) hole();
+  }
+
 
   module pcb_mounts() {
     post_diameter = 9;
@@ -103,21 +120,6 @@ module controller(open_view=false) {
     txy(pcb_x + 115.55, pcb_y + 3.75) hole();
   }
 
-  module top_place_mouting_holes() {
-    module hole() {
-      hole_diameter = 5;
-      hole_depth = 10;
-      tz(zsize - hole_depth) cylinder(d=hole_diameter, h=hole_depth + overlap);
-    }
-
-    txy(hole_inset, controller_ysize - hole_inset) hole();
-    txy(controller_xsize - hole_inset, controller_ysize - hole_inset) hole();
-    txy(hole_inset, pcb_y - pcb_ypad + hole_inset) hole();
-    txy(controller_xsize - GIMBAL_HOLE_XSPAN - gimbal_xpad * 2, pcb_y - pcb_ypad + 1) hole();
-    txy(controller_xsize - GIMBAL_HOLE_XSPAN - gimbal_xpad * 2 + hole_inset, hole_inset) hole();
-    txy(controller_xsize - hole_inset, hole_inset) hole();
-  }
-
   color("#700") difference() {
     union() {
       difference() {
@@ -133,7 +135,6 @@ module controller(open_view=false) {
 }
 
 module placed_pcb() {
-
   translate([
       pcb_x,
       pcb_y,
@@ -151,6 +152,6 @@ module placed_gimbal() {
 
 $fa=2.0;
 $fs=0.5;
-controller(false);
+controller(true);
 placed_pcb();
 placed_gimbal();
