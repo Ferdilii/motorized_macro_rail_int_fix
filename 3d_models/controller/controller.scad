@@ -79,6 +79,30 @@ module controller(open_view=false) {
     txy(controller_xsize - hole_inset, hole_inset) post();
   }
 
+  module pcb_mounts() {
+    post_diameter = 9;
+    module post() {
+      cylinder(d=post_diameter, h=pcb_z);
+    }
+
+    txy(pcb_x + 3, pcb_y + 3) post();
+    txy(pcb_x + 6.35, pcb_y + 50.8) post();
+    txy(pcb_x + 115.55, pcb_y + 50.8) post();
+    txy(pcb_x + 115.55, pcb_y + 3.75) post();
+  }
+
+  module pcb_mount_holes() {
+    module hole() {
+      hole_diameter = 5;
+      hole_depth = 10;
+      tz(pcb_z - hole_depth) cylinder(d=hole_diameter, h=hole_depth + overlap);
+    }
+
+    txy(pcb_x + 6.35, pcb_y + 50.8) hole();
+    txy(pcb_x + 115.55, pcb_y + 50.8) hole();
+    txy(pcb_x + 115.55, pcb_y + 3.75) hole();
+  }
+
   module top_place_mouting_holes() {
     module hole() {
       hole_diameter = 5;
@@ -101,8 +125,10 @@ module controller(open_view=false) {
         tz(controller_base_thickness) controller_slice(wall_thickness, zsize);
       }
       top_plate_mounting_posts();
+      pcb_mounts();
     }
     top_place_mouting_holes();
+    pcb_mount_holes();
   }
 }
 
@@ -126,5 +152,5 @@ module placed_gimbal() {
 $fa=2.0;
 $fs=0.5;
 controller(true);
-placed_pcb();
+*placed_pcb();
 placed_gimbal();
