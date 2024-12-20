@@ -158,6 +158,16 @@ module controller(open_view=false) {
           port_zsize]);
   }
 
+  module remote_trigger_port() {
+    port_diameter = 4;
+    port_x = 64;
+    port_z = 10;
+    translate([
+        port_x,
+        controller_ysize - wall_thickness - overlap,
+        port_z]) rx(-90) cylinder(d=port_diameter, h=wall_thickness + overlap * 2);
+  }
+
   color("#700") difference() {
     union() {
       difference() {
@@ -172,6 +182,7 @@ module controller(open_view=false) {
     pcb_mount_holes();
     gimbal_mounting_holes();
     motor_pin_port();
+    remote_trigger_port();
   }
 }
 
