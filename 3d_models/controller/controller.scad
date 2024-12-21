@@ -345,5 +345,5 @@ placed_pcb();
 placed_gimbal();
 cover();
 // comment out everything but this to create a dxf projection
-*cover_projection();
+//cover_projection();
 

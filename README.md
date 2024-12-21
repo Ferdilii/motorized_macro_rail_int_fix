@@ -325,11 +325,37 @@ In the folder [3d_models/controller](3d_models/controller/), there is a file nam
 
 ![controller image](img/controller.png)
 
-Now this model is intended for the parts and PCB model that I went with.  If you went with
-different parts, made your own PCB, or do not have a CND machine for the cover, you can either
-try to modify the given design or make a custom one using whatever parts / methods work for you.
+Now this model is intended for the parts and PCB model that I went with.  If you
+went with different parts, made your own PCB, or do not have a CNC machine for
+the acrylic cover, you can either try to modify the given design or make a
+custom one using whatever parts / methods work for you.
 
-As for this model, [I AM HERE]
+If you want to start with an STL file, you can find one at [3d_models/stl/controller.stl](3d_models/stl/controller.stl)
+
+![controller stl](img/controller_stl.png)
+
+If you want to edit the OpenSCAD model directly, it can be found at
+[3d_models/controller/controller.scad](3d_models/controller/controller.scad).
+The model is parametric and has many varialbes you can change and experiement
+with.  The bottom of the file allows you to turn components on and off using th the usual OpenSCAD prefixes of `*`, `!` and `//`:
+
+```
+// comment out everything but controller for the 3d print model
+controller(false);
+placed_pcb();
+placed_gimbal(); 
+cover();
+// comment out everything but this to create a dxf projection
+//cover_projection();
+```
+
+The `cover_projection()` can be used to create a `.dxf` export for CNC or a laser cut.
+Alterrnatively, you can 3D print the cover, likely with some modifications
+to allow the screen to be viewed:
+
+![controller dxf](img/controller_dxf.png)
+
+An exported DXF is available at [3d_models/dxf/controller_cover.dxf](3d_models/dxf/controller_cover.dxf) if you would like to use that as your starting point.
 
 ## Process Walkthrough
 
