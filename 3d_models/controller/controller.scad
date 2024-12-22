@@ -150,7 +150,7 @@ module controller(open_view=false) {
 
   module motor_pin_port() {
     port_x = pcb_x + 66;
-    port_z = pcb_z + 0.7;
+    port_z = pcb_z + 2.2;
     port_xsize = 13;
     port_zsize = 5;
     translate([
