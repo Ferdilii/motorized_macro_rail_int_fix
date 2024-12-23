@@ -204,7 +204,7 @@ void _render(struct SharedState* ss, const struct MotorControl* motor_snap) {
   _render_title(ss);
 
   const struct SavedSettings* settings = saved_settings_get();
-  const float pos_mm = motor_snap->current_pos / (float)(settings->steps_per_mm);
+  const double pos_mm = motor_snap->current_pos / (double)(settings->steps_per_mm);
   int16_t ypos = TEXT_HEIGHT * 2;
   snprintf(str, sizeof(str), "Pos:   %5.2fmm", pos_mm);
   bitmap_str(bm, TEXT_FONT, str, 0, ypos, bitmap_SET);

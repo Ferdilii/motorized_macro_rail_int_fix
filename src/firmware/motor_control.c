@@ -19,7 +19,7 @@ void sleep_us(uint32_t unused) { }
 #define RUNNING_TRUE 1
 #define RUNNING_REQUEST_STOP 2
 
-static inline uint8_t near_zero(float v, float threshold) {
+static inline uint8_t near_zero(double v, double threshold) {
   return (v < threshold) && (v > -threshold);
 }
 
@@ -57,8 +57,8 @@ void motor_control_init(
   mc->running = RUNNING_FALSE;
 }
 
-static float update_physics_normalized(
-    float dist, float vel, float acc, float max_vel, float delta_seconds) {
+static double update_physics_normalized(
+    double dist, double vel, double acc, double max_vel, double delta_seconds) {
   // first, apply the acceleration normally
   vel += acc * delta_seconds;
   if (vel > max_vel) {
@@ -68,7 +68,7 @@ static float update_physics_normalized(
   // Now check, if we apply maximum deceleration, will we end up going further
   // or shorter than dist.  If it's further, then deccelleration (braking) needs to
   // be applied.
-  const float braking_dist = vel * vel / (2.0 * acc);
+  const double braking_dist = vel * vel / (2.0 * acc);
   if (braking_dist > dist) {
     // undo the overshoot so a proper calculation is not biased.
     vel -= acc * delta_seconds;
@@ -87,14 +87,14 @@ static float update_physics_normalized(
   return vel;
 }
 
-static void update_physics(struct MotorControl* mc, float delta_seconds) {
+static void update_physics(struct MotorControl* mc, double delta_seconds) {
   // The first task is to remove the offsets and symmetry of the calculation,
   // Removing the offset means we don't have to carry it through calculations
   // and symmetry means that we don't have to do every calculation in positive
   // and negative directions.
-  float dist = mc->target_pos - mc->current_pos;
-  float velocity = mc->velocity;
-  float acceleration = mc->acceleration;
+  double dist = mc->target_pos - mc->current_pos;
+  double velocity = mc->velocity;
+  double acceleration = mc->acceleration;
   uint8_t invert = 0;
 
   if (dist < 0) {
@@ -122,14 +122,14 @@ static void update_physics(struct MotorControl* mc, float delta_seconds) {
 }
 
 static void update_current_pos_positive(struct MotorControl* mc) {
-  const float new_curr_pos = (mc->motor_pos / 2) - mc->backlash;
+  const double new_curr_pos = (mc->motor_pos / 2) - mc->backlash;
   if (new_curr_pos > mc->current_pos) {
     mc->current_pos = new_curr_pos;
   }
 }
 
 static void update_current_pos_negative(struct MotorControl* mc) {
-  const float new_curr_pos = (mc->motor_pos / 2) + mc->backlash;
+  const double new_curr_pos = (mc->motor_pos / 2) + mc->backlash;
   if (new_curr_pos < mc->current_pos) {
     mc->current_pos = new_curr_pos;
   }
@@ -143,18 +143,18 @@ static void update_current_pos(struct MotorControl* mc) {
   }
 }
 
-static void update_jog_velocity(struct MotorControl* mc, float delta_seconds) {
-  const float max_delta_v = mc->acceleration * delta_seconds;
+static void update_jog_velocity(struct MotorControl* mc, double delta_seconds) {
+  const double max_delta_v = mc->acceleration * delta_seconds;
 
   if (mc->jog_velocity > mc->velocity) {
-    const float delta_v = mc->jog_velocity - mc->velocity;
+    const double delta_v = mc->jog_velocity - mc->velocity;
     if (delta_v < max_delta_v) {
       mc->velocity = mc->jog_velocity;
     } else {
       mc->velocity += max_delta_v;
     }
   } else {
-    const float delta_v = mc->velocity - mc->jog_velocity;
+    const double delta_v = mc->velocity - mc->jog_velocity;
     if (delta_v < max_delta_v) {
       mc->velocity = mc->jog_velocity;
     } else {
@@ -163,9 +163,9 @@ static void update_jog_velocity(struct MotorControl* mc, float delta_seconds) {
   }
 }
 
-void update_position(struct MotorControl* mcp, float delta_seconds) {
+void update_position(struct MotorControl* mcp, double delta_seconds) {
   const int32_t orig_motor_pos = (int32_t)(mcp->motor_pos);
-  const float new_motor_pos = mcp->motor_pos + (mcp->velocity * delta_seconds);
+  const double new_motor_pos = mcp->motor_pos + (mcp->velocity * delta_seconds);
   const int32_t delta = (int32_t)(new_motor_pos) - orig_motor_pos;
 
   if (delta > 0) {
@@ -202,7 +202,7 @@ void check_for_jog_end(struct MotorControl* mcp) {
 }
 
 void check_for_target_reached(struct MotorControl* mcp) {
-  float target_dist = mcp->target_pos - mcp->current_pos;
+  double target_dist = mcp->target_pos - mcp->current_pos;
 
   if (((target_dist < 0) && (mcp->velocity >= 0)) ||
       ((target_dist > 0) && (mcp->velocity <= 0))) {
@@ -220,7 +220,7 @@ void motor_control_loop(struct MotorControl* mcp) {
   if (prev_us == 0 || (mcp->loop_us <= prev_us)) {
     return;
   }
-  const float delta_seconds = (float)(mcp->loop_us - prev_us) / 1000000.0;
+  const double delta_seconds = (double)(mcp->loop_us - prev_us) / 1000000.0;
 
   if (mcp->jog_mode) {
     update_jog_velocity(mcp, delta_seconds);
@@ -327,7 +327,7 @@ uint8_t motor_control_try_target_position(struct MotorControl* mc, int32_t p) {
 uint8_t motor_control_check_stopped(struct MotorControl* mc) {
   spin_lock_unsafe_blocking(mc->lock);
   uint8_t stopped = 0;
-  float delta = 0;
+  double delta = 0;
   if (!mc->jog_mode) {
     delta = mc->target_pos - mc->current_pos;
   }
@@ -356,7 +356,7 @@ uint8_t motor_control_try_backlash(struct MotorControl* mc, int32_t p) {
   return changed;
 }
 
-void motor_control_set_jog_velocity(struct MotorControl* mc, float steps_per_sec) {
+void motor_control_set_jog_velocity(struct MotorControl* mc, double steps_per_sec) {
   spin_lock_unsafe_blocking(mc->lock);
   mc->jog_mode = 1;
   mc->jog_velocity = steps_per_sec;
@@ -367,7 +367,7 @@ uint8_t motor_control_try_set_current_pos(struct MotorControl* mc, int32_t p) {
   spin_lock_unsafe_blocking(mc->lock);
   uint8_t changed = 0;
   if ((mc->velocity > -0.1) && (mc->velocity < 0.1)) {
-    const float difference = mc->current_pos - p;
+    const double difference = mc->current_pos - p;
     mc->jog_velocity = 0;
     mc->jog_mode = 0;
     mc->velocity = 0;
@@ -405,11 +405,11 @@ uint32_t estimate_seek_time_ms(const struct MotorControl* mv, int32_t steps) {
   // a = 0.5 * acc
   // b = v
   // c = -d
-  const float a = 0.5 * (float)mv->acceleration;
-  const float b = (float)mv->max_velocity;
-  const float c = -0.5 * (float)steps;
-  const float t1 = (-b + sqrt(b*b - 4*a*c)) / (2 * a);
-  const float t2 = (-b - sqrt(b*b - 4*a*c)) / (2 * a);
+  const double a = 0.5 * (double)mv->acceleration;
+  const double b = (double)mv->max_velocity;
+  const double c = -0.5 * (double)steps;
+  const double t1 = (-b + sqrt(b*b - 4*a*c)) / (2 * a);
+  const double t2 = (-b - sqrt(b*b - 4*a*c)) / (2 * a);
   // I thought the calculations below should be * 2000 but this led to results
   // that were twice as big.  I think I'm missing someting but just using x1000
   // for now until I can think about it more.

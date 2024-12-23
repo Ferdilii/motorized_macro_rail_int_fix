@@ -56,9 +56,9 @@ static void _render_distance(
     int32_t shot_count,
     int32_t steps_per_mm) {
   char str[32];
-  float dist_mm = 0;
+  double dist_mm = 0;
   if (shot_count > 1) {
-    dist_mm = (float)current_pos / (float)steps_per_mm;
+    dist_mm = (double)current_pos / (double)steps_per_mm;
 
     snprintf(str, sizeof(str), "Dist:  %5.1fmm", dist_mm);
     bitmap_str(bm, TEXT_FONT, str, 0, ypos, bitmap_SET);

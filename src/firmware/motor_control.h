@@ -21,11 +21,11 @@ struct MotorControl {
   // some "play" before the mechanics re-engage.
   //
   // Motor pos is 2x the scale of current pos (400 vs 200 units per 360 deg typically)
-  float motor_pos;  // user r/w, loop r/w
-  float current_pos;  // user r/w, loop r/w
+  double motor_pos;  // user r/w, loop r/w
+  double current_pos;  // user r/w, loop r/w
 
   // target position determines where the motor should go
-  float target_pos;  // user r/w, loop r
+  double target_pos;  // user r/w, loop r
 
   // backlash, in steps, determines the amount of movement
   // that corresponds to consuming backlash
@@ -41,7 +41,7 @@ struct MotorControl {
 
   // velocity, in steps/second is the current stepper motor
   // velocity
-  float velocity;  // user r, loop r/w
+  double velocity;  // user r, loop r/w
 
   // used to send updates to the control logic
   spin_lock_t* lock;  // user r/w, loop r/w
@@ -54,7 +54,7 @@ struct MotorControl {
   // If true, the unit is in jog mode and simply adds velocity to the current
   // position on each step
   uint8_t jog_mode;
-  float jog_velocity;
+  double jog_velocity;
 
   // idle frames are used to avoid going to sleep immediately
   uint32_t idle_frames;
@@ -100,7 +100,7 @@ uint8_t motor_control_check_stopped(struct MotorControl* mc);
 // Puts the algorithm into jog mode and pushes the velocity toward
 // the requested steps per second.  If doing so would exceed the maximum
 // set acceleration, then the maximum acceleration is used instead.
-void motor_control_set_jog_velocity(struct MotorControl* mc, float steps_per_sec);
+void motor_control_set_jog_velocity(struct MotorControl* mc, double steps_per_sec);
 
 // Changes current_pos without moving the motor.  motor_pos is moved by an equal delta.
 uint8_t motor_control_try_set_current_pos(struct MotorControl* mc, int32_t p);

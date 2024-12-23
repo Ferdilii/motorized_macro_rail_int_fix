@@ -20,9 +20,9 @@ void gimbal_jog(
 
   // A spin lock is needed to change motor settings so only
   // change them if needed.
-  const float delta_jv = motor_snap->jog_velocity - (float)new_jv;
+  const double delta_jv = motor_snap->jog_velocity - (double)new_jv;
   if ((delta_jv >= 1.0) || (delta_jv <= -1.0)) {
-    motor_control_set_jog_velocity(&(ss->motor), (float)new_jv);
+    motor_control_set_jog_velocity(&(ss->motor), (double)new_jv);
   }
 }
 

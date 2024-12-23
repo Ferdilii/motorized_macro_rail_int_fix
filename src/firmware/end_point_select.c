@@ -45,7 +45,7 @@ static void update(struct SharedState* ss, const struct MotorControl* motor_snap
 static void render_position(struct Bitmap* bm, const struct MotorControl* motor_snap) {
   const struct SavedSettings* settings = saved_settings_get();
   char str[32];
-  const float pos = (motor_snap->current_pos) / (float)(settings->steps_per_mm);
+  const double pos = (motor_snap->current_pos) / (double)(settings->steps_per_mm);
   uint16_t ypos = TEXT_HEIGHT * 2;
   snprintf(str, sizeof(str), "Plate:   %5.2fmm", pos);
   bitmap_str(bm, TEXT_FONT, str, 0, ypos, bitmap_SET);
