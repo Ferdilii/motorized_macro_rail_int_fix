@@ -7,7 +7,7 @@ G0 Z3.0
 ( T0 : 2.0 )
 ( Mounting Holes )
 G17
-M3 S1000
+M3 S10000
 G0 X4.9 Y122.3
 G0 X4.9 Y122.3
 G0 Z3.0
