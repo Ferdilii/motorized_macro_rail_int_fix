@@ -3,7 +3,7 @@
 This is a project for a motorized macro focusing rail.  It is used with special
 "stacking" software to increase the depth of field of macro images.  This
 project is presented as a modification to an existing commercial rail, but could
-be easily extended to use a custom built rail (using steel rods and linear
+be extended to use a custom built rail (using steel rods and linear
 bearings commonly used in at-home 3D printers and CNC mahines).
 
 ## Background
@@ -54,23 +54,26 @@ need to know to start experimenting, but a useful reference as you progress.
 
 ### Manual Approaches
 
-* You can use manual focus on your lens to achieve a similar result. That said, it
-can be challenging to get the step size correct and consistent.  The
-final stacked image will thus often have "blurry" areas where there was no in-focus source
-image to use.  There is also the risk of moving the camera every time you touch it.
-Still, this can be a no-cost way to start and get famiiar with the process.
+* You can use manual focus on your lens to vary the focus distance. That said,
+it can be challenging to get the step size correct and consistent (especially on a
+lens not designed primarily for manual focus).  The final stacked image will
+thus often have "blurry" areas where there was no in-focus source image to use.
+There is also the risk of moving the camera every time you touch it.  Still,
+this can be a great way to start and get famiiar with the process.  This method
+also does not limit you to small objects as stacking larger scenes can be useful
+too.
 * You can buy a manual focus rail at many different qualities and price points.
-That is the starting point for this project.  The nice thing about these
-rails is that they simple to use and eacy to pack up for field work.  The
-downside is that using them manually can feel like tedious work and you risk moving
-the camera and introducing vibrations as you interact with the rail.
+That is the starting point for this project.  The nice thing about these rails
+is that they simple to use and easy to pack up for field work.  The downside is
+that using them manually can feel like tedious work and you risk moving the
+camera and introducing vibrations as you interact with the rail.
 
 ### Automated approaches
 
 * You can buy commercial rails at different price points.  Here is
 [one](https://cognisys-inc.com/stackshot-macro-rail-package.html) and
 here is [another](https://www.wemacro.com/US/index.php/product/wemacro-rail-with-power-bank-cable-for-outside/).
-Price aside, one thing I think is a downside of these solutions is the
+Price aside, I think a downside of these solutions is the
 interface.  One uses buttons and the other uses a phone app - both seem a bit
 cumbersome compared to an analog stick when it comes to positioning the camera.
 * [Some cameras](https://fujifilm-x.com/en-gb/learning-centre/using-focus-bracketing-and-stacking/)
@@ -106,7 +109,7 @@ could go with a 128x64 and switch to an 8x8 font.  See
 [src/firmware/README.md](src/firmware/README.md) for more details.
 * [4 push-buttons](https://www.digikey.com/en/products/detail/schurter-inc/1301-9314-24/8536705) ($1).
 * [Joystick](https://betafpv.com/products/literadio-transmitter-nano-gimbal-for-literadio-3-and-2-se?variant=39628763529350) ($6).
-I'm using an RC gimbal (pitch-roll type) which is very precise.  You
+I'm using an RC gimbal (pitch-roll type) which gives a feeling of precise control.  You
 an get these new or salvage one from an old RC radio.  Alternatively,
 you can opt for a commonly-available ["PS2 stick"](https://www.amazon.com/HiLetgo-Controller-JoyStick-Breakout-Arduino/dp/B00P7QBGD2)
 that will be less precise but possibly good-enough.
@@ -120,20 +123,19 @@ into the sufficiency range.
 A Pico microcontroller is not designed to power a motor directly and you will need
 power electronics.  The [A4988](https://www.pololu.com/file/0j450/a4988_dmos_microstepping_driver_with_translator.pdf)
 gives you both the power and an easy-to-use interface which make the motor run smooth and quiet (using microstepping) and provides a number of protections (such as overcurrent protection).
-* [Power connector](https://www.digikey.com/en/products/detail/mpd-memory-protection-devices/EJ501B/2439533) ($1).
-I'm going with a 5.5mm barrel jack but it's really up to you.  The design will
+* [Power connector](https://www.amazon.com/dp/B09128LHGG) ($2).
+I'm going with a XT-60 connector used with RC LIPO batteries but it's really up to you.  The design will
 support between 12V and around 30V but you'll want to double check the limits
 of your chosen motor and voltage regulators.
-* [Camera remote shutter release](https://www.digikey.com/en/products/detail/same-sky-formerly-cui-devices/MJ-2508/281259) ($1).  I went with
+* [Camera remote shutter release](https://www.digikey.com/en/products/detail/same-sky-formerly-cui-devices/SJ1-2503A/738680) ($1).  I went with
 a 2.5mm jack for this but since it's the not the camera side, your options
 are flexible.  Many cameras support a simple electronic shutter release.  If yours
 doesn't, you can probably improvise something or go with the manual shutter
 release option the firmware provides (more on that later).
 * [4N25 Optocoupler](https://www.digikey.com/en/products/detail/liteon/4N25/385762) (<$1)
-This is used to trigger the camera.  An optocoupler triggers the camera using light,
-meaning that the electrical system of the camera and focus rail are fully isolated.  This
-is probably overkill, safety wise, but otocouplers are only a few more cents than
-a transistor so why not.
+This is used to trigger the camera.  An [optocoupler](https://en.wikipedia.org/wiki/Opto-isolator) triggers the camera using light,
+meaning that the electrical system of the camera and focus rail are fully isolated.  This electrical
+isolation can bring some peace-of-mind about connecting your camera.
 * [100 Ohm resistor](https://www.digikey.com/en/products/detail/vishay-dale/RLR07C1000GSB14/3141196) (<$1)
 The optocoupler needs one of these.
 * [470 uF capacitor](https://www.digikey.com/en/products/detail/rubycon/6-3YXJ470M6-3X11/3134408) (<$1)
@@ -144,7 +146,7 @@ out voltage transisents that are common with powering motors.
 You will also need a rail.  I went with the [NM-200s](https://www.amazon.com/dp/B0BXKFGLF3?th=1)
 which I acquired on sale for $150.  I'd say the [NM-180s](https://www.amazon.com/dp/B08BCCFQC3)
 is likely as good for $130 retail.  There are also a number of cheaper options that I have no
-direct experience with, such as [this one for $89](https://www.amazon.com/Adjustment-Photography-360%C2%B0Rotating-Compatibility-MS18/dp/B0C89CLJ8N).  If you go with a NM-??? rail as I used, you can use the proveded `.STL` files directly.  For other rails
+direct experience with, such as [this one for $89](https://www.amazon.com/Adjustment-Photography-360%C2%B0Rotating-Compatibility-MS18/dp/B0C89CLJ8N).  If you go with a NM-XX0s rail as I used, you can use the provided `.STL` files directly.  For other rails
 you will need to resize the adapter using the free OpenSCAD and instructions provided later
 in this document.
 
@@ -214,13 +216,13 @@ Pico for this reason (as is done in the schematic above).
 ### Build firmware yourself
 
 To start, you'll need a working development environment.  I'll point you to the
-[official docs](https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf) if you are not there yet.  I personally prefer following Appendix C "Manually configure your environment" first over the Visual Studio docs, then add Visual Studio code later so I have both options available.
+[official docs](https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf) if you are not there yet.  I personally prefer following Appendix C "Manually configure your environment" first over the VS Code docs, then add VS Code later so I have both options available.
 
 Once your blinking light project is working, your should be close to done.  Here
 are the command line instructions (use the official Pico docs as a guide for VS Code)
 
-* First, go into the `src/` directory.
-* In Linux, type `./bootstrap.sh`.  In Windows, you'll need to follow
+* First, go into the [`src/`](src) directory.
+* In Linux, type [`./bootstrap.sh`](src/bootstrap.sh).  In Windows, you'll need to follow
 the steps listed in `./bootstrap.sh` which are identical to the official
 docs.
 * `cd build`
@@ -290,11 +292,11 @@ If you power on the unit and press the "previous button", you are taken to
 a menu that lets you chang the following settings:
 
 * Max Velocity: The maximum motor turn speed.  Too high of a value may cause the
-stepper motor to miss steps o rlead to long spin down times if acceleration
-is ot raised as well.
+stepper motor to miss steps or lead to long spin down times if acceleration
+is not risen to match.
 * Acceletaion: The maximum motor acceleration/decelleration.  Too high of a
 a value may cause the motor to miss steps or lead to rail vibrations.
-* Backlash: When the moto switches direction, it will take some slack before
+* Backlash: When the motor switches direction, it will take some slack before
 the main gear is engaged, this is known as backlash.  If you want a perfect
 value, you can run the test mode with a caliper attached to the rail.
 It's usually not critical that this number be fully tuned.
@@ -305,9 +307,9 @@ vibrations/oscillations from rail decelleration to subside.
 ### Steps / mm
 
 This final menu item relates to both your motors steps/rotation and
-your rails rotations/mm.  The a4988 driver is configured in 16x microstep
-mode, meaning that 16 steps equal one step on the motor.  The formula to use
-is
+your rails rotations/mm.  The a4988 driver is configured in the schematic
+above to 16x microstep mode, meaning that 16 steps equal one step on the motor.
+The formula to use is thus:
 
 ```
   motor_steps_per_rotation * 16 / mm_per_rotation
@@ -325,10 +327,10 @@ In the folder [3d_models/controller](3d_models/controller/), there is a file nam
 
 ![controller image](img/controller.png)
 
-Now this model is intended for the parts and PCB model that I went with.  If you
-went with different parts, made your own PCB, or do not have a CNC machine for
-the acrylic cover, you can either try to modify the given design or make a
-custom one using whatever parts / methods work for you.
+This model is intended for the parts and PCB model that I'm using.  If you went
+with different parts, made a differently-shaped PCB, or do not have a CNC
+machine for the acrylic cover, you can either try to modify the given design or
+make a custom one using whatever parts / methods work for you.
 
 If you want to start with an STL file, you can find one at [3d_models/stl/controller.stl](3d_models/stl/controller.stl)
 
@@ -367,7 +369,7 @@ You first need to attach the stepper motor to the rail by sliding it on and
 *gently* tightening the bolts (don't overdo it).  The motor can easily be
 detached if you don't need it for a given session.`
 
-![attach rail]()
+![attach rail](img/connected_rail.jpg)
 
 Next line up the camera and target and make sure that nothing is moving.
 
@@ -406,8 +408,9 @@ Hit the 'next' button and find the closest point.
 ### Choose shot delay
 
 Hit the 'next' button to choose the shot delay. My exposure settings indicate
-that a photo will take 1/8th of a second to take.  I thus give a little extra
-at 0.3 seconds.  If your camera offers a setting for
+that a photo will take 1/8th of a second to take.  You also want to think about how
+long the camera will take to write the photo to the SD card (most cameras will buffer
+shots in memory, but maybe not enough).  If your camera offers a setting for
 ["electronic shutter"](https://photographylife.com/mechanical-electronic-shutter-efcs),
 I suggest turning it on as any amount of
 [shutter shock](https://photographylife.com/shutter-shock) is especially
@@ -431,7 +434,7 @@ The correct image count depends on many variables:
 - Your choice of aperture setting
 
 You'll need to experiment.  If you do not know where to begin, I suggest f/8
-and 0.2mm which is probably a bit overkill (but again, it really depends).
+and 0.2mm and see how it goes (or try [this chart](https://www.wemacro.com/?p=529)).
 
 Hit the 'next' button and choose your shot count
 
@@ -441,9 +444,8 @@ Hit the 'next' button and choose your shot count
 
 Hit the `next` button to take all of the photos.  You can pause/resume the process
 with the `next` button or cancel it with the `back` button.  If you find a need
-to abort everything quickly, you can press the `reset` button but this will
-lead to the motor driving current through your `a4988` chip if it's spinning
-so I suggest reserving `reset` for exceptional situations.
+to abort everything quickly or just want to start over, you can press the `reset`
+button (I suggest using next/back over reset if the motor is spinning).
 
 When all photos are taken, you have the option of repeating the process in the
 reverse direction with the 'next' button or starting over with the 'back' button.
