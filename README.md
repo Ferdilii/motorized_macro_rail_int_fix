@@ -20,8 +20,6 @@ Due to the [physics of photographic lenses](https://en.wikipedia.org/wiki/Depth_
 small objects typically has a very low depth of field, where only a thin plane
 of the object appears in focus, often much less than 1mm.
 
-![low DOF image]()
-
 In general photography, it is possible to "stop down" the aperture to increase
 the depth of field.  That is true in macro photography as well, but even stopping
 down often does not sufficiently address the depth of field problem.
@@ -31,14 +29,14 @@ shifted, then combine these using software.  For example, we would take these
 photos:
 
 
-![photo1]()
-![photo2]()
-![photo3]()
-(and N more)
+![photo1](img/20241228_StackedBlueberry_0048.jpg)
+![photo2](img/20241228_StackedBlueberry_0058.jpg)
+![photo3](img/20241228_StackedBlueberry_0066.jpg)
+(and 29 more)
 
 and combine them into this "stacked" image:
 
-![stacked image]()
+![stacked image](img/StackedBlueberry_2_32Images.jpg)
 
 The project here helps to take the capture photos in an automated and
 consistent way.
@@ -373,7 +371,7 @@ detached if you don't need it for a given session.`
 
 Next line up the camera and target and make sure that nothing is moving.
 
-![camera setup]()
+![camera setup](img/20241227_MacroRail_0001.jpg)
 
 It's good to have a light on your subject to reduce to exposure time and make
 the light consistent.  Where you place the light is an artistic choice but side
