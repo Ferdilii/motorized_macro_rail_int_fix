@@ -391,17 +391,17 @@ will need to take more images to due to less depth of field.
 Power on the focusing rail and use the joystick to find the farthest out point
 (note you can also find the closest point first, if you prefer).
 
-![interface]()
+![back of camera](img/camera_focus_back.jpg)
 
-![back of camera]()
+![interface](img/controller_end_pos.jpg)
 
 ### Find closest point
 
 Hit the 'next' button and find the closest point.
 
-![interface]()
+![front of camera](img/camera_focus_front.jpg)
 
-![back of camera]()
+![interface](img/controller_start_pos.jpg)
 
 ### Choose shot delay
 
@@ -414,9 +414,7 @@ I suggest turning it on as any amount of
 [shutter shock](https://photographylife.com/shutter-shock) is especially
 visible during macro work.
 
-![back of camera]()
-
-![interface]()
+![interface](img/controller_shot_delay.jpg)
 
 If you don't have the remote shutter working with your camera, you have
 the option of choosing `0.0` here.  In that case, the rail will pause
@@ -436,7 +434,7 @@ and 0.2mm and see how it goes (or try [this chart](https://www.wemacro.com/?p=52
 
 Hit the 'next' button and choose your shot count
 
-![interface]()
+![interface](img/controller_shot_count.jpg)
 
 ### Take photos
 
@@ -454,14 +452,12 @@ I suggest Helicon focus for reasonably priced, turn key software with a free tri
 period.  The software is for mac or windows but I am running it in Linux with Wine
 and it runs fine.
 
-![helicon interface]()
-![helicon result]()
+![helicon interface](img/helicon.jpg)
 
 If you want a free/open source solution, check out the [focus stack](https://github.com/PetteriAimonen/focus-stack)
 project.  The main downside of going this route is that the excellent
 post-stack retouching features of Helicon are not present, but many people
 are able to use the software to produce excellent images regardless:
 
-![focus stack interface]()
-![focus stack result]()
+![focus stack interface](img/focus_stack.jpg)
 
