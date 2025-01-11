@@ -1,15 +1,15 @@
-use <mattwach/util.scad>
-include <mattwach/vitamins/electronics/pi_pico.scad>
-include <mattwach/vitamins/electronics/capacitor.scad>
-include <mattwach/vitamins/electronics/a4988_carrier.scad>
-include <mattwach/vitamins/electronics/oled.scad>
-include <NopSCADlib/core.scad>
-include <NopSCADlib/vitamins/pin_headers.scad>
-include <NopSCADlib/vitamins/buttons.scad>
-include <NopSCADlib/vitamins/components.scad>
-include <NopSCADlib/vitamins/dip.scad>
-include <NopSCADlib/vitamins/axials.scad> 
-include <NopSCADlib/vitamins/radials.scad> 
+use <lib/mattwach/util.scad>
+include <lib/mattwach/vitamins/electronics/pi_pico.scad>
+include <lib/mattwach/vitamins/electronics/capacitor.scad>
+include <lib/mattwach/vitamins/electronics/a4988_carrier.scad>
+include <lib/mattwach/vitamins/electronics/oled.scad>
+include <lib/NopSCADlib/core.scad>
+include <lib/NopSCADlib/vitamins/pin_headers.scad>
+include <lib/NopSCADlib/vitamins/buttons.scad>
+include <lib/NopSCADlib/vitamins/components.scad>
+include <lib/NopSCADlib/vitamins/dip.scad>
+include <lib/NopSCADlib/vitamins/axials.scad> 
+include <lib/NopSCADlib/vitamins/radials.scad> 
 
 
 PCB_XSIZE = 119.4;

@@ -38,7 +38,7 @@ and combine them into this "stacked" image:
 
 ![stacked image](img/StackedBlueberry_2_32Images.jpg)
 
-The project here helps to take the capture photos in an automated and
+The project here helps to take the captured photos in an automated and
 consistent way.
 
 Note that taking these photos requires either a specialized lens, an attachable lens
@@ -62,7 +62,7 @@ also does not limit you to small objects as stacking larger scenes can be useful
 too.
 * You can buy a manual focus rail at many different qualities and price points.
 That is the starting point for this project.  The nice thing about these rails
-is that they simple to use and easy to pack up for field work.  The downside is
+is that they are easy to pack up for field work.  The downside is
 that using them manually can feel like tedious work and you risk moving the
 camera and introducing vibrations as you interact with the rail.
 
@@ -130,7 +130,7 @@ a 2.5mm jack for this but since it's the not the camera side, your options
 are flexible.  Many cameras support a simple electronic shutter release.  If yours
 doesn't, you can probably improvise something or go with the manual shutter
 release option the firmware provides (more on that later).
-* [4N25 Optocoupler](https://www.digikey.com/en/products/detail/liteon/4N25/385762) (<$1)
+* [4N25 Optocoupler](https://www.digikey.com/en/products/detail/liteon/4N25/385762) (< $1)
 This is used to trigger the camera.  An [optocoupler](https://en.wikipedia.org/wiki/Opto-isolator) triggers the camera using light,
 meaning that the electrical system of the camera and focus rail are fully isolated.  This electrical
 isolation can bring some peace-of-mind about connecting your camera.
@@ -216,7 +216,7 @@ Pico for this reason (as is done in the schematic above).
 To start, you'll need a working development environment.  I'll point you to the
 [official docs](https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf) if you are not there yet.  I personally prefer following Appendix C "Manually configure your environment" first over the VS Code docs, then add VS Code later so I have both options available.
 
-Once your blinking light project is working, your should be close to done.  Here
+Once your blinking light project is working, you are nearly done.  Here
 are the command line instructions (use the official Pico docs as a guide for VS Code)
 
 * First, go into the [`src/`](src) directory.
@@ -302,7 +302,9 @@ value, you can run the test mode with a caliper attached to the rail.
 It's usually not critical that this number be fully tuned.
 * Settle Seconds: This is how long the controller should wait between
 stopping the rail and taking a photo.  The intent is to allow any
-vibrations/oscillations from rail decelleration to subside.
+vibrations/oscillations from rail decelleration to subside.  You
+can also use this value to give your camera more time to write to
+its memory card.
 
 ### Steps / mm
 

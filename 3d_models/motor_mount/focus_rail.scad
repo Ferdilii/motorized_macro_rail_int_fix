@@ -1,4 +1,4 @@
-use <mattwach/shapes.scad>
+use <lib/mattwach/shapes.scad>
 include <foot.scad> 
 include <knob.scad>
 

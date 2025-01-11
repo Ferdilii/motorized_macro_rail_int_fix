@@ -1,4 +1,4 @@
-use <mattwach/util.scad>
+use <lib/mattwach/util.scad>
 include <focus_rail.scad>
 
 overlap = 0.01;
