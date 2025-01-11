@@ -1,5 +1,5 @@
-use <mattwach/util.scad>
-use <mattwach/shapes.scad>
+use <lib/mattwach/util.scad>
+use <lib/mattwach/shapes.scad>
 include <flange.scad>
 
 overlap = 0.01;

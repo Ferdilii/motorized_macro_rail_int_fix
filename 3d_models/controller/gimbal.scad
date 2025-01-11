@@ -1,4 +1,4 @@
-use <mattwach/util.scad>
+use <lib/mattwach/util.scad>
 
 GIMBAL_HOLE_XSPAN = 35; 
 GIMBAL_HOLE_YSPAN = 42; 

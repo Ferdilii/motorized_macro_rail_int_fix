@@ -1,4 +1,4 @@
-use <mattwach/util.scad>
+use <lib/mattwach/util.scad>
 include <knob.scad>
 include <motor.scad>
 
