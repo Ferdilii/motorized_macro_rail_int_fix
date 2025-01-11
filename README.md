@@ -20,8 +20,6 @@ Due to the [physics of photographic lenses](https://en.wikipedia.org/wiki/Depth_
 small objects typically has a very low depth of field, where only a thin plane
 of the object appears in focus, often much less than 1mm.
 
-![low DOF image]()
-
 In general photography, it is possible to "stop down" the aperture to increase
 the depth of field.  That is true in macro photography as well, but even stopping
 down often does not sufficiently address the depth of field problem.
@@ -31,14 +29,14 @@ shifted, then combine these using software.  For example, we would take these
 photos:
 
 
-![photo1]()
-![photo2]()
-![photo3]()
-(and N more)
+![photo1](img/20241228_StackedBlueberry_0048.jpg)
+![photo2](img/20241228_StackedBlueberry_0058.jpg)
+![photo3](img/20241228_StackedBlueberry_0066.jpg)
+(and 29 more)
 
 and combine them into this "stacked" image:
 
-![stacked image]()
+![stacked image](img/StackedBlueberry_2_32Images.jpg)
 
 The project here helps to take the captured photos in an automated and
 consistent way.
@@ -375,7 +373,7 @@ detached if you don't need it for a given session.`
 
 Next line up the camera and target and make sure that nothing is moving.
 
-![camera setup]()
+![camera setup](img/20241227_MacroRail_0001.jpg)
 
 It's good to have a light on your subject to reduce to exposure time and make
 the light consistent.  Where you place the light is an artistic choice but side
@@ -395,17 +393,17 @@ will need to take more images to due to less depth of field.
 Power on the focusing rail and use the joystick to find the farthest out point
 (note you can also find the closest point first, if you prefer).
 
-![interface]()
+![back of camera](img/camera_focus_back.jpg)
 
-![back of camera]()
+![interface](img/controller_end_pos.jpg)
 
 ### Find closest point
 
 Hit the 'next' button and find the closest point.
 
-![interface]()
+![front of camera](img/camera_focus_front.jpg)
 
-![back of camera]()
+![interface](img/controller_start_pos.jpg)
 
 ### Choose shot delay
 
@@ -418,9 +416,7 @@ I suggest turning it on as any amount of
 [shutter shock](https://photographylife.com/shutter-shock) is especially
 visible during macro work.
 
-![back of camera]()
-
-![interface]()
+![interface](img/controller_shot_delay.jpg)
 
 If you don't have the remote shutter working with your camera, you have
 the option of choosing `0.0` here.  In that case, the rail will pause
@@ -440,7 +436,7 @@ and 0.2mm and see how it goes (or try [this chart](https://www.wemacro.com/?p=52
 
 Hit the 'next' button and choose your shot count
 
-![interface]()
+![interface](img/controller_shot_count.jpg)
 
 ### Take photos
 
@@ -458,14 +454,12 @@ I suggest Helicon focus for reasonably priced, turn key software with a free tri
 period.  The software is for mac or windows but I am running it in Linux with Wine
 and it runs fine.
 
-![helicon interface]()
-![helicon result]()
+![helicon interface](img/helicon.jpg)
 
 If you want a free/open source solution, check out the [focus stack](https://github.com/PetteriAimonen/focus-stack)
 project.  The main downside of going this route is that the excellent
 post-stack retouching features of Helicon are not present, but many people
 are able to use the software to produce excellent images regardless:
 
-![focus stack interface]()
-![focus stack result]()
+![focus stack interface](img/focus_stack.jpg)
 
