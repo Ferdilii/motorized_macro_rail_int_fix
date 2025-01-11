@@ -284,6 +284,8 @@ for your chosen stepper motor.  Intructions on how to calibrate are
 [here](https://www.pololu.com/product/1182) with alternate instructions
 [here](https://ardufocus.com/howto/a4988-motor-current-tuning/).
 
+![motor calibrate](img/a9488_calibrate.jpg)
+
 ## Firmware Settings
 
 If you power on the unit and press the "previous button", you are taken to
