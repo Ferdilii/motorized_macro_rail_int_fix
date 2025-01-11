@@ -249,13 +249,13 @@ knob:
 
 ![shaft interface](img/flange.png)
 
-I have included rendered `.stl` files in the [motor_mount/stl](motor_mount/stl)
+I have included rendered `.stl` files in the [3d_models/stl](3d_models/stl)
 directory that you make be able to use directly if you have a compatible rail.
 
 If you do not have a a matching rail, you can probably make a few tweaks to the
 model and have a working result.  By using the freely-available [OpenSCAD](https://openscad.org/), you can adapt
 the clamp interface to various different rails by editing
-[`motor_mount/focus_rail.scad`](motor_mount/focus_rail.scad) and changing
+[`motor_mount/focus_rail.scad`](3d_models/motor_mount/focus_rail.scad) and changing
 the following parameters to match your rail:
 
 ```
@@ -266,8 +266,8 @@ RAIL_BODY_HEIGHT = 20;
 The numbers above (in mm) are for the [NM-200s](https://www.amazon.com/dp/B0BXKFGLF3).
 
 The knob interface design should be adaptable to most (but not all) rail
-designs.  The file to change is [`motor_mount/knob.scad`]() with the following
-variables likely being relevant:
+designs.  The file to change is [`motor_mount/knob.scad`](3d_models/motor_mount/knob.scad)
+with the following variables likely being relevant:
 
 ```
 KNOB_DIAMETER = 15.1;
@@ -288,6 +288,8 @@ for your chosen stepper motor.  Intructions on how to calibrate are
 
 If you power on the unit and press the "previous button", you are taken to
 a menu that lets you chang the following settings:
+
+![settings](img/settings.jpg)
 
 * Max Velocity: The maximum motor turn speed.  Too high of a value may cause the
 stepper motor to miss steps or lead to long spin down times if acceleration
