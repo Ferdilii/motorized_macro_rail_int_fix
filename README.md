@@ -2,7 +2,7 @@
 
 [![Macro Video](https://img.youtube.com/vi/2CRFKH4DlHQ/0.jpg)](https://www.youtube.com/watch?v=2CRFKH4DlHQ)
 
-Instructables Link is [here](https://www.instructables.com/member/mattwach/)
+Instructables Link is [here](https://www.instructables.com/DIY-Motorized-Macro-Rail/)
 
 This is a project for a motorized macro focusing rail.  It is used with special
 "stacking" software to increase the depth of field of macro images.  This
