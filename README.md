@@ -1,5 +1,9 @@
 # Motorized Macro Rail
 
+[![Macro Video](https://img.youtube.com/vi/2CRFKH4DlHQ/0.jpg)](https://www.youtube.com/watch?v=2CRFKH4DlHQ)
+
+Instructables Link is [here](https://www.instructables.com/member/mattwach/)
+
 This is a project for a motorized macro focusing rail.  It is used with special
 "stacking" software to increase the depth of field of macro images.  This
 project is presented as a modification to an existing commercial rail, but could
