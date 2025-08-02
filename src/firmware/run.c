@@ -9,7 +9,7 @@
 #include "shutter.h"
 #include "oledm/font/terminus8x16.h"
 
-#define SHUTTER_RELEASE_MS 20
+#define SHUTTER_RELEASE_MS 40
 
 #define RUN_STATE_TAKE_PHOTO 0
 #define RUN_STATE_SHUTTER_WAIT 1

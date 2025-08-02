@@ -82,6 +82,8 @@ void buttons_init(void) {
 void buttons_update(struct SharedState* ss) {
   if (shutter_state == SHUTTER_TRIGGER) {
     shutter_high();
+    // Some cameras need the shutter held a little longer (Fuji XT-5 needed this).
+    sleep_ms(30);
     shutter_state = SHUTTER_HIGH;
   } else if (shutter_state == SHUTTER_HIGH) {
     shutter_low();
