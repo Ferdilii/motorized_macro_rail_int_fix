@@ -61,7 +61,7 @@ static void _shutter_wait(struct SharedState* ss) {
   }
 
   // it should end at zero on the last shot
-  int32_t new_pos = ss->start_pos - ((int32_t)rs.shot_idx * ss->start_pos / ((int32_t)ss->shot_count - 1));
+  int32_t new_pos = ss->start_pos - (int32_t)(((int64_t)rs.shot_idx * (int64_t)ss->start_pos) / ((int32_t)ss->shot_count - 1));
 
   if (motor_control_try_target_position(&(ss->motor), new_pos)) {
     rs.state = RUN_STATE_WAIT_MOTOR_STOP;
